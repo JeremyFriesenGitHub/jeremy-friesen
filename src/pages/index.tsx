@@ -37,11 +37,11 @@ export default function Home() {
         <title>Jeremy Friesen</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main className="relative flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#A62B03] to-[#002244] p-4 text-center overflow-hidden">
+      <main className="relative flex min-h-screen flex-col items-center justify-center bg-black p-4 text-center overflow-hidden">
         <InteractiveGridPattern
           squares={gridSize} 
           width={40}
-          height={40}
+          height={45}
           className="absolute inset-0 h-full w-full"
           squaresClassName="stroke-gray-400/30 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000"
         />
