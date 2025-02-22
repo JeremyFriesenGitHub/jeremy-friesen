@@ -6,12 +6,9 @@ export default {
     content: ["./src/**/*.tsx"],
   theme: {
   	extend: {
-  		fontFamily: {
-  			sans: [
-  				'var(--font-geist-sans)',
-                    ...fontFamily.sans
-                ]
-  		},
+		fontFamily: {
+			sans: ["Open Sans", "sans-serif"],
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
