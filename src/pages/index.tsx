@@ -4,6 +4,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { InteractiveGridPattern } from "../components/magicui/interactive-grid-pattern";
 import { useState, useEffect } from "react";
+import React from "react";
+import { Navbar } from "../components/custom/navbar";
 
 export default function Home() {
   const [gridSize, setGridSize] = useState<[number, number]>([24, 24]); 
@@ -37,23 +39,32 @@ export default function Home() {
         <title>Jeremy Friesen</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main className="relative flex min-h-screen flex-col items-center justify-center bg-black p-4 text-center overflow-hidden">
+  
+      <div className="relative min-h-screen bg-gradient-to-br from-[#A62B03] to-[#002244]">
+        
+        <Navbar />
+  
         <InteractiveGridPattern
-          squares={gridSize} 
+          squares={gridSize}
           width={40}
           height={45}
-          className="absolute inset-0 h-full w-full"
-          squaresClassName="stroke-gray-400/30 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000"
+          className="w-full h-full"
+          squaresClassName="stroke-gray-400/10 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000"
         />
-        <div className="relative z-10">
-          <h1 className="text-white text-3xl md:text-5xl font-bold">
-            Hello, World!
-          </h1>
-          <Link href="https://github.com/JeremyFriesenGitHub/jeremy-friesen" className="text-white text-lg md:text-2xl font-bold underline mt-6 md:mt-12">
-            See the repo progress here
-          </Link>
-        </div>
-      </main>
+  
+
+        <h1 className="text-white text-3xl md:text-5xl font-bold justify-center items-center flex h-full">
+          Hello, World!
+        </h1>
+  
+        <Link 
+          href="https://github.com/JeremyFriesenGitHub/jeremy-friesen" 
+          className="text-white text-lg md:text-2xl font-bold underline mt-6 md:mt-12 justify-center items-center flex h-full"
+        >
+          See the repo progress here
+        </Link>
+  
+      </div>
     </>
-  );
+  );  
 }
