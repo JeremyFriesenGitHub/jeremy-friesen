@@ -28,7 +28,7 @@ interface InteractiveGridPatternProps extends React.SVGProps<SVGSVGElement> {
  */
 export function InteractiveGridPattern({
   width = 40,
-  height = 40,
+  height = 45,
   squares = [24, 24],
   className,
   squaresClassName,
@@ -58,8 +58,8 @@ export function InteractiveGridPattern({
             width={width}
             height={height}
             className={cn(
-              "stroke-lime-500/100 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000",
-              hoveredSquare === index ? "fill-lime-500/100" : "fill-transparent",
+              "stroke-[#FB4F14] transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000",
+              hoveredSquare === index ? "fill-[#FB4F14]" : "fill-transparent",
               squaresClassName,
             )}
             onMouseEnter={() => setHoveredSquare(index)}
