@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react"; // Lucide-React icons
+import { VscGithubAlt } from "react-icons/vsc";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,9 @@ export function Navbar() {
         <div className="hidden md:flex space-x-6">
           <a href="#" className="hover:text-gray-300">Experience</a>
           <a href="#" className="hover:text-gray-300">Projects</a>
-          <a href="#" className="hover:text-gray-300">Contact</a>
+          <a href="https://github.com/JeremyFriesenGitHub" className="hover:text-gray-300">
+            <VscGithubAlt size={28} />
+          </a>
         </div>
 
         <button
@@ -39,6 +42,9 @@ export function Navbar() {
           </a>
           <a href="#" className="p-2 bg-white/20 rounded-md">
             Contact
+          </a>
+          <a href="https://github.com/JeremyFriesenGitHub" className="p-2 bg-white/20 rounded-md">
+            My GitHub
           </a>
         </div>
       )}
