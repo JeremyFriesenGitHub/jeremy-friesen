@@ -1,73 +1,61 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "~/lib/utils";
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
-  const rows = new Array(50).fill(1);
-  const cols = new Array(60).fill(1);
-  let colors = [
-    "--sky-300",
-    "--pink-300",
-    "--green-300",
-    "--yellow-300",
-    "--red-300",
-    "--purple-300",
-    "--blue-300",
-    "--indigo-300",
-    "--violet-300",
+  const [rows, setRows] = useState(0);
+  const [cols, setCols] = useState(0);
+
+  const colors = [
+    "#0ea5e9", // Sky-500
+    "#f97316", // Orange-500
+    "#f59e0b", // Amber-500
+    "#eab308", // Yellow-500
+    "#ffffff", // White
+    "#000000", // Black
+    "#3b82f6", // Blue-500
+    "#6b7280", // Gray-500
+    "#92400e", // Brown-500
   ];
-  const getRandomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
+
+  const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
+  useEffect(() => {
+    const updateGridSize = () => {
+      const boxWidth = window.innerWidth * 0.025; // 2.5vw
+      const boxHeight = window.innerHeight * 0.025; // 2.5vh
+      setCols(Math.floor(window.innerWidth / boxWidth));
+      setRows(Math.floor(window.innerHeight / boxHeight));
+    };
+
+    updateGridSize();
+    window.addEventListener("resize", updateGridSize);
+    return () => window.removeEventListener("resize", updateGridSize);
+  }, []);
 
   return (
     <div
-      style={{
-        transform: `translate(-40%,-60%) skewX(-48deg) skewY(14deg) scale(0.675) rotate(0deg) translateZ(0)`,
-      }}
-      className={cn(
-        "absolute left-1/4 p-4 -top-1/4 flex  -translate-x-1/2 -translate-y-1/2 w-full h-full z-0 ",
-        className
-      )}
+      className={cn("fixed inset-0 flex flex-wrap", className)}
       {...rest}
     >
-      {rows.map((_, i) => (
-        <motion.div
-          key={`row` + i}
-          className="w-16 h-8  border-l  border-gray-400/30 relative"
-        >
-          {cols.map((_, j) => (
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={`row-${i}`} className="flex">
+          {Array.from({ length: cols }).map((_, j) => (
             <motion.div
               whileHover={{
-                backgroundColor: `var(${getRandomColor()})`,
+                backgroundColor: getRandomColor(),
                 transition: { duration: 0 },
               }}
               animate={{
                 transition: { duration: 2 },
               }}
-              key={`col` + j}
-              className="w-16 h-8  border-r border-t border-gray-400/30 relative"
+              key={`col-${j}`}
+              className="w-[2.5vw] h-[2.5vh] border border-gray-400/30 relative"
             >
-              {j % 2 === 0 && i % 2 === 0 ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="absolute h-6 w-10 -top-[14px] -left-[22px] text-slate-700 stroke-[1px] pointer-events-none"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 6v12m6-6H6"
-                  />
-                </svg>
-              ) : null}
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       ))}
     </div>
   );
