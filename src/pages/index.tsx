@@ -12,13 +12,12 @@ import { TypingAnimation } from "../components/magicui/typing-animation";
 const texts = [
   "Hello",
   "World!",
-  "Welcome",
-  "Bonjour",
+  "Welcome!",
+  "Bonjour!",
 ];
 
 
 export default function Home() {
-
   return (
     <>
       <Head>
@@ -26,23 +25,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <main className="relative min-h-screen bg-[linear-gradient(60deg,#001489,#A23202,#0C2340)]">
-      <Navbar />
-      <Boxes />
-      <div className="relative flex flex-col items-center justify-center text-center p-8 text-white">
-      <MorphingText texts={texts} className="text-3xl md:text-5xl font-bold mt-8" />
+      <main className="relative flex flex-col min-h-screen w-full">
+        <div className="absolute inset-0 w-full h-full bg-[linear-gradient(90deg,#000000,#B11019,#000000)]"></div>
 
-          <Link
-            className="text-2xl md:text-3xl underline font-bold mt-12"
-            href="https://github.com/JeremyFriesenGitHub/jeremy-friesen"
-          >
-          <TypingAnimation>See the repo progess here</TypingAnimation>
+        <Navbar />
+        <Boxes />
+
+        <div className="relative flex flex-col items-center justify-center text-center p-8 text-white">
+          <MorphingText texts={texts} className="mt-8" />
+          
+          <Link className="mt-12 underline" href="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
+            <TypingAnimation>See the repo progress here</TypingAnimation>
           </Link>
-      </div> 
+        </div>
       </main>
-
-
-        
     </>
-  );  
+  );
 }

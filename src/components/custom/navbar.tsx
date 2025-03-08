@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react"; // Lucide-React icons
+import { Menu, X } from "lucide-react";
 import { VscGithubAlt } from "react-icons/vsc";
 
 export function Navbar() {

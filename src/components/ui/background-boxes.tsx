@@ -8,15 +8,10 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const [cols, setCols] = useState(0);
 
   const colors = [
-    "#0ea5e9", // Sky-500
-    "#f97316", // Orange-500
-    "#f59e0b", // Amber-500
-    "#eab308", // Yellow-500
-    "#ffffff", // White
-    "#000000", // Black
-    "#3b82f6", // Blue-500
-    "#6b7280", // Gray-500
-    "#92400e", // Brown-500
+    "#969696", 
+    "#ffffff", 
+    "#000000",
+    "#eb2d37", 
   ];
 
   const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
