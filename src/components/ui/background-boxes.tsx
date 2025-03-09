@@ -18,10 +18,9 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
 
   useEffect(() => {
     const updateGridSize = () => {
-      const boxWidth = window.innerWidth * 0.025; // 2.5vw
-      const boxHeight = window.innerHeight * 0.025; // 2.5vh
-      setCols(Math.floor(window.innerWidth / boxWidth));
-      setRows(Math.floor(window.innerHeight / boxHeight));
+      const boxSize = Math.min(window.innerWidth, window.innerHeight) * 0.025;
+      setCols(Math.floor(window.innerWidth / boxSize));
+      setRows(Math.floor(window.innerHeight / boxSize));
     };
 
     updateGridSize();

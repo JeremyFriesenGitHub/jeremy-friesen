@@ -24,20 +24,15 @@ export default function Home() {
         <title>Jeremy Friesen</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-
+      
       <main className="relative flex flex-col min-h-screen w-full">
         <div className="absolute inset-0 w-full h-full bg-[linear-gradient(90deg,#000000,#B11019,#000000)]"></div>
-
         <Navbar />
         <Boxes />
-
-        <div className="relative flex flex-col items-center justify-center text-center p-8 text-white">
-          <MorphingText texts={texts} className="mt-8" />
-          
-          <Link className="mt-12 underline" href="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
-            <TypingAnimation>See the repo progress here</TypingAnimation>
-          </Link>
-        </div>
+        <MorphingText texts={texts} className="mt-8 relative flex flex-col items-center justify-center text-center p-8 text-white" />
+        <Link className="mt-12 underline relative flex flex-col items-center justify-center text-center p-8 text-white" href="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
+          <TypingAnimation>See the repo progress here</TypingAnimation>
+        </Link>
       </main>
     </>
   );
