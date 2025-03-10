@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { VscGithubAlt } from "react-icons/vsc";
+import { LuX } from "react-icons/lu";
+import { VscGithubAlt, VscThreeBars } from "react-icons/vsc";
 import { CiLinkedin } from "react-icons/ci";
 
 export function Navbar() {
@@ -30,7 +30,7 @@ export function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <LuX size={28} /> : <VscThreeBars size={28} />}
         </button>
       </div>
 
