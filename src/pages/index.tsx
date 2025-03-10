@@ -30,7 +30,7 @@ export default function Home() {
       </Head>
       
       <main className="relative flex flex-col min-h-screen w-full">
-        <div className="absolute inset-0 w-full h-full bg-[linear-gradient(90deg,#000000,#B11019,#000000)]">
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] to-[#4E5E1C]">
           <Navbar />
           <Boxes />
           <MorphingText texts={texts} className="mt-8 relative flex flex-col items-center justify-center text-center p-8 text-white" />
