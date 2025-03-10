@@ -29,29 +29,29 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
-      <main className="relative flex flex-col min-h-screen w-full">
+      <main className="flex flex-col min-h-screen w-full">
         <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] to-[#4E5E1C]">
           <Navbar />
           <Boxes />
-          <MorphingText texts={texts} className="mt-8 relative flex flex-col items-center justify-center text-center p-8 text-white" />
-          <Link className="mt-12 underline relative flex flex-col items-center justify-center text-center p-8 text-white" href="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
-            <TypingAnimation>See the repo progress here</TypingAnimation>
+          <MorphingText texts={texts} className="mt-5 items-center justify-center text-center text-white" />
+          <Link className="relative underline items-center justify-center text-center text-white" href="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
+            <TypingAnimation >See the repo progress here</TypingAnimation>
           </Link>
-          <p className="relative mx-auto h-10 w-full text-lg sm:text-md md:text-xl lg:text-2xl leading-tight md:h-16 text-white flex flex-col items-center justify-center">Made with</p>
-          <div className="flex flex-wrap justify-center items-center mt-8 md:gap-10">
-            <Link className="relative mx-2 text-white flex flex-col items-center justify-center" href="https://azure.microsoft.com/en-ca">
+          <p className="mt-20 items-center justify-center text-center text-white">Made with</p>
+          <div className="mt-20 flex flex-wrap justify-center items-center md:gap-10">
+            <Link className="relative mx-2 text-white items-center justify-center" href="https://azure.microsoft.com/en-ca">
               <VscAzure size={30} className="sm:size-10 md:size-20" />
             </Link>
-            <Link className="relative mx-2 text-white flex flex-col items-center justify-center" href="https://nextjs.org">
+            <Link className="relative mx-2 text-white items-center justify-center" href="https://nextjs.org">
               <TbBrandNextjs size={30} className="sm:size-10 md:size-20"/>
             </Link>
-            <Link className="relative mx-2 text-white flex flex-col items-center justify-center" href="https://react.dev">
+            <Link className="relative mx-2 text-white items-center justify-center" href="https://react.dev">
               <FaReact size={30} className="sm:size-10 md:size-20"/>
             </Link>
-            <Link className="relative mx-2 text-white flex flex-col items-center justify-center" href="https://tailwindcss.com">
+            <Link className="relative mx-2 text-white items-center justify-center" href="https://tailwindcss.com">
               <SiTailwindcss size={30} className="sm:size-10 md:size-20 "/>
             </Link>
-            <Link className="relative mx-2 text-white flex flex-col items-center justify-center" href="https://www.typescriptlang.org">
+            <Link className="relative mx-2 text-white items-center justify-center" href="https://www.typescriptlang.org">
               <SiTypescript size={30} className="sm:size-10 md:size-20"/>
             </Link>
           </div>

@@ -46,7 +46,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                 transition: { duration: 2 },
               }}
               key={`col-${j}`}
-              className="w-[2.5vw] h-[2.5vh] border border-gray-400/30 relative"
+              className="w-[2.5vw] h-[2.5vh] border border-gray-400/10 relative"
             >
             </motion.div>
           ))}
