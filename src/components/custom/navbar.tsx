@@ -38,6 +38,7 @@ export function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
+
           {isOpen ? <LuX size={30} /> : <VscThreeBars size={30} />}
         </button>
       </div>
