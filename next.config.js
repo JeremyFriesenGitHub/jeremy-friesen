@@ -7,6 +7,11 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
+  images: {
+    domains: [
+      "api.microlink.io", // Microlink Image Preview
+    ],
+  },
 
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.

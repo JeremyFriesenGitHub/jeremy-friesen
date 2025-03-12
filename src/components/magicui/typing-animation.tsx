@@ -79,7 +79,7 @@ export function TypingAnimation({
     <MotionComponent
       ref={elementRef}
       className={cn(
-        "relative mx-auto h-12 w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-none md:h-20",
+        "mx-auto w-full text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-none md:h-20 mt-28",
         className,
       )}
       {...props}
