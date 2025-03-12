@@ -11,18 +11,15 @@ export function Navbar() {
     <nav className="sticky top-0 z-10 bg-black/40 backdrop-blur-lg p-4 text-white rounded-md">
       <div className="flex items-center justify-between">
         
-        {/* Left Section */}
         <a href="#" className={`hover:text-gray-500 md:block ${isOpen ? "hidden" : "block"}`}>
           Home
         </a>
 
-        {/* Middle Section (Centered) */}
         <div className="hidden md:flex space-x-6 absolute left-1/2 transform -translate-x-1/2">
           <a href="#" className="hover:text-gray-500">Experience</a>
           <a href="#" className="hover:text-gray-500">Projects</a>
         </div>
 
-        {/* Right Section */}
         <div className="hidden md:flex space-x-6">
           <a href="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="hover:text-gray-500">
             <MdOutlineContactPage size={30} />
