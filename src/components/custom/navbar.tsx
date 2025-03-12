@@ -58,15 +58,15 @@ export function Navbar() {
           </a>
 
           <h1 className="text-2xl font-bold p-2">Resume</h1>
-          <LinkPreview url="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="p-2 bg-white/20 rounded-md">
+          <LinkPreview url="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="p-2 bg-white/20 rounded-md text-white">
             <MdOutlineContactPage size={30} />
           </LinkPreview>{" "}
 
           <h1 className="text-2xl font-bold p-2">Socials</h1>
-          <LinkPreview url="https://github.com/JeremyFriesenGitHub" className="bg-white/20 rounded-md p-2 ">
+          <LinkPreview url="https://github.com/JeremyFriesenGitHub" className="bg-white/20 rounded-md p-2 text-white">
              <VscGithubAlt size={30} />
           </LinkPreview>{" "}
-          <LinkPreview url="https://www.linkedin.com/in/jeremyfriesen1" className="bg-white/20 rounded-md p-2">
+          <LinkPreview url="https://www.linkedin.com/in/jeremyfriesen1" className="bg-white/20 rounded-md p-2 text-white">
              <CiLinkedin size={30} />
           </LinkPreview>{" "}
         </div>
