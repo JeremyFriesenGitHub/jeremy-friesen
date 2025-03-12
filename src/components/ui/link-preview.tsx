@@ -67,7 +67,7 @@ export const LinkPreview = ({
 
   const translateX = useSpring(x, springConfig);
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const targetRect = (event.target as HTMLElement).getBoundingClientRect();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
