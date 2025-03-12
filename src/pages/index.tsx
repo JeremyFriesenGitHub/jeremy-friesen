@@ -18,9 +18,8 @@ export default function Home() {
         <title>Jeremy Friesen</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-
       <main className="min-h-screen flex flex-col relative">
-      <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] to-[#4E5E1C]">
+      <div className="inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] to-[#4E5E1C]">
           <Navbar />
           <Boxes />
           <MorphingText texts={texts} className="mt-5 items-center justify-center text-center text-white" />
