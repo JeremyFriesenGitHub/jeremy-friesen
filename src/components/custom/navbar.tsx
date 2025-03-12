@@ -2,7 +2,6 @@ import { useState } from "react";
 import { LuX } from "react-icons/lu";
 import { VscGithubAlt, VscThreeBars } from "react-icons/vsc";
 import { CiLinkedin } from "react-icons/ci";
-import { MdOutlineContactPage } from "react-icons/md";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,25 +9,19 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-10 bg-black/40 backdrop-blur-lg p-4 text-white rounded-md">
       <div className="flex items-center justify-between">
-        
-        <a href="#" className={`hover:text-gray-500 md:block ${isOpen ? "hidden" : "block"}`}>
+  
+        <a href="#" className="hover:text-gray-500 hidden md:flex space-x-6">
           Home
         </a>
 
-        <div className="hidden md:flex space-x-6 absolute left-1/2 transform -translate-x-1/2">
+        <div className="hidden md:flex space-x-6">
           <a href="#" className="hover:text-gray-500">Experience</a>
           <a href="#" className="hover:text-gray-500">Projects</a>
-        </div>
-
-        <div className="hidden md:flex space-x-6">
-          <a href="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="hover:text-gray-500">
-            <MdOutlineContactPage size={30} />
-          </a>
           <a href="https://github.com/JeremyFriesenGitHub" className="hover:text-gray-500">
-            <VscGithubAlt size={30} />
+            <VscGithubAlt size={28} />
           </a>
           <a href="https://www.linkedin.com/in/jeremyfriesen1" className="hover:text-gray-500">
-            <CiLinkedin size={30} />
+            <CiLinkedin size={28} />
           </a>
         </div>
 
@@ -37,7 +30,7 @@ export function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Menu"
         >
-          {isOpen ? <LuX size={30} /> : <VscThreeBars size={30} />}
+          {isOpen ? <LuX size={28} /> : <VscThreeBars size={28} />}
         </button>
       </div>
 
@@ -54,18 +47,16 @@ export function Navbar() {
           <a href="#" className="p-2 bg-white/20 rounded-md">
             Projects
           </a>
-
-          <h1 className="text-2xl font-bold p-2">Resume</h1>
-          <a href="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="p-2 bg-white/20 rounded-md">
-            <MdOutlineContactPage size={30} />
+          <a href="#" className="p-2 bg-white/20 rounded-md">
+            Contact
           </a>
 
           <h1 className="text-2xl font-bold p-2">Socials</h1>
           <a href="https://github.com/JeremyFriesenGitHub" className="bg-white/20 rounded-md p-2 ">
-             <VscGithubAlt size={30} />
+             <VscGithubAlt size={28} />
           </a>
           <a href="https://www.linkedin.com/in/jeremyfriesen1" className="bg-white/20 rounded-md p-2">
-             <CiLinkedin size={30} />
+             <CiLinkedin size={28} />
           </a>
         </div>
       )}
