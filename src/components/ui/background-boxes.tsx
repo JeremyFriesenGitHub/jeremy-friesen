@@ -8,11 +8,10 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const [cols, setCols] = useState(0);
 
   const colors = [
-    "#FFFFFF",
-    "#ec722e",
-    "#7dc343",
-    "#64a2d8",
-    "#eed842",
+    "#969696", 
+    "#ffffff", 
+    "#000000",
+    "#eb2d37", 
   ];
 
   const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
@@ -46,7 +45,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                 transition: { duration: 2 },
               }}
               key={`col-${j}`}
-              className="w-[2.5vw] h-[2.5vh] border border-gray-400/10 relative"
+              className="w-[2.5vw] h-[2.5vh] border border-gray-400/30 relative"
             >
             </motion.div>
           ))}
