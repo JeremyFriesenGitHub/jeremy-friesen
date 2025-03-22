@@ -4,6 +4,7 @@ import { VscGithubAlt, VscThreeBars } from "react-icons/vsc";
 import { CiLinkedin } from "react-icons/ci";
 import { MdOutlineContactPage } from "react-icons/md";
 import { LinkPreview } from "~/components/ui/link-preview";
+import Link from "next/link";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,12 +26,12 @@ export function Navbar() {
           <LinkPreview url="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="hover:text-gray-500 text-white">
             <MdOutlineContactPage size={30} />
           </LinkPreview>{" "}
-          <LinkPreview url="https://github.com/JeremyFriesenGitHub" className="hover:text-gray-500 text-white">
+          <Link href="https://github.com/JeremyFriesenGitHub" className="hover:text-gray-500 text-white">
             <VscGithubAlt size={30} />
-          </LinkPreview>{" "}
-          <LinkPreview url="https://www.linkedin.com/in/jeremyfriesen1" className="hover:text-gray-500 text-white">
+          </Link>{" "}
+          <Link href="https://www.linkedin.com/in/jeremyfriesen1" className="hover:text-gray-500 text-white">
             <CiLinkedin size={30} />
-          </LinkPreview>{" "}
+          </Link>
         </div>
 
         <button
