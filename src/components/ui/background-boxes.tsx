@@ -8,11 +8,11 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const [cols, setCols] = useState(0);
 
   const colors = [
-    "#FFFFFF",
-    "#ec722e",
-    "#7dc343",
-    "#64a2d8",
-    "#eed842",
+    // "#FFFFFF",
+    "#F14F21",
+    "#7EB900",
+    "#00A3EE",
+    "#FEB800",
   ];
 
   const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
