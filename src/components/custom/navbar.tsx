@@ -18,7 +18,7 @@ export function Navbar() {
         </a>
 
         <div className="hidden md:flex space-x-6 absolute left-1/2 transform -translate-x-1/2">
-          <a href="#" className="hover:text-gray-500">Experience</a>
+          <a href="#experience" className="hover:text-gray-500">Experience</a>
           <a href="#" className="hover:text-gray-500">Projects</a>
         </div>
 
@@ -51,7 +51,7 @@ export function Navbar() {
           <a href="#" className="p-2 bg-white/20 rounded-md">
             Home
           </a>
-          <a href="#" className="p-2 bg-white/20 rounded-md">
+          <a href="#experience" className="p-2 bg-white/20 rounded-md">
             Experience
           </a>
           <a href="#" className="p-2 bg-white/20 rounded-md">
