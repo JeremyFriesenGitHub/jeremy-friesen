@@ -7,7 +7,7 @@ import { LinkPreview } from "~/components/ui/link-preview";
 export function Footer() {
     return (   
     <>
-         <p className="mt-20 items-center justify-center text-center text-white">Made with</p><div className="mt-10 flex flex-wrap justify-center items-center gap-6 md:gap-10">
+         <p className="mt-20 items-center justify-center text-center text-white">Website made with:</p><div className="mt-10 flex flex-wrap justify-center items-center gap-6 md:gap-10">
             <LinkPreview className="relative text-white items-center justify-center" url="https://azure.microsoft.com/en-ca">
                 <VscAzure size={40} className="sm:size-10 md:size-20" />
             </LinkPreview>{" "}
