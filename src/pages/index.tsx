@@ -15,8 +15,9 @@ import {PiGraphFill} from "react-icons/pi";
 import { RiComputerLine } from "react-icons/ri";
 import { GoDatabase } from "react-icons/go";
 import { GiArtificialIntelligence } from "react-icons/gi";
+import { Skills } from "~/components/custom/skills";
 
-const texts = ["Hello", "World!", "Welcome!", "Bonjour!"];
+const texts = ["Jeremy", "Friesen"];
 const items = [
   {
     title: (
@@ -163,7 +164,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="min-h-screen flex flex-col relative">
-      <div className="inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] to-[#4E5E1C]">
+      <div className="inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] via-[#4E5E1C] to-[#1353B4]">
         <Navbar />
           <Boxes />
           <MorphingText texts={texts} className="mt-5 items-center justify-center text-center text-white" />
@@ -200,6 +201,17 @@ export default function Home() {
               ))}
             </BentoGrid>
           </section>
+
+          <section id="skills" className="p-16">
+          <a href="#skills">
+          <span className="text-white font-bold underline relative text-2xl p-16">
+              Skills
+            </span>
+            </a>
+
+            <Skills />
+
+            </section>
 
           <Footer />
         </div>
