@@ -1,10 +1,9 @@
 import { type AppType } from "next/app";
-
 import "~/styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <div style={{ fontFamily: "'Courier New', monospace" }}>
+    <div style={{ fontFamily: "'Segoe UI Mono', monospace" }}>
       <Component {...pageProps} />
     </div>
   );
