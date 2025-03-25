@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jeremy-friesen.com/sitemap.xml
+Sitemap: https://jeremy-friesen.com/api/sitemap
