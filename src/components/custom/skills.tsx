@@ -8,8 +8,6 @@ import { LinkPreview } from "~/components/ui/link-preview";
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
   } from "~/components/ui/card"
