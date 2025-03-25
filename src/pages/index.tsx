@@ -164,32 +164,31 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="min-h-screen flex flex-col relative">
-      <div className="inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] via-[#4E5E1C] to-[#1353B4]">
-        <Navbar />
+        <div className="inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] via-[#4E5E1C] to-[#1353B4]">
+          <Navbar />
           <Boxes />
           <MorphingText texts={texts} className="mt-5 items-center justify-center text-center text-white" />
           <LinkPreview className="relative underline items-center justify-center text-center text-white" url="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
             <TypingAnimation>See the repo progress here!</TypingAnimation>
-          </LinkPreview>{" "}
-          <section id="experience" className="p-16">
-          <a href="#experience">
-            <span className="text-white font-bold underline relative text-2xl p-16">
-              Experience
-            </span>
-          </a>
-          <CustomVerticalTimeline />
+          </LinkPreview>
+          {" "}
+          <section id="experience" className="p-8 sm:p-16 text-center">
+            <a href="#experience">
+              <span className="text-white font-bold underline relative text-2xl sm:text-3xl p-8 sm:p-16 items-center justify-center">
+                Experience
+              </span>
+            </a>
+            <CustomVerticalTimeline />
           </section>
 
-          <section id="projects" className="p-16">
-          <a href="#projects">
-          <span className="text-white font-bold underline relative text-2xl p-16">
-              Projects
-            </span>
-
+          <section id="projects" className="p-8 sm:p-16 text-center">
+            <a href="#projects">
+              <span className="text-white font-bold underline relative text-2xl sm:text-3xl p-8 sm:p-16 items-center justify-center">
+                Projects
+              </span>
             </a>
-            <BentoGrid className="max-w-4xl mx-auto md:auto-rows-[20rem] relative text-white">
+            <BentoGrid className="max-w-4xl mx-auto md:auto-rows-[20rem] relative text-white gap-8 p-6">
               {items.map((item, i) => (
-               
                 <BentoGridItem
                   key={i}
                   title={item.title}
@@ -202,16 +201,14 @@ export default function Home() {
             </BentoGrid>
           </section>
 
-          <section id="skills" className="p-16">
-          <a href="#skills">
-          <span className="text-white font-bold underline relative text-2xl p-16">
-              Skills
-            </span>
+          <section id="skills" className="p-8 sm:p-16 text-center">
+            <a href="#skills">
+              <span className="text-white font-bold underline relative text-2xl sm:text-3xl p-8 sm:p-16 items-center justify-center">
+                Skills
+              </span>
             </a>
-
             <Skills />
-
-            </section>
+          </section>
 
           <Footer />
         </div>
