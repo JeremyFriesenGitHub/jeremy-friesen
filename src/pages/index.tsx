@@ -5,8 +5,6 @@ import React from "react";
 import { Navbar } from "~/components/custom/navbar";
 import Image from "next/image";
 import { Boxes } from "~/components/ui/background-boxes";
-import { MorphingText } from "~/components/magicui/morphing-text";
-import { TypingAnimation } from "~/components/magicui/typing-animation";
 import { Footer } from "~/components/custom/footer";
 import { LinkPreview } from "~/components/ui/link-preview";
 import { CustomVerticalTimeline } from "~/components/ui/vertical-timeline";
@@ -16,8 +14,9 @@ import { RiComputerLine } from "react-icons/ri";
 import { GoDatabase } from "react-icons/go";
 import { GiArtificialIntelligence } from "react-icons/gi";
 import { Skills } from "~/components/custom/skills";
+import { useScroll, useTransform } from "motion/react";
+import { GoogleGeminiEffect } from "~/components/ui/google-gemini-effect";
 
-const texts = ["Jeremy", "Friesen"];
 const items = [
   {
     title: (
@@ -157,6 +156,17 @@ const items = [
 ];
 
 export default function Home() {
+  const ref = React.useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+ 
+  const pathLengthFirst = useTransform(scrollYProgress, [0, 0.8], [0.2, 1.2]);
+  const pathLengthSecond = useTransform(scrollYProgress, [0, 0.8], [0.15, 1.2]);
+  const pathLengthThird = useTransform(scrollYProgress, [0, 0.8], [0.1, 1.2]);
+  const pathLengthFourth = useTransform(scrollYProgress, [0, 0.8], [0.05, 1.2]);
+  const pathLengthFifth = useTransform(scrollYProgress, [0, 0.8], [0, 1.2]);
   return (
     <>
       <Head>
@@ -164,14 +174,17 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className="min-h-screen flex flex-col relative">
-        <div className="inset-0 w-full h-full bg-gradient-to-b from-[#1353B4] via-[#4E5E1C] to-[#1353B4]">
+        {/* Background Layer */}
+        <div className="relative inset-0 w-full min-h-screen bg-gradient-to-b from-[#1353B4] via-[#4E5E1C] to-[#1353B4]">
+          {/* Navbar & Decorative Background */}
           <Navbar />
           <Boxes />
-          <MorphingText texts={texts} className="mt-5 items-center justify-center text-center text-white" />
-          <LinkPreview className="relative underline items-center justify-center text-center text-white" url="https://github.com/JeremyFriesenGitHub/jeremy-friesen">
-            <TypingAnimation>See the repo progress here!</TypingAnimation>
-          </LinkPreview>
-          {" "}
+
+          {/* GoogleGeminiEffect - Now Integrated into Background */}
+          <div ref={ref} className="h-[300vh] overflow-clip">
+            <GoogleGeminiEffect pathLengths={[pathLengthFirst, pathLengthSecond, pathLengthThird, pathLengthFourth, pathLengthFifth]} />
+          </div>
+
           <section id="experience" className="p-8 sm:p-16 text-center">
             <a href="#experience">
               <span className="text-white font-bold underline relative text-2xl sm:text-3xl p-8 sm:p-16 items-center justify-center">
