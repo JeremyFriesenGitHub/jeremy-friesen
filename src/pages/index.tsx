@@ -202,7 +202,7 @@ export default function Home() {
                   <p>I&apos;m a third year CS Student at Carleton University who&apos;s:</p>
                   <li>Committed to <strong>Continuous Learning & Improvement</strong></li>
                   <li>Passionate about and experienced in <strong>Data Science/Analysis</strong>, <strong>Software Development</strong>, <strong>Cloud & IT Infrastructure</strong>, <strong>DevSecOps</strong>, and <strong>AI/ML</strong></li>
-                  <li>Always looking to build a solid <strong>professional network</strong></li>
+                  <li>Always striving to build a solid <strong>professional network</strong></li>
                 </ul>
               </div>
             </div>
