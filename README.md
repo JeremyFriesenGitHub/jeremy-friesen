@@ -60,7 +60,8 @@ The site features a Windows XP Bliss/Microsoft-inspired color scheme and typogra
 │   │   │   ├── card.tsx
 │   │   │   ├── google-gemini-effect.tsx     // Hero Section effect 
 │   │   │   ├── link-preview.tsx
-│   │   │   └── vertical-timeline.tsx                                   
+│   │   │   └── vertical-timeline.tsx
+│   ├──  env.js                                    
 │   ├── lib/
 │   │   └── utils.ts
 │   ├── pages/                       
