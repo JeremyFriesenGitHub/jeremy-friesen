@@ -176,14 +176,37 @@ export default function Home() {
       <main className="min-h-screen flex flex-col relative">
         {/* Background Layer */}
         <div className="relative inset-0 w-full min-h-screen bg-gradient-to-b from-[#1353B4] via-[#4E5E1C] to-[#1353B4]">
-          {/* Navbar & Decorative Background */}
           <Navbar />
           <Boxes />
 
-          {/* GoogleGeminiEffect - Now Integrated into Background */}
           <div ref={ref} className="h-[300vh] overflow-clip">
             <GoogleGeminiEffect pathLengths={[pathLengthFirst, pathLengthSecond, pathLengthThird, pathLengthFourth, pathLengthFifth]} />
           </div>
+
+          <section id="about" className="p-8 sm:p-16 text-center">
+            <a href="#about">
+              <span className="text-white font-bold underline relative text-2xl sm:text-3xl p-8 sm:p-16 items-center justify-center">
+                About
+              </span>
+            </a>
+            <div className="flex flex-col items-center justify-center pt-6">
+              <Image
+                src="/bliss.jpg"
+                alt="Windows XP Bliss"
+                width={200}
+                height={200}
+                className="rounded-full mb-4"
+              />
+              <div className="text-white text-lg max-w-2xl relative sm:text-xl">
+              <ul className="list-disc list-inside space-y-6">
+                  <p>I&apos;m a third year CS Student at Carleton University who&apos;s:</p>
+                  <li>Committed to <strong>Continuous Learning & Improvement</strong></li>
+                  <li>Passionate about and experienced in <strong>Data Science/Analysis</strong>, <strong>Software Development</strong>, <strong>Cloud & IT Infrastructure</strong>, <strong>DevSecOps</strong>, and <strong>AI/ML</strong></li>
+                  <li>Always looking to build a solid <strong>professional network</strong></li>
+                </ul>
+              </div>
+            </div>
+          </section>
 
           <section id="experience" className="p-8 sm:p-16 text-center">
             <a href="#experience">
