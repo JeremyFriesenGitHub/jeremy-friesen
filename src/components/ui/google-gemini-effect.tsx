@@ -27,7 +27,7 @@ export const GoogleGeminiEffect = ({
       <p className="text-lg md:text-7xl font-normal pb-4 text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-100 to-neutral-300">
         {title ?? <MorphingText texts={["Jeremy","Friesen"]} className="mt-5 items-center justify-center text-center text-white" />}
       </p>
-      <p className="text-xs md:text-xl font-normal text-center text-white mt-4 max-w-lg mx-auto">
+      <p className="text-xs md:text-xl font-normal text-center text-white max-w-lg mx-auto -mt-2">
         {description ?? <TypingAnimation>See the repo here!</TypingAnimation>}
       </p>
       <div className="w-full h-[890px] -top-60 md:-top-40  flex items-center justify-center absolute ">
