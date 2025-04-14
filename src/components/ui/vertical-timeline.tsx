@@ -29,7 +29,7 @@ export function CustomVerticalTimeline() {
               iconStyle={{ background: '#426100', color: '#fff' }}
               icon={<LiaCanadianMapleLeaf />}
             >
-              <span className="vertical-timeline-element-title text-white font-bold">Science and Research Assistant </span>
+              <span className="vertical-timeline-element-title text-white font-bold">Analyst </span>
               <span className="vertical-timeline-element-subtitle text-white font-semibold"><br />Public Safety Canada</span>
               <span className="vertical-timeline-element-subtitle text-white"><br />Ottawa, ON</span>
               <span className="text-white"> Canada </span>
