@@ -7,7 +7,7 @@ export function CustomVerticalTimeline() {
     return (
         <>
         <VerticalTimeline className='gap-8 p-6'>
-            {/* <VerticalTimelineElement
+             <VerticalTimelineElement
               className="vertical-timeline-element--work"
               contentStyle={{ background: '#A32B0A', color: '#fff' }}
               contentArrowStyle={{ borderRight: '7px solid #A32B0A' }}
@@ -19,7 +19,7 @@ export function CustomVerticalTimeline() {
               <span className="vertical-timeline-element-subtitle text-white font-semibold"><br />FINTRAC</span>
               <span className="vertical-timeline-element-subtitle text-white"><br />Ottawa, ON</span>
               <span className="text-white"> Canada </span>
-            </VerticalTimelineElement>   */}
+            </VerticalTimelineElement>  
 
             <VerticalTimelineElement
               className="vertical-timeline-element--work"
