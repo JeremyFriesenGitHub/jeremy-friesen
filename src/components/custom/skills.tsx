@@ -5,6 +5,8 @@ import { BiLogoFlask } from "react-icons/bi";
 import { VscAzure, VscGithubAlt, VscVscode } from "react-icons/vsc";
 import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
 import { LinkPreview } from "~/components/ui/link-preview";
+import { FaNode } from "react-icons/fa6";
+
 import {
     Card,
     CardContent,
@@ -31,7 +33,8 @@ const skillsData = [
       { icon: <TbBrandNextjs />, url: "https://nextjs.org" },
       { icon: <SiExpress />, url: "https://expressjs.com" },
       { icon: <BiLogoFlask />, url: "https://flask.palletsprojects.com" },
-      { icon: <SiTailwindcss />, url: "https://tailwindcss.com" }
+      { icon: <SiTailwindcss />, url: "https://tailwindcss.com" },
+      { icon: <FaNode />, url: "https://nodejs.org/en" }
     ]
   },
   {
