@@ -16,7 +16,7 @@ export function CustomVerticalTimeline() {
               icon={<LiaCanadianMapleLeaf />}
             >
               <span className="vertical-timeline-element-title text-white font-bold">Service Desk Technician </span>
-              <span className="vertical-timeline-element-subtitle text-white font-semibold"><br /> Department of Finance Canada </span>
+              <span className="vertical-timeline-element-subtitle text-white font-semibold"><br />Finance Canada </span>
               <span className="vertical-timeline-element-subtitle text-white"><br />Ottawa, ON</span>
               <span className="text-white"> Canada </span>
             </VerticalTimelineElement>  
