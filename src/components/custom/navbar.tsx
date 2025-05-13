@@ -25,7 +25,7 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex space-x-6">
-          <LinkPreview url="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="hover:text-gray-500 text-white">
+          <LinkPreview url="https://drive.google.com/file/d/1AFMbuVx-Cek0TGTKfywu3PQVvQb2IYTR/view" className="hover:text-gray-500 text-white">
             <MdOutlineContactPage size={30} />
           </LinkPreview>{" "}
           <Link href="https://github.com/JeremyFriesenGitHub" className="hover:text-gray-500 text-white">
@@ -67,7 +67,7 @@ export function Navbar() {
           </a>
 
           <h1 className="text-2xl font-bold p-2">Resume</h1>
-          <LinkPreview url="https://drive.google.com/file/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view" className="p-2 bg-white/20 rounded-md text-white">
+          <LinkPreview url="https://drive.google.com/file/d/1AFMbuVx-Cek0TGTKfywu3PQVvQb2IYTR/view" className="p-2 bg-white/20 rounded-md text-white">
             <MdOutlineContactPage size={30} />
           </LinkPreview>{" "}
 
