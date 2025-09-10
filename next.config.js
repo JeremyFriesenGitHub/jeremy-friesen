@@ -16,7 +16,7 @@ const config = {
       {
         protocol: "https",
         hostname: "assets.aceternity.com",
-      }
+      },
     ],
   },
 

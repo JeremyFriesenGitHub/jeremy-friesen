@@ -18,7 +18,7 @@ export async function GET() {
         <loc>${baseUrl}${url}</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
         <priority>${priority}</priority>
-      </url>`
+      </url>`,
       )
       .join("")}
   </urlset>`;

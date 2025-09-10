@@ -15,7 +15,8 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
     "#FEB800",
   ];
 
-  const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+  const getRandomColor = () =>
+    colors[Math.floor(Math.random() * colors.length)];
 
   useEffect(() => {
     const updateGridSize = () => {
@@ -30,10 +31,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   }, []);
 
   return (
-    <div
-      className={cn("fixed inset-0 flex flex-wrap", className)}
-      {...rest}
-    >
+    <div className={cn("fixed inset-0 flex flex-wrap", className)} {...rest}>
       {Array.from({ length: rows }).map((_, i) => (
         <div key={`row-${i}`} className="flex">
           {Array.from({ length: cols }).map((_, j) => (
@@ -46,9 +44,8 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                 transition: { duration: 2 },
               }}
               key={`col-${j}`}
-              className="w-[2.5vw] h-[2.5vh] border border-gray-400/10 relative"
-            >
-            </motion.div>
+              className="relative h-[2.5vh] w-[2.5vw] border border-gray-400/10"
+            ></motion.div>
           ))}
         </div>
       ))}
