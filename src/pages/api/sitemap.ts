@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET() {
-  const baseUrl = "https://jeremy-friesen.com";
+// Pages Router API route: export a default handler (required by Next.js ApiRouteConfig)
+export default function handler(_req: NextApiRequest, res: NextApiResponse) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://jeremy-friesen.com";
 
   const pages = [
     { url: "/", priority: "1.0" },
@@ -18,14 +19,11 @@ export async function GET() {
         <loc>${baseUrl}${url}</loc>
         <lastmod>${new Date().toISOString()}</lastmod>
         <priority>${priority}</priority>
-      </url>`,
+      </url>`
       )
       .join("")}
   </urlset>`;
 
-  return new NextResponse(sitemap, {
-    headers: {
-      "Content-Type": "application/xml",
-    },
-  });
+  res.setHeader("Content-Type", "application/xml");
+  res.status(200).send(sitemap);
 }
