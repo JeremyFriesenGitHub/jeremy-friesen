@@ -8,9 +8,15 @@ import "./src/env.js";
 const config = {
   reactStrictMode: true,
   images: {
-    domains: [
-      "api.microlink.io", // Microlink Image Preview
-      "assets.aceternity.com"
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "api.microlink.io",
+      }, // Microlink Image Preview
+      {
+        protocol: "https",
+        hostname: "assets.aceternity.com",
+      }
     ],
   },
 

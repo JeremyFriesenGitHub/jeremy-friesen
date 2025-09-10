@@ -16,8 +16,78 @@ import { GiArtificialIntelligence } from "react-icons/gi";
 import { Skills } from "~/components/custom/skills";
 import { useScroll, useTransform } from "motion/react";
 import { GoogleGeminiEffect } from "~/components/ui/google-gemini-effect";
+import { LuTimer } from "react-icons/lu";
+import { SiGoogledocs } from "react-icons/si";
 
 const items = [
+  {
+    title: (
+    <LinkPreview url="https://jeremyfriesengithub.github.io/prodly/">
+    <div className="text-white hover:underline">Prodly</div>
+    </LinkPreview>
+  ),
+    description: (
+    <LinkPreview url="https://jeremyfriesengithub.github.io/prodly/">
+    <div className="text-white hover:underline">An AI Productivity Platform</div>
+    </LinkPreview>
+  ),
+    
+    header: (
+  
+     <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-dot-black/[0.3] dark:bg-dot-white/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] border border-purple-500/30 shadow-[0_0_20px_#ff00ff80] bg-gradient-to-br from-pink-600 via-fuchsia-700 to-purple-900 text-white">
+      <Image
+      src="/test7.png"
+      width={300}
+      height={300}
+      alt="prodly landing page"
+      className="w-500 h-500 object-cover rounded-r-xl"
+    />
+    <Image
+      src="/test8.png"
+      width={300}
+      height={100}
+      alt="pomodoro timer"
+      className="w-500 h-500 object-cover rounded-xl"
+    />
+      </div>
+    ),
+    className: "md:col-span-2 bg-[#9E0089] text-white",
+    icon: (
+    <LinkPreview url="https://jeremyfriesengithub.github.io/prodly/">
+    <LuTimer className="h-4 w-4 text-white" />
+    </LinkPreview>
+    ),
+  },
+    {
+    title: (
+      <LinkPreview url="https://carletonai.github.io/docs/">
+      <div className="text-white hover:underline">CAIS</div>
+      </LinkPreview>
+    ),
+    description: (
+      <LinkPreview url="https://carletonai.github.io/docs/">
+      <div className="text-white hover:underline">Carleton AI Society docs</div>
+      </LinkPreview>
+    ),
+    header: (
+      <div className= "flex flex-1 w-full h-full min-h-[6rem] rounded-xl dark:bg-dot-white/[0.2] bg-dot-black/[0.2] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] border border-transparent dark:border-white/[0.2] bg-neutral-100 dark:bg-black text-black">
+      <Image
+          src="/test9.png" 
+          width={300}
+          height={300}
+          alt="CAIS Docs"
+          className="w-full h-full object-cover rounded-xl"
+        />
+      </div>
+    ),
+    className: "md:col-span-1 bg-[#B30000] text-white",
+    icon: (
+    <LinkPreview url="https://carletonai.github.io/docs/">
+    <SiGoogledocs className="h-4 w-4 text-white" />
+    </LinkPreview>
+
+  ),
+  },
   {
     title: (
     <LinkPreview url="https://devpost.com/software/cu-tunnels">
