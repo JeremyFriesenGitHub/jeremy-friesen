@@ -1,4 +1,4 @@
-import { VscAzure } from "react-icons/vsc";
+import { SiVercel } from "react-icons/si";
 import { TbBrandNextjs } from "react-icons/tb";
 import { FaReact } from "react-icons/fa";
 import { SiTailwindcss, SiTypescript } from "react-icons/si";
@@ -13,9 +13,9 @@ export function Footer() {
       <div className="mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-10">
         <LinkPreview
           className="relative items-center justify-center text-white"
-          url="https://azure.microsoft.com/en-ca"
+          url="https://vercel.com"
         >
-          <VscAzure size={40} className="sm:size-10 md:size-20" />
+          <SiVercel size={40} className="sm:size-10 md:size-20" />
         </LinkPreview>{" "}
         <LinkPreview
           className="relative items-center justify-center text-white"

@@ -25,6 +25,7 @@ import {
   SiEclipseide,
   SiCytoscapedotjs,
   SiTailwindcss,
+  SiVercel,
 } from "react-icons/si";
 import { TbBrandNextjs } from "react-icons/tb";
 import { BiLogoFlask } from "react-icons/bi";
@@ -98,6 +99,7 @@ const skillsData = [
       { icon: <SiIntellijidea />, url: "https://www.jetbrains.com/idea/" },
       { icon: <SiEclipseide />, url: "https://eclipseide.org" },
       { icon: <FaFigma />, url: "https://www.figma.com" },
+      { icon: <SiVercel />, url: "https://vercel.com" },
     ],
   },
 ];
