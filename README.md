@@ -33,7 +33,7 @@ The site features a Windows XP Bliss/Microsoft-inspired color scheme and typogra
 
 ## Inspiration
 
- - **Resume:** Content is primarily derived from my [resume](https://drive.google.com/file/u/0/d/1QHPFNCJJYdhbHvL9JZiD_PBiAFXNjdlW/view?pli=1).
+ - **Resume:** Content is primarily derived from my [resume](https://drive.google.com/file/d/1cmu1No1OGQGQLtQ-rRTcjuByhRxKo3KK/view?usp=sharing).
  - **Front-End Components:** A combination of Aceternity UI, Magic UI, npm, Shadcn/UI, and custom components built with TailwindCSS.
  - **Hosting:** Deployed using Azure Static Web Apps, with CI/CD managed through GitHub Actions to maintain consistency with the site's theme.
  - **Project Initialization:** Created using ``create-t3-app``.
