@@ -9,7 +9,7 @@ import { Footer } from "~/components/sections/footer";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-background">
+    <main className="relative min-h-screen">
       <ParticleBackgroundLoader />
       <Navbar />
       <Hero />

@@ -35,7 +35,6 @@ import { VscAzure, VscGithubAlt, VscVscode } from "react-icons/vsc";
 import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
 import { FaNode } from "react-icons/fa6";
 import Link from "next/link";
-import { TiltCard } from "~/components/effects/tilt-card";
 import { GlassCard } from "~/components/ui/glass-card";
 import { SectionHeading } from "~/components/ui/section-heading";
 import { ScrollMorph } from "~/components/effects/scroll-morph";
@@ -92,26 +91,24 @@ export function Skills() {
           const color = colors[index % colors.length]!;
           return (
             <ScrollMorph key={index}>
-              <TiltCard className="h-full">
-                <GlassCard className="group h-full transition-all duration-300 hover:border-border" glowColor={color}>
-                  <h3 className="mb-3 text-center text-lg font-semibold text-foreground transition duration-200 group-hover:translate-x-1 sm:mb-4 sm:text-xl">
-                    {category.title}
-                  </h3>
-                  <div className="grid grid-cols-3 items-center justify-center gap-3 transition duration-200 group-hover:translate-x-1 sm:gap-4">
-                    {category.skills.map((skill, idx) => (
-                      <Link
-                        key={idx}
-                        href={skill.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center text-3xl text-foreground transition-all hover:scale-110 sm:text-4xl md:text-5xl"
-                      >
-                        {iconMap[skill.iconName]}
-                      </Link>
-                    ))}
-                  </div>
-                </GlassCard>
-              </TiltCard>
+              <GlassCard className="group h-full transition-all duration-300 hover:border-border" glowColor={color}>
+                <h3 className="mb-3 text-center text-lg font-semibold text-foreground sm:mb-4 sm:text-xl">
+                  {category.title}
+                </h3>
+                <div className="grid grid-cols-3 items-center justify-center gap-3 sm:gap-4">
+                  {category.skills.map((skill, idx) => (
+                    <Link
+                      key={idx}
+                      href={skill.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center text-3xl text-foreground transition-colors sm:text-4xl md:text-5xl"
+                    >
+                      {iconMap[skill.iconName]}
+                    </Link>
+                  ))}
+                </div>
+              </GlassCard>
             </ScrollMorph>
           );
         })}

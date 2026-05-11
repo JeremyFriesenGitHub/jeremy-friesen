@@ -17,9 +17,9 @@ export function Experience() {
 
       <div className="relative mx-auto max-w-3xl">
         {/* Gradient center line */}
-        <div className="absolute left-4 top-0 h-full w-0.5 gradient-line md:left-1/2 md:-translate-x-px" />
+        <div className="absolute left-3 top-0 h-full w-0.5 gradient-line md:left-1/2 md:-translate-x-px" />
 
-        <div className="space-y-8 sm:space-y-12">
+        <div className="space-y-6 sm:space-y-12">
           {experiences.map((exp, i) => {
             const isLeft = i % 2 === 0;
             const c = isDark ? exp.color : exp.colorLight;
@@ -31,18 +31,18 @@ export function Experience() {
                   }`}
                 >
                   {/* Timeline dot */}
-                  <div className="absolute left-4 z-10 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full sm:h-8 sm:w-8 md:left-1/2">
+                  <div className="absolute left-3 top-4 z-10 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full sm:h-8 sm:w-8 md:left-1/2 md:top-0">
                     <motion.div
-                      className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground sm:h-8 sm:w-8"
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground shadow-[0_0_0_4px_hsl(var(--background))] sm:h-8 sm:w-8"
                       whileHover={{ scale: 1.2 }}
                     >
-                      <LiaCanadianMapleLeaf className="text-background" size={12} />
+                      <LiaCanadianMapleLeaf className="text-background" size={14} />
                     </motion.div>
                   </div>
 
                   {/* Card */}
                   <div
-                    className={`ml-8 w-full sm:ml-10 md:ml-0 md:w-[calc(50%-2rem)] ${
+                    className={`ml-10 w-[calc(100%-2.5rem)] sm:ml-12 sm:w-[calc(100%-3rem)] md:ml-0 md:w-[calc(50%-2rem)] ${
                       isLeft ? "md:pr-4" : "md:pl-4"
                     }`}
                   >

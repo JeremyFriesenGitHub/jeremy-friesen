@@ -16,16 +16,14 @@ export function Navbar() {
   const visible = useScrollDirection(10, isOpen);
   const { theme, toggleTheme } = useTheme();
 
-  // Lock body scroll when mobile menu is open
+  // Close mobile menu on Escape
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
     };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, [isOpen]);
 
   return (
@@ -38,7 +36,7 @@ export function Navbar() {
         <MagneticElement distance={0.2}>
           <a
             href="#"
-            className={`glass-pill rounded-full px-3 py-1 text-sm font-medium transition-all hover:bg-foreground/10 hover:font-bold sm:text-base md:block ${isOpen ? "hidden" : "block"}`}
+            className="glass-pill block rounded-full px-3 py-1 text-sm font-medium transition-all hover:bg-foreground/10 hover:font-bold sm:text-base"
           >
             Home
           </a>
@@ -63,7 +61,7 @@ export function Navbar() {
           <MagneticElement distance={0.3}>
             <button
               onClick={toggleTheme}
-              className="outline-none transition-colors hover:text-foreground focus:outline-none focus-visible:outline-none"
+              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
               aria-label="Toggle theme"
             >
               {theme === "dark" ? <LuSun size={22} /> : <LuMoon size={22} />}
@@ -72,7 +70,7 @@ export function Navbar() {
           <MagneticElement distance={0.3}>
             <Link
               href={socialLinks.resume}
-              className="transition-colors hover:text-foreground"
+              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Resume"
@@ -83,7 +81,7 @@ export function Navbar() {
           <MagneticElement distance={0.3}>
             <Link
               href={socialLinks.github}
-              className="transition-colors hover:text-foreground"
+              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -94,7 +92,7 @@ export function Navbar() {
           <MagneticElement distance={0.3}>
             <Link
               href={socialLinks.linkedin}
-              className="transition-colors hover:text-foreground"
+              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -107,13 +105,13 @@ export function Navbar() {
         <div className="flex items-center gap-3 md:hidden">
           <button
             onClick={toggleTheme}
-            className="outline-none transition-colors hover:text-foreground focus:outline-none focus-visible:outline-none"
+            className="inline-flex items-center justify-center transition-colors hover:text-foreground"
             aria-label="Toggle theme"
           >
             {theme === "dark" ? <LuSun size={22} /> : <LuMoon size={22} />}
           </button>
           <button
-            className="relative z-10"
+            className="relative z-10 inline-flex items-center justify-center"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
             aria-expanded={isOpen}
@@ -123,58 +121,83 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile fullscreen overlay menu */}
+      {/* Mobile dropdown menu */}
       {isOpen && (
-        <div className="fixed inset-x-0 bottom-0 top-14 z-40 flex flex-col gap-2 overflow-y-auto bg-background/95 px-5 pb-8 pt-6 backdrop-blur-xl sm:top-16 md:hidden">
-          <span className="px-2 py-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Sections
-          </span>
-          <a
-            href="#"
-            className="glass-hover rounded-lg px-4 py-3.5 text-base font-medium transition-all hover:font-bold sm:text-lg"
+        <>
+          {/* Tap-outside backdrop (below dropdown, above page content) */}
+          <div
+            className="fixed inset-0 z-40 md:hidden"
             onClick={() => setIsOpen(false)}
-          >
-            Home
-          </a>
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="glass-hover rounded-lg px-4 py-3.5 text-base font-medium transition-all hover:font-bold sm:text-lg"
-              onClick={() => setIsOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+            aria-hidden="true"
+          />
 
-          <span className="mt-6 px-2 py-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Links
-          </span>
-          <Link
-            href={socialLinks.resume}
-            className="glass-hover flex items-center gap-3 rounded-lg px-4 py-3.5 text-base font-medium sm:text-lg"
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* Dropdown panel — anchored under the navbar */}
+          <div
+            className="absolute inset-x-3 top-full z-50 mt-2 origin-top-right overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-background/65 shadow-[0_12px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl backdrop-saturate-150 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 md:hidden"
+            role="menu"
           >
-            <MdOutlineContactPage size={24} /> Resume
-          </Link>
-          <Link
-            href={socialLinks.github}
-            className="glass-hover flex items-center gap-3 rounded-lg px-4 py-3.5 text-base font-medium sm:text-lg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <VscGithubAlt size={24} /> GitHub
-          </Link>
-          <Link
-            href={socialLinks.linkedin}
-            className="glass-hover flex items-center gap-3 rounded-lg px-4 py-3.5 text-base font-medium sm:text-lg"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <CiLinkedin size={24} /> LinkedIn
-          </Link>
-        </div>
+            <div className="flex flex-col p-2">
+              <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Sections
+              </div>
+              <a
+                href="#"
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
+                onClick={() => setIsOpen(false)}
+                role="menuitem"
+              >
+                Home
+              </a>
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
+                  onClick={() => setIsOpen(false)}
+                  role="menuitem"
+                >
+                  {link.label}
+                </a>
+              ))}
+
+              <div className="my-2 h-px bg-[var(--glass-border)]" />
+
+              <div className="px-3 pb-1 pt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                Links
+              </div>
+              <Link
+                href={socialLinks.resume}
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                role="menuitem"
+              >
+                <MdOutlineContactPage size={18} /> Resume
+              </Link>
+              <Link
+                href={socialLinks.github}
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                role="menuitem"
+              >
+                <VscGithubAlt size={18} /> GitHub
+              </Link>
+              <Link
+                href={socialLinks.linkedin}
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                role="menuitem"
+              >
+                <CiLinkedin size={18} /> LinkedIn
+              </Link>
+            </div>
+          </div>
+        </>
       )}
     </nav>
   );

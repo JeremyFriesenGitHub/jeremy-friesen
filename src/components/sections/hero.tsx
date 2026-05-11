@@ -22,7 +22,9 @@ export function Hero() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
     >
       {/* Centered glow orb */}
-      <div className="glow-breathe pointer-events-none absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground/10 blur-3xl sm:h-[450px] sm:w-[450px] md:h-[600px] md:w-[600px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 sm:h-[450px] sm:w-[450px] md:h-[600px] md:w-[600px]">
+        <div className="glow-breathe h-full w-full rounded-full bg-foreground/10 blur-3xl" />
+      </div>
 
       <motion.div
         style={{ opacity, y, scale }}
@@ -32,7 +34,7 @@ export function Hero() {
           texts={["Jeremy", "Friesen"]}
           className="items-center justify-center text-center text-foreground"
         />
-        <TypingAnimation className="text-breathe text-foreground">
+        <TypingAnimation className="text-foreground">
           See the repo here!
         </TypingAnimation>
         <a

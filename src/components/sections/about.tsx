@@ -21,9 +21,9 @@ export function About() {
               priority
             />
           </div>
-          <div className="text-center text-base text-foreground sm:text-lg">
-            <p className="mb-3 sm:mb-4">{aboutText.intro}</p>
-            <ul className="list-inside list-disc space-y-2 text-left text-sm sm:space-y-3 sm:text-base">
+          <div className="w-full text-base text-foreground sm:text-lg">
+            <p className="mb-4 text-center sm:mb-5">{aboutText.intro}</p>
+            <ul className="mx-auto max-w-md list-disc space-y-2 pl-5 text-left text-sm marker:text-muted-foreground sm:space-y-3 sm:text-base">
               {aboutText.points.map((point, i) => (
                 <li key={i}>
                   {point.text} <strong className="text-foreground">{point.highlight}</strong>

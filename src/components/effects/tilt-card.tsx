@@ -10,7 +10,7 @@ interface TiltCardProps {
   maxTilt?: number;
 }
 
-export function TiltCard({ children, className, maxTilt = 10 }: TiltCardProps) {
+export function TiltCard({ children, className, maxTilt = 6 }: TiltCardProps) {
   const { ref, style, handlers } = useTilt(maxTilt);
 
   return (
