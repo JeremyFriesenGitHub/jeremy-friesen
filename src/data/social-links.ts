@@ -1,13 +1,13 @@
 export const socialLinks = {
   resume:
-    "https://drive.google.com/file/d/1C9QWZYbZ9FBwLat5M1vibf_GK56ivlLR/view?usp=sharing",
+    "https://drive.google.com/file/d/1DmrlFnYDeuEydZJNtONpJW-0bkdkTIu-/view?usp=sharing",
   github: "https://github.com/JeremyFriesenGitHub",
   linkedin: "https://www.linkedin.com/in/jeremyfriesen1",
   repo: "https://github.com/JeremyFriesenGitHub/jeremy-friesen",
 } as const;
 
 export const aboutText = {
-  intro: "I'm a third year CS Student at Carleton University who's:",
+  intro: "I'm a fourth year CS Student at Carleton University who's:",
   points: [
     {
       text: "Committed to",
