@@ -19,7 +19,6 @@ type LinkPreviewProps = {
   width?: number;
   height?: number;
   quality?: number;
-  layout?: string;
 } & (
   | { isStatic: true; imageSrc: string }
   | { isStatic?: false; imageSrc?: never }
@@ -32,7 +31,6 @@ export const LinkPreview = ({
   width = 200,
   height = 125,
   quality = 50,
-  layout = "fixed",
   isStatic = false,
   imageSrc = "",
 }: LinkPreviewProps) => {
@@ -57,9 +55,11 @@ export const LinkPreview = ({
   const [isOpen, setOpen] = React.useState(false);
 
   const [isMounted, setIsMounted] = React.useState(false);
+  const [isTouchDevice, setIsTouchDevice] = React.useState(false);
 
   React.useEffect(() => {
     setIsMounted(true);
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
   }, []);
 
   const springConfig = { stiffness: 100, damping: 15 };
@@ -68,12 +68,9 @@ export const LinkPreview = ({
   const translateX = useSpring(x, springConfig);
 
   const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const targetRect = (event.target as HTMLElement).getBoundingClientRect();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const eventOffsetX = event.clientX - targetRect.left;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2; // Reduce the effect to make it subtle
+    const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2;
     x.set(offsetFromCenter);
   };
 
@@ -86,75 +83,79 @@ export const LinkPreview = ({
             width={width}
             height={height}
             quality={quality}
-            layout={layout}
             priority={true}
             alt="hidden image"
           />
         </div>
       ) : null}
 
-      <HoverCardPrimitive.Root
-        openDelay={50}
-        closeDelay={100}
-        onOpenChange={(open) => {
-          setOpen(open);
-        }}
-      >
-        <HoverCardPrimitive.Trigger
-          onMouseMove={handleMouseMove}
-          className={cn("text-black dark:text-white", className)}
-          href={url}
-        >
+      {isTouchDevice ? (
+        <Link href={url} className={cn("text-foreground", className)}>
           {children}
-        </HoverCardPrimitive.Trigger>
-
-        <HoverCardPrimitive.Content
-          className="[transform-origin:var(--radix-hover-card-content-transform-origin)]"
-          side="top"
-          align="center"
-          sideOffset={10}
+        </Link>
+      ) : (
+        <HoverCardPrimitive.Root
+          openDelay={50}
+          closeDelay={100}
+          onOpenChange={(open) => {
+            setOpen(open);
+          }}
         >
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.6 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  transition: {
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                  },
-                }}
-                exit={{ opacity: 0, y: 20, scale: 0.6 }}
-                className="rounded-xl shadow-xl"
-                style={{
-                  x: translateX,
-                }}
-              >
-                <Link
-                  href={url}
-                  className="block rounded-xl border-2 border-transparent bg-white p-1 shadow hover:border-neutral-200 dark:hover:border-neutral-800"
-                  style={{ fontSize: 0 }}
+          <HoverCardPrimitive.Trigger
+            onMouseMove={handleMouseMove}
+            className={cn("text-foreground", className)}
+            href={url}
+          >
+            {children}
+          </HoverCardPrimitive.Trigger>
+
+          <HoverCardPrimitive.Content
+            className="[transform-origin:var(--radix-hover-card-content-transform-origin)]"
+            side="top"
+            align="center"
+            sideOffset={10}
+          >
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.6 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                    },
+                  }}
+                  exit={{ opacity: 0, y: 20, scale: 0.6 }}
+                  className="rounded-xl shadow-xl"
+                  style={{
+                    x: translateX,
+                  }}
                 >
-                  <Image
-                    src={isStatic ? imageSrc : src}
-                    width={width}
-                    height={height}
-                    quality={quality}
-                    layout={layout}
-                    priority={true}
-                    className="rounded-lg"
-                    alt="preview image"
-                  />
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </HoverCardPrimitive.Content>
-      </HoverCardPrimitive.Root>
+                  <Link
+                    href={url}
+                    className="block rounded-xl border-2 border-transparent bg-card p-1 shadow hover:border-border"
+                    style={{ fontSize: 0 }}
+                  >
+                    <Image
+                      src={isStatic ? imageSrc : src}
+                      width={width}
+                      height={height}
+                      quality={quality}
+                      priority={true}
+                      className="rounded-lg"
+                      alt="preview image"
+                    />
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </HoverCardPrimitive.Content>
+        </HoverCardPrimitive.Root>
+      )}
     </>
   );
 };
