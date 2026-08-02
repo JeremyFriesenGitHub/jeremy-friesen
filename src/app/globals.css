@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light mode (default when .dark is removed) */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 220 15% 92%;
+    --card-foreground: 0 0% 0%;
+    --popover: 220 15% 92%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 200 85% 40%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 260 20% 92%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 220 15% 90%;
+    --muted-foreground: 0 0% 0%;
+    --accent: 170 55% 38%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 0%;
+    --border: 220 15% 85%;
+    --input: 220 15% 85%;
+    --ring: 200 85% 40%;
+    --chart-1: 200 85% 40%;
+    --chart-2: 170 55% 38%;
+    --chart-3: 260 45% 50%;
+    --chart-4: 35 75% 45%;
+    --chart-5: 340 55% 48%;
+    --radius: 0.75rem;
+
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-bg-gradient-from: rgba(255, 255, 255, 0.55);
+    --glass-bg-gradient-to: rgba(235, 240, 250, 0.25);
+    --glass-border: rgba(15, 25, 50, 0.08);
+    --glass-inset: rgba(255, 255, 255, 0.85);
+    --glass-inset-bottom: rgba(255, 255, 255, 0.25);
+    --glass-shadow: rgba(20, 30, 60, 0.06);
+    --glass-shadow-heavy: rgba(20, 30, 60, 0.1);
+    --glass-hover-bg: rgba(255, 255, 255, 0.65);
+    --glass-hover-border: rgba(15, 25, 50, 0.14);
+
+    --aurora-1: 205 85% 62%;
+    --aurora-2: 255 75% 68%;
+    --aurora-3: 175 70% 55%;
+  }
+
+  /* Dark mode */
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 225 20% 10%;
+    --card-foreground: 0 0% 100%;
+    --popover: 225 20% 10%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 200 85% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 260 25% 18%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 225 15% 16%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 170 60% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 65% 65%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 225 15% 18%;
+    --input: 225 15% 18%;
+    --ring: 200 85% 65%;
+    --chart-1: 200 85% 65%;
+    --chart-2: 170 60% 60%;
+    --chart-3: 260 50% 72%;
+    --chart-4: 35 80% 65%;
+    --chart-5: 340 60% 68%;
+
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-bg-gradient-from: rgba(255, 255, 255, 0.07);
+    --glass-bg-gradient-to: rgba(255, 255, 255, 0.015);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-inset: rgba(255, 255, 255, 0.12);
+    --glass-inset-bottom: rgba(255, 255, 255, 0.04);
+    --glass-shadow: rgba(0, 0, 0, 0.25);
+    --glass-shadow-heavy: rgba(0, 0, 0, 0.35);
+    --glass-hover-bg: rgba(255, 255, 255, 0.09);
+    --glass-hover-border: rgba(255, 255, 255, 0.18);
+
+    --aurora-1: 210 90% 55%;
+    --aurora-2: 265 85% 60%;
+    --aurora-3: 175 80% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply text-foreground;
+    font-family: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
+    background:
+      linear-gradient(
+        180deg,
+        hsl(220 40% 98%) 0%,
+        hsl(225 35% 96%) 35%,
+        hsl(245 30% 97%) 70%,
+        hsl(200 35% 97%) 100%
+      );
+    background-attachment: fixed;
+    position: relative;
+  }
+  .dark body {
+    background: hsl(var(--background));
+  }
+  /* Cool aurora background — sits behind everything (including the particle canvas) */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60% 50% at 15% 10%, hsl(var(--aurora-1) / 0.22) 0%, transparent 70%),
+      radial-gradient(55% 45% at 85% 25%, hsl(var(--aurora-2) / 0.20) 0%, transparent 70%),
+      radial-gradient(70% 55% at 50% 100%, hsl(var(--aurora-3) / 0.16) 0%, transparent 70%);
+  }
+  .dark body::before {
+    background:
+      radial-gradient(60% 50% at 15% 10%, hsl(var(--aurora-1) / 0.12) 0%, transparent 65%),
+      radial-gradient(55% 45% at 85% 25%, hsl(var(--aurora-2) / 0.12) 0%, transparent 65%),
+      radial-gradient(70% 55% at 50% 100%, hsl(var(--aurora-3) / 0.08) 0%, transparent 70%);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Visible focus ring for keyboard nav (mouse focus stays unstyled) */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(28px) saturate(1.6);
+    -webkit-backdrop-filter: blur(28px) saturate(1.6);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-inset),
+      inset 0 -1px 0 0 var(--glass-inset-bottom),
+      0 6px 28px var(--glass-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-hover:hover {
+    background: var(--glass-hover-bg);
+    border-color: var(--glass-hover-border);
+  }
+
+  .glass-card {
+    background: linear-gradient(
+      135deg,
+      var(--glass-bg-gradient-from) 0%,
+      var(--glass-bg-gradient-to) 100%
+    );
+    backdrop-filter: blur(32px) saturate(1.6);
+    -webkit-backdrop-filter: blur(32px) saturate(1.6);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-inset),
+      inset 0 -1px 0 0 var(--glass-inset-bottom),
+      0 10px 36px var(--glass-shadow-heavy);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-card-hover:hover {
+    background: linear-gradient(
+      135deg,
+      var(--glass-hover-bg) 0%,
+      var(--glass-bg-gradient-to) 100%
+    );
+    border-color: var(--glass-hover-border);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-inset),
+      inset 0 -1px 0 0 var(--glass-inset-bottom),
+      0 12px 44px var(--glass-shadow-heavy);
+  }
+
+  .glass-pill {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-inset),
+      inset 0 -1px 0 0 var(--glass-inset-bottom),
+      0 4px 18px var(--glass-shadow);
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .gradient-dark {
+    background: linear-gradient(
+      170deg,
+      hsl(230, 30%, 5%) 0%,
+      hsl(235, 25%, 7%) 20%,
+      hsl(240, 22%, 8%) 45%,
+      hsl(250, 20%, 7%) 70%,
+      hsl(225, 28%, 5%) 100%
+    );
+  }
+
+  .gradient-light {
+    background: linear-gradient(
+      170deg,
+      hsl(220, 25%, 95%) 0%,
+      hsl(225, 20%, 93%) 20%,
+      hsl(230, 18%, 94%) 45%,
+      hsl(220, 22%, 96%) 70%,
+      hsl(215, 25%, 95%) 100%
+    );
+  }
+
+  .gradient-text-cool {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)),
+      hsl(var(--accent)),
+      hsl(var(--chart-3))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-line {
+    background: hsl(var(--foreground));
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 30px rgba(79, 184, 232, 0.12),
+      0 0 60px rgba(79, 184, 232, 0.04);
+  }
+
+  .glow-soft {
+    box-shadow: 0 0 40px rgba(79, 184, 232, 0.08),
+      0 0 80px rgba(79, 184, 232, 0.03);
+  }
+
+  .glass-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--glass-border) 20%,
+      var(--glass-hover-border) 50%,
+      var(--glass-border) 80%,
+      transparent 100%
+    );
+  }
+}
+
+@keyframes glow-breathe {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.glow-breathe {
+  animation: glow-breathe 3s ease-in-out infinite;
+}
+
+@keyframes text-glow-breathe {
+  0%, 100% {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    opacity: 0.85;
+  }
+  50% {
+    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
+    opacity: 1;
+  }
+}
+
+.text-breathe {
+  animation: text-glow-breathe 3s ease-in-out infinite;
+}
