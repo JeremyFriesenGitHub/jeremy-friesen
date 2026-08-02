@@ -10,8 +10,17 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    title: "Client Management Analyst",
-    company: "Finance Canada",
+    title: "Cyber Security Intern",
+    company: "Government of Canada",
+    location: "Ottawa, ON",
+    country: "Canada",
+    date: "May 2026 - Present",
+    color: "#b49ae8",
+    colorLight: "#3d2178",
+  },
+  {
+    title: "IT Analyst Intern",
+    company: "Government of Canada",
     location: "Ottawa, ON",
     country: "Canada",
     date: "May 2025 - Aug. 2025",
@@ -19,8 +28,8 @@ export const experiences: Experience[] = [
     colorLight: "#8f3018",
   },
   {
-    title: "Analyst",
-    company: "Public Safety Canada",
+    title: "Cloud Analyst Intern",
+    company: "Government of Canada",
     location: "Ottawa, ON",
     country: "Canada",
     date: "Jan. 2025 - Apr. 2025",
@@ -28,7 +37,7 @@ export const experiences: Experience[] = [
     colorLight: "#1e5b35",
   },
   {
-    title: "Level 1 Analyst",
+    title: "IT Analyst Intern",
     company: "Royal Canadian Mounted Police",
     location: "Ottawa, ON",
     country: "Canada",
@@ -37,7 +46,7 @@ export const experiences: Experience[] = [
     colorLight: "#125672",
   },
   {
-    title: "Data Scientist for Complex Systems",
+    title: "Data Scientist Intern",
     company: "National Research Council of Canada",
     location: "Ottawa, ON",
     country: "Canada",
