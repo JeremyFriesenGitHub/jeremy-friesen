@@ -31,5 +31,9 @@ jobs:
 
       - run: npm run build
 
+      # Advisory only. A new advisory can land against a production dep at any
+      # time, through no fault of the PR in front of it — so this reports
+      # without blocking the merge. Dependabot is what actually chases these.
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
+        continue-on-error: true
