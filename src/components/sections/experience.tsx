@@ -1,77 +1,61 @@
-"use client";
-
-import { motion } from "motion/react";
+import type { CSSProperties } from "react";
 import { LiaCanadianMapleLeaf } from "react-icons/lia";
+import { LuMapPin } from "react-icons/lu";
+import { Chip } from "~/components/ui/chip";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Reveal } from "~/components/ui/reveal";
+import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
-import { ScrollMorph } from "~/components/effects/scroll-morph";
 import { experiences } from "~/data/experience";
-import { useIsDark } from "~/hooks/use-is-dark";
 
 export function Experience() {
-  const isDark = useIsDark();
-
   return (
-    <section id="experience" className="relative z-10 px-4 py-12 sm:px-8 sm:py-20">
-      <SectionHeading>Experience</SectionHeading>
+    <Section id="experience">
+      <SectionHeading
+        eyebrow="Experience"
+        title="Internships across the public sector."
+        description="Security, cloud, IT and data science roles with the Government of Canada, the RCMP and the National Research Council."
+      />
 
-      <div className="relative mx-auto max-w-3xl">
-        {/* Gradient center line */}
-        <div className="absolute left-3 top-0 h-full w-0.5 gradient-line md:left-1/2 md:-translate-x-px" />
+      <ol className="relative mx-auto max-w-3xl">
+        {/* Rail */}
+        <div
+          aria-hidden="true"
+          className="absolute top-2 bottom-2 left-[15px] w-px bg-linear-to-b from-primary via-accent to-tertiary opacity-70 sm:left-[19px]"
+        />
 
-        <div className="space-y-6 sm:space-y-12">
-          {experiences.map((exp, i) => {
-            const isLeft = i % 2 === 0;
-            const c = isDark ? exp.color : exp.colorLight;
-            return (
-              <ScrollMorph key={i}>
-                <div
-                  className={`relative flex items-start gap-4 sm:gap-6 md:gap-0 ${
-                    isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-3 top-4 z-10 flex h-7 w-7 -translate-x-1/2 items-center justify-center rounded-full sm:h-8 sm:w-8 md:left-1/2 md:top-0">
-                    <motion.div
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground shadow-[0_0_0_4px_hsl(var(--background))] sm:h-8 sm:w-8"
-                      whileHover={{ scale: 1.2 }}
-                    >
-                      <LiaCanadianMapleLeaf className="text-background" size={14} />
-                    </motion.div>
+        {experiences.map((exp, i) => (
+          <li key={`${exp.title}-${exp.date}`} className="relative pb-8 pl-12 last:pb-0 sm:pl-16">
+            {/* Dot */}
+            <span
+              aria-hidden="true"
+              className="accent-scope absolute top-5 left-0 flex size-8 items-center justify-center rounded-full border border-(--item-accent)/40 bg-background text-(--item-accent) shadow-[0_0_0_4px_var(--background)] sm:size-10"
+              style={{ "--accent-dark": exp.color, "--accent-light": exp.colorLight } as CSSProperties}
+            >
+              <LiaCanadianMapleLeaf size={18} />
+            </span>
+
+            <Reveal delay={Math.min(i * 0.06, 0.3)}>
+              <GlassCard
+                accent={{ dark: exp.color, light: exp.colorLight }}
+                className="p-5 sm:p-6"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{exp.title}</h3>
+                    <p className="mt-0.5 font-medium text-(--item-accent)">{exp.company}</p>
                   </div>
-
-                  {/* Card */}
-                  <div
-                    className={`ml-10 w-[calc(100%-2.5rem)] sm:ml-12 sm:w-[calc(100%-3rem)] md:ml-0 md:w-[calc(50%-2rem)] ${
-                      isLeft ? "md:pr-4" : "md:pl-4"
-                    }`}
-                  >
-                    <GlassCard glowColor={c}>
-                      <div className="space-y-1">
-                        <h3 className="text-base font-bold text-foreground sm:text-lg">
-                          {exp.title}
-                        </h3>
-                        <p className="text-sm font-semibold text-foreground sm:text-base">
-                          {exp.company}
-                        </p>
-                        <p className="text-xs text-muted-foreground sm:text-sm">
-                          {exp.location}, {exp.country}
-                        </p>
-                        <p className="text-xs text-muted-foreground sm:text-sm">
-                          {exp.date}
-                        </p>
-                      </div>
-                    </GlassCard>
-                  </div>
-
-                  {/* Spacer for the other side */}
-                  <div className="hidden md:block md:w-[calc(50%-2rem)]" />
+                  <Chip className="px-3 py-1.5 text-xs">{exp.date}</Chip>
                 </div>
-              </ScrollMorph>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+                <p className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <LuMapPin size={14} aria-hidden="true" />
+                  {exp.location}, {exp.country}
+                </p>
+              </GlassCard>
+            </Reveal>
+          </li>
+        ))}
+      </ol>
+    </Section>
   );
 }

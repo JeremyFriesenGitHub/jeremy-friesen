@@ -1,26 +1,35 @@
-"use client";
-
-import { ScrollMorph } from "~/components/effects/scroll-morph";
-import { cn } from "~/lib/utils";
+import { Reveal } from "~/components/ui/reveal";
 
 interface SectionHeadingProps {
-  children: React.ReactNode;
-  id?: string;
-  className?: string;
+  eyebrow: string;
+  title: string;
+  description?: string;
+  /** Optional link or button rendered on the right on wide screens. */
+  action?: React.ReactNode;
 }
 
-export function SectionHeading({ children, id, className }: SectionHeadingProps) {
+export function SectionHeading({
+  eyebrow,
+  title,
+  description,
+  action,
+}: SectionHeadingProps) {
   return (
-    <ScrollMorph>
-      <h2
-        id={id}
-        className={cn(
-          "mb-8 text-center text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl",
-          className,
+    <Reveal className="mb-10 flex flex-col gap-5 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
+      <div className="max-w-2xl">
+        <p className="font-mono text-xs font-semibold tracking-[0.22em] text-primary uppercase">
+          {eyebrow}
+        </p>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+          {title}
+        </h2>
+        {description && (
+          <p className="mt-3 text-base text-pretty text-muted-foreground sm:text-lg">
+            {description}
+          </p>
         )}
-      >
-        {children}
-      </h2>
-    </ScrollMorph>
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
+    </Reveal>
   );
 }

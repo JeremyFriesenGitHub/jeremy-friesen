@@ -1,14 +1,13 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "~/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://jeremy-friesen.com";
-
   return [
     {
-      url: baseUrl,
+      url: siteUrl,
       lastModified: new Date(),
-      priority: 1.0,
+      changeFrequency: "monthly",
+      priority: 1,
     },
   ];
 }

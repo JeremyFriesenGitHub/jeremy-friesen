@@ -1,93 +1,171 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  /* Light mode (default when .dark is removed) */
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 220 15% 92%;
-    --card-foreground: 0 0% 0%;
-    --popover: 220 15% 92%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 200 85% 40%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 260 20% 92%;
-    --secondary-foreground: 0 0% 0%;
-    --muted: 220 15% 90%;
-    --muted-foreground: 0 0% 0%;
-    --accent: 170 55% 38%;
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 65% 50%;
-    --destructive-foreground: 0 0% 0%;
-    --border: 220 15% 85%;
-    --input: 220 15% 85%;
-    --ring: 200 85% 40%;
-    --chart-1: 200 85% 40%;
-    --chart-2: 170 55% 38%;
-    --chart-3: 260 45% 50%;
-    --chart-4: 35 75% 45%;
-    --chart-5: 340 55% 48%;
-    --radius: 0.75rem;
+/* `.dark` on <html> switches the theme; set before first paint by the inline script in layout.tsx. */
+@custom-variant dark (&:where(.dark, .dark *));
 
-    --glass-bg: rgba(255, 255, 255, 0.45);
-    --glass-bg-gradient-from: rgba(255, 255, 255, 0.55);
-    --glass-bg-gradient-to: rgba(235, 240, 250, 0.25);
-    --glass-border: rgba(15, 25, 50, 0.08);
-    --glass-inset: rgba(255, 255, 255, 0.85);
-    --glass-inset-bottom: rgba(255, 255, 255, 0.25);
-    --glass-shadow: rgba(20, 30, 60, 0.06);
-    --glass-shadow-heavy: rgba(20, 30, 60, 0.1);
-    --glass-hover-bg: rgba(255, 255, 255, 0.65);
-    --glass-hover-border: rgba(15, 25, 50, 0.14);
+@theme inline {
+  --font-sans:
+    var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
 
-    --aurora-1: 205 85% 62%;
-    --aurora-2: 255 75% 68%;
-    --aurora-3: 175 70% 55%;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-success: var(--success);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-menu-in: menu-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 9s linear infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-nudge: nudge 2.2s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) rotate(var(--tilt, 0deg));
+    }
+    50% {
+      transform: translate3d(0, -14px, 0) rotate(var(--tilt, 0deg));
+    }
   }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -8px, 0) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--success) 55%, transparent);
+    }
+    60% {
+      box-shadow: 0 0 0 7px transparent;
+    }
+  }
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, 6px, 0);
+    }
+  }
+}
 
-  /* Dark mode */
+/* ---------------------------------------------------------------------------
+ * Design tokens. Colors are full values (not channels) so they can be read
+ * verbatim by the WebGL background and mixed with color-mix() in utilities.
+ * ------------------------------------------------------------------------ */
+:root {
+  color-scheme: light;
+
+  --background: #f3f5fb;
+  --foreground: #0b1020;
+  --muted: #e4e8f2;
+  --muted-foreground: #46506b;
+  --card: rgba(255, 255, 255, 0.62);
+  --card-foreground: #0b1020;
+  --primary: #1d5fd6;
+  --primary-foreground: #ffffff;
+  --accent: #6246ea;
+  --accent-foreground: #ffffff;
+  --tertiary: #0f8f80;
+  --success: #15803d;
+  --border: rgba(11, 16, 32, 0.1);
+  --ring: #1d5fd6;
+
+  /* Glass surfaces */
+  --glass-from: rgba(255, 255, 255, 0.74);
+  --glass-to: rgba(255, 255, 255, 0.42);
+  --glass-rim: rgba(255, 255, 255, 0.95);
+  --glass-edge: rgba(11, 16, 32, 0.1);
+  --glass-hi: rgba(255, 255, 255, 0.95);
+  --glass-lo: rgba(11, 16, 32, 0.05);
+  --glass-shadow: rgba(20, 28, 56, 0.16);
+  --glass-glow: rgba(255, 255, 255, 0.85);
+  --glass-blur: 18px;
+
+  /* Aurora palette shared by the WebGL background and the CSS fallback */
+  --aurora-1: #7fb5ff;
+  --aurora-2: #bda7ff;
+  --aurora-3: #86e6d6;
+  --aurora-4: #ffb8db;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #070a12;
+  --foreground: #eef2ff;
+  --muted: #141a2a;
+  --muted-foreground: #aab4cf;
+  --card: rgba(255, 255, 255, 0.05);
+  --card-foreground: #eef2ff;
+  --primary: #7cc4ff;
+  --primary-foreground: #06111f;
+  --accent: #b39dff;
+  --accent-foreground: #120a2e;
+  --tertiary: #5eead4;
+  --success: #4ade80;
+  --border: rgba(255, 255, 255, 0.1);
+  --ring: #7cc4ff;
+
+  --glass-from: rgba(255, 255, 255, 0.1);
+  --glass-to: rgba(255, 255, 255, 0.035);
+  --glass-rim: rgba(255, 255, 255, 0.28);
+  --glass-edge: rgba(255, 255, 255, 0.08);
+  --glass-hi: rgba(255, 255, 255, 0.16);
+  --glass-lo: rgba(0, 0, 0, 0.3);
+  --glass-shadow: rgba(0, 0, 0, 0.5);
+  --glass-glow: rgba(255, 255, 255, 0.16);
+  --glass-blur: 20px;
+
+  --aurora-1: #2457d6;
+  --aurora-2: #6d3bd6;
+  --aurora-3: #0f8a80;
+  --aurora-4: #b0266b;
+}
+
+/* Blur is the one expensive thing on this page; dial it back on phones. */
+@media (max-width: 640px) {
+  :root,
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 225 20% 10%;
-    --card-foreground: 0 0% 100%;
-    --popover: 225 20% 10%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 200 85% 65%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 260 25% 18%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 225 15% 16%;
-    --muted-foreground: 0 0% 100%;
-    --accent: 170 60% 60%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 65% 65%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 225 15% 18%;
-    --input: 225 15% 18%;
-    --ring: 200 85% 65%;
-    --chart-1: 200 85% 65%;
-    --chart-2: 170 60% 60%;
-    --chart-3: 260 50% 72%;
-    --chart-4: 35 80% 65%;
-    --chart-5: 340 60% 68%;
-
-    --glass-bg: rgba(255, 255, 255, 0.04);
-    --glass-bg-gradient-from: rgba(255, 255, 255, 0.07);
-    --glass-bg-gradient-to: rgba(255, 255, 255, 0.015);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-inset: rgba(255, 255, 255, 0.12);
-    --glass-inset-bottom: rgba(255, 255, 255, 0.04);
-    --glass-shadow: rgba(0, 0, 0, 0.25);
-    --glass-shadow-heavy: rgba(0, 0, 0, 0.35);
-    --glass-hover-bg: rgba(255, 255, 255, 0.09);
-    --glass-hover-border: rgba(255, 255, 255, 0.18);
-
-    --aurora-1: 210 90% 55%;
-    --aurora-2: 265 85% 60%;
-    --aurora-3: 175 80% 50%;
+    --glass-blur: 12px;
   }
 }
 
@@ -95,200 +173,177 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply text-foreground;
-    font-family: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
-    background:
-      linear-gradient(
-        180deg,
-        hsl(220 40% 98%) 0%,
-        hsl(225 35% 96%) 35%,
-        hsl(245 30% 97%) 70%,
-        hsl(200 35% 97%) 100%
-      );
-    background-attachment: fixed;
-    position: relative;
-  }
-  .dark body {
-    background: hsl(var(--background));
-  }
-  /* Cool aurora background — sits behind everything (including the particle canvas) */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      radial-gradient(60% 50% at 15% 10%, hsl(var(--aurora-1) / 0.22) 0%, transparent 70%),
-      radial-gradient(55% 45% at 85% 25%, hsl(var(--aurora-2) / 0.20) 0%, transparent 70%),
-      radial-gradient(70% 55% at 50% 100%, hsl(var(--aurora-3) / 0.16) 0%, transparent 70%);
-  }
-  .dark body::before {
-    background:
-      radial-gradient(60% 50% at 15% 10%, hsl(var(--aurora-1) / 0.12) 0%, transparent 65%),
-      radial-gradient(55% 45% at 85% 25%, hsl(var(--aurora-2) / 0.12) 0%, transparent 65%),
-      radial-gradient(70% 55% at 50% 100%, hsl(var(--aurora-3) / 0.08) 0%, transparent 70%);
-  }
+
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
-  /* Visible focus ring for keyboard nav (mouse focus stays unstyled) */
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    min-height: 100dvh;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 28%, transparent);
+  }
+
   :focus-visible {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
-    border-radius: 6px;
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  /* Theme toggle: the new theme sweeps in as an expanding circle (see use-theme.ts). */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+  ::view-transition-new(root) {
+    z-index: 2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-@layer utilities {
-  .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(28px) saturate(1.6);
-    -webkit-backdrop-filter: blur(28px) saturate(1.6);
-    border: 1px solid var(--glass-border);
-    box-shadow:
-      inset 0 1px 0 0 var(--glass-inset),
-      inset 0 -1px 0 0 var(--glass-inset-bottom),
-      0 6px 28px var(--glass-shadow);
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  }
+/* ---------------------------------------------------------------------------
+ * Liquid glass surfaces
+ *
+ *  .glass        translucent panel: gradient fill, backdrop blur, gradient rim,
+ *                inner highlight, soft drop shadow, and a specular highlight that
+ *                follows the pointer via --mx/--my (set by usePointerGlow).
+ *  .glass-strong more opaque variant for the navbar and hero chips.
+ *  .glass-pill   lightweight pill with NO backdrop blur, for chips nested inside
+ *                a .glass card (nested backdrop filters are slow and buggy).
+ * ------------------------------------------------------------------------ */
+@utility glass {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(135deg, var(--glass-from), var(--glass-to));
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-hi),
+    inset 0 -1px 0 0 var(--glass-lo),
+    0 24px 60px -28px var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(170%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(170%);
 
-  .glass-hover:hover {
-    background: var(--glass-hover-bg);
-    border-color: var(--glass-hover-border);
-  }
-
-  .glass-card {
+  /* Gradient rim: a 1px ring that catches the light on the top-left edge. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
     background: linear-gradient(
       135deg,
-      var(--glass-bg-gradient-from) 0%,
-      var(--glass-bg-gradient-to) 100%
+      var(--glass-rim) 0%,
+      transparent 38%,
+      transparent 62%,
+      color-mix(in oklab, var(--glass-rim) 55%, transparent) 100%
     );
-    backdrop-filter: blur(32px) saturate(1.6);
-    -webkit-backdrop-filter: blur(32px) saturate(1.6);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
-    box-shadow:
-      inset 0 1px 0 0 var(--glass-inset),
-      inset 0 -1px 0 0 var(--glass-inset-bottom),
-      0 10px 36px var(--glass-shadow-heavy);
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
 
-  .glass-card-hover:hover {
-    background: linear-gradient(
-      135deg,
-      var(--glass-hover-bg) 0%,
-      var(--glass-bg-gradient-to) 100%
+  /* Specular highlight that tracks the pointer. */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 0%),
+      var(--glass-glow),
+      transparent 60%
     );
-    border-color: var(--glass-hover-border);
-    box-shadow:
-      inset 0 1px 0 0 var(--glass-inset),
-      inset 0 -1px 0 0 var(--glass-inset-bottom),
-      0 12px 44px var(--glass-shadow-heavy);
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
-
-  .glass-pill {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(1.5);
-    -webkit-backdrop-filter: blur(20px) saturate(1.5);
-    border: 1px solid var(--glass-border);
-    box-shadow:
-      inset 0 1px 0 0 var(--glass-inset),
-      inset 0 -1px 0 0 var(--glass-inset-bottom),
-      0 4px 18px var(--glass-shadow);
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .gradient-dark {
-    background: linear-gradient(
-      170deg,
-      hsl(230, 30%, 5%) 0%,
-      hsl(235, 25%, 7%) 20%,
-      hsl(240, 22%, 8%) 45%,
-      hsl(250, 20%, 7%) 70%,
-      hsl(225, 28%, 5%) 100%
-    );
-  }
-
-  .gradient-light {
-    background: linear-gradient(
-      170deg,
-      hsl(220, 25%, 95%) 0%,
-      hsl(225, 20%, 93%) 20%,
-      hsl(230, 18%, 94%) 45%,
-      hsl(220, 22%, 96%) 70%,
-      hsl(215, 25%, 95%) 100%
-    );
-  }
-
-  .gradient-text-cool {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary)),
-      hsl(var(--accent)),
-      hsl(var(--chart-3))
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .gradient-line {
-    background: hsl(var(--foreground));
-  }
-
-  .glow-blue {
-    box-shadow: 0 0 30px rgba(79, 184, 232, 0.12),
-      0 0 60px rgba(79, 184, 232, 0.04);
-  }
-
-  .glow-soft {
-    box-shadow: 0 0 40px rgba(79, 184, 232, 0.08),
-      0 0 80px rgba(79, 184, 232, 0.03);
-  }
-
-  .glass-divider {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--glass-border) 20%,
-      var(--glass-hover-border) 50%,
-      var(--glass-border) 80%,
-      transparent 100%
-    );
+  &:hover::after,
+  &:focus-within::after {
+    opacity: 0.55;
   }
 }
 
-@keyframes glow-breathe {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(0.95);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
+@utility glass-strong {
+  --glass-from: color-mix(in oklab, var(--background) 72%, transparent);
+  --glass-to: color-mix(in oklab, var(--background) 50%, transparent);
+}
+
+@utility glass-pill {
+  background: color-mix(in oklab, var(--foreground) 5%, transparent);
+  border: 1px solid var(--glass-edge);
+  box-shadow: inset 0 1px 0 0 var(--glass-hi);
+}
+
+/* Fixed, full-viewport film grain that gives the glass something to bite on. */
+@utility noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Slow-moving gradient text, used for the surname in the hero. */
+@utility text-liquid {
+  background-image: linear-gradient(
+    100deg,
+    var(--primary) 0%,
+    var(--accent) 30%,
+    var(--tertiary) 55%,
+    var(--accent) 75%,
+    var(--primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 9s linear infinite;
+}
+
+/* Hides the native scrollbar gutter jump on horizontal chip rows. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
-.glow-breathe {
-  animation: glow-breathe 3s ease-in-out infinite;
-}
-
-@keyframes text-glow-breathe {
-  0%, 100% {
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-    opacity: 0.85;
+@layer components {
+  /* Per-item accent colour. Components set --accent-light/--accent-dark inline
+     and children read --item-accent, so no JS needs to know the theme. */
+  .accent-scope {
+    --item-accent: var(--accent-light, var(--primary));
   }
-  50% {
-    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor;
-    opacity: 1;
+  .dark .accent-scope {
+    --item-accent: var(--accent-dark, var(--primary));
   }
-}
-
-.text-breathe {
-  animation: text-glow-breathe 3s ease-in-out infinite;
 }

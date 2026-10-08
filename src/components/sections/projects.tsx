@@ -1,83 +1,126 @@
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
+import { FaGithub } from "react-icons/fa6";
+import {
+  LuArrowUpRight,
+  LuBookOpen,
+  LuBrainCircuit,
+  LuDatabase,
+  LuLaptop,
+  LuTimer,
+  LuWaypoints,
+} from "react-icons/lu";
+import { Chip } from "~/components/ui/chip";
+import { GlassButton } from "~/components/ui/glass-button";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Reveal } from "~/components/ui/reveal";
+import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
-import { ScrollMorph } from "~/components/effects/scroll-morph";
-import { projects } from "~/data/projects";
-import { useIsDark } from "~/hooks/use-is-dark";
-import { PiGraphFill } from "react-icons/pi";
-import { RiComputerLine } from "react-icons/ri";
-import { GoDatabase } from "react-icons/go";
-import { GiArtificialIntelligence } from "react-icons/gi";
-import { LuTimer } from "react-icons/lu";
-import { SiGoogledocs } from "react-icons/si";
+import { projects, type ProjectIcon } from "~/data/projects";
+import { socialLinks } from "~/data/social-links";
+import { cn } from "~/lib/utils";
 
-const iconMap: Record<string, React.ReactNode> = {
-  LuTimer: <LuTimer className="h-4 w-4" />,
-  SiGoogledocs: <SiGoogledocs className="h-4 w-4" />,
-  PiGraphFill: <PiGraphFill className="h-4 w-4" />,
-  RiComputerLine: <RiComputerLine className="h-4 w-4" />,
-  GoDatabase: <GoDatabase className="h-4 w-4" />,
-  GiArtificialIntelligence: <GiArtificialIntelligence className="h-4 w-4" />,
+const icons: Record<ProjectIcon, React.ComponentType<{ size?: number; className?: string }>> = {
+  timer: LuTimer,
+  docs: LuBookOpen,
+  graph: LuWaypoints,
+  computer: LuLaptop,
+  database: LuDatabase,
+  ai: LuBrainCircuit,
 };
 
 export function Projects() {
-  const isDark = useIsDark();
-
   return (
-    <section id="projects" className="relative z-10 px-4 py-12 sm:px-8 sm:py-20">
-      <SectionHeading>Projects</SectionHeading>
+    <Section id="projects">
+      <SectionHeading
+        eyebrow="Projects"
+        title="Selected work."
+        description="Open-source tools, platforms and experiments — from campus utilities to AI products."
+        action={
+          <GlassButton href={socialLinks.github} external>
+            <FaGithub size={16} aria-hidden="true" />
+            All repositories
+            <LuArrowUpRight size={16} aria-hidden="true" />
+          </GlassButton>
+        }
+      />
 
-      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 md:auto-rows-[20rem] md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, i) => {
-          const c = isDark ? project.color : project.colorLight;
+          const Icon = icons[project.icon];
           return (
-            <ScrollMorph key={i}>
+            <Reveal
+              key={project.title}
+              delay={Math.min((i % 3) * 0.07, 0.2)}
+              className={cn(project.colSpan === 2 && "lg:col-span-2")}
+            >
               <GlassCard
-                className={`group flex h-full flex-col justify-between overflow-hidden transition-all duration-300 hover:border-border ${
-                  project.colSpan === 2 ? "sm:col-span-2" : "sm:col-span-1"
-                }`}
-                glowColor={c}
+                accent={project.accent}
+                className="group flex h-full flex-col overflow-hidden p-3"
               >
-                {/* Image header */}
-                <div className="mb-3 flex h-36 gap-2 overflow-hidden rounded-lg sm:h-28 md:h-32">
-                  {project.images.map((img, idx) => (
-                    <div key={idx} className="relative flex-1">
+                <div className="flex h-44 gap-2 overflow-hidden rounded-2xl sm:h-48">
+                  {project.images.map((img) => (
+                    <div key={img.src} className="relative min-w-0 flex-1 overflow-hidden rounded-2xl">
                       <Image
                         src={img.src}
                         alt={img.alt}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                        className="rounded-lg object-cover"
+                        sizes={
+                          project.colSpan === 2
+                            ? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        }
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                       />
                     </div>
                   ))}
                 </div>
 
-                {/* Content */}
-                <Link
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <span className="text-foreground">
-                    {iconMap[project.iconName]}
-                  </span>
-                  <h3 className="mb-1 mt-2 text-sm font-bold text-foreground hover:underline sm:text-base">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground hover:underline">
-                    {project.description}
-                  </p>
-                </Link>
+                <div className="flex flex-1 flex-col px-2 pt-4 pb-2">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex size-9 items-center justify-center rounded-xl bg-(--item-accent)/12 text-(--item-accent)">
+                        <Icon size={18} />
+                      </span>
+                      <h3 className="text-lg font-semibold tracking-tight">
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="after:absolute after:inset-0 after:rounded-3xl"
+                        >
+                          {project.title}
+                        </a>
+                      </h3>
+                    </div>
+                    <LuArrowUpRight
+                      aria-hidden="true"
+                      className="mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
+                      size={18}
+                    />
+                  </div>
+                  <p className="mt-3 text-sm text-pretty text-muted-foreground">{project.description}</p>
+                  <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
+                    {project.tags.map((tag) => (
+                      <Chip key={tag}>{tag}</Chip>
+                    ))}
+                    {project.repo && (
+                      <a
+                        href={project.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} source on GitHub`}
+                        className="relative z-10 ml-auto inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        <FaGithub size={15} aria-hidden="true" />
+                      </a>
+                    )}
+                  </div>
+                </div>
               </GlassCard>
-            </ScrollMorph>
+            </Reveal>
           );
         })}
       </div>
-    </section>
+    </Section>
   );
 }

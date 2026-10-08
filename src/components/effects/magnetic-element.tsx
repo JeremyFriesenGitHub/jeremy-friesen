@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useMagnetic } from "~/hooks/use-magnetic";
 
 interface MagneticElementProps {
@@ -17,8 +17,8 @@ export function MagneticElement({
   const { ref, style, handlers } = useMagnetic(distance);
 
   return (
-    <motion.div ref={ref} style={style} className={className} {...handlers}>
+    <m.div ref={ref} style={style} className={className} {...handlers}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }
