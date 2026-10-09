@@ -1,42 +1,56 @@
 export type SkillIcon =
   | "python"
-  | "postgresql"
   | "typescript"
+  | "javascript"
   | "java"
+  | "cpp"
+  | "postgresql"
   | "html"
   | "css"
-  | "javascript"
+  | "bash"
+  | "powershell"
   | "nextjs"
+  | "react"
+  | "node"
   | "express"
   | "flask"
   | "fastapi"
   | "tailwind"
-  | "node"
-  | "react"
+  | "playwright"
   | "pytorch"
-  | "drizzle"
-  | "shadcn"
+  | "scikit"
+  | "numpy"
   | "pandas"
   | "geopandas"
   | "folium"
-  | "mermaid"
-  | "scikit"
-  | "cytoscape"
-  | "mongodb"
+  | "matplotlib"
+  | "jupyter"
+  | "gemini"
   | "azure"
   | "aws"
-  | "netlify"
+  | "gcp"
   | "docker"
+  | "kubernetes"
+  | "terraform"
   | "githubactions"
   | "vercel"
+  | "linux"
+  | "wireshark"
+  | "arkime"
+  | "mongodb"
+  | "duckdb"
+  | "drizzle"
+  | "shadcn"
+  | "figma"
+  | "mermaid"
   | "git"
   | "github"
   | "vscode"
-  | "jupyter"
   | "pycharm"
   | "intellij"
-  | "eclipse"
-  | "figma";
+  | "raspberrypi"
+  | "arduino"
+  | "latex";
 
 export interface Skill {
   name: string;
@@ -50,10 +64,11 @@ export interface SkillCategory {
   skills: Skill[];
 }
 
+/** Mirrors the Technical Skills block of the resume, plus what the projects use. */
 export const skillCategories: SkillCategory[] = [
   {
     title: "Languages",
-    accent: { dark: "#6ec4e8", light: "#125672" },
+    accent: { dark: "#6b93ff", light: "#1536b8" },
     skills: [
       { name: "Python", icon: "python", url: "https://www.python.org" },
       {
@@ -67,6 +82,7 @@ export const skillCategories: SkillCategory[] = [
         url: "https://developer.mozilla.org/docs/Web/JavaScript",
       },
       { name: "Java", icon: "java", url: "https://www.java.com" },
+      { name: "C / C++", icon: "cpp", url: "https://isocpp.org" },
       {
         name: "SQL · PostgreSQL",
         icon: "postgresql",
@@ -82,11 +98,17 @@ export const skillCategories: SkillCategory[] = [
         icon: "css",
         url: "https://developer.mozilla.org/docs/Web/CSS",
       },
+      { name: "Bash", icon: "bash", url: "https://www.gnu.org/software/bash/" },
+      {
+        name: "PowerShell",
+        icon: "powershell",
+        url: "https://learn.microsoft.com/powershell/",
+      },
     ],
   },
   {
-    title: "Frameworks",
-    accent: { dark: "#7dd49e", light: "#1e5b35" },
+    title: "Frameworks & Libraries",
+    accent: { dark: "#ff6b7a", light: "#b3101f" },
     skills: [
       { name: "Next.js", icon: "nextjs", url: "https://nextjs.org" },
       { name: "React", icon: "react", url: "https://react.dev" },
@@ -103,14 +125,16 @@ export const skillCategories: SkillCategory[] = [
         icon: "tailwind",
         url: "https://tailwindcss.com",
       },
+      { name: "Playwright", icon: "playwright", url: "https://playwright.dev" },
     ],
   },
   {
     title: "Data & AI",
-    accent: { dark: "#c48ae8", light: "#7822ae" },
+    accent: { dark: "#b08cff", light: "#5b21b6" },
     skills: [
       { name: "PyTorch", icon: "pytorch", url: "https://pytorch.org" },
       { name: "scikit-learn", icon: "scikit", url: "https://scikit-learn.org" },
+      { name: "NumPy", icon: "numpy", url: "https://numpy.org" },
       { name: "pandas", icon: "pandas", url: "https://pandas.pydata.org" },
       { name: "GeoPandas", icon: "geopandas", url: "https://geopandas.org" },
       {
@@ -118,44 +142,55 @@ export const skillCategories: SkillCategory[] = [
         icon: "folium",
         url: "https://python-visualization.github.io/folium/latest/",
       },
+      { name: "Matplotlib", icon: "matplotlib", url: "https://matplotlib.org" },
       { name: "Jupyter", icon: "jupyter", url: "https://jupyter.org" },
       {
-        name: "Cytoscape.js",
-        icon: "cytoscape",
-        url: "https://js.cytoscape.org",
+        name: "Gemini API",
+        icon: "gemini",
+        url: "https://ai.google.dev",
       },
     ],
   },
   {
-    title: "Cloud & DevOps",
-    accent: { dark: "#e8c05a", light: "#664d0e" },
+    title: "Cloud, DevOps & Security",
+    accent: { dark: "#ffd166", light: "#8a5a00" },
     skills: [
       { name: "Azure", icon: "azure", url: "https://azure.microsoft.com" },
       { name: "AWS", icon: "aws", url: "https://aws.amazon.com" },
+      { name: "Google Cloud", icon: "gcp", url: "https://cloud.google.com" },
       { name: "Docker", icon: "docker", url: "https://www.docker.com" },
+      { name: "Kubernetes", icon: "kubernetes", url: "https://kubernetes.io" },
+      { name: "Terraform", icon: "terraform", url: "https://www.terraform.io" },
       {
         name: "GitHub Actions",
         icon: "githubactions",
         url: "https://github.com/features/actions",
       },
       { name: "Vercel", icon: "vercel", url: "https://vercel.com" },
-      { name: "Netlify", icon: "netlify", url: "https://www.netlify.com" },
+      { name: "Linux", icon: "linux", url: "https://www.kernel.org" },
+      {
+        name: "Wireshark",
+        icon: "wireshark",
+        url: "https://www.wireshark.org",
+      },
+      { name: "Arkime", icon: "arkime", url: "https://arkime.com" },
     ],
   },
   {
-    title: "Data Layer & UI",
-    accent: { dark: "#e8907a", light: "#8f3018" },
+    title: "Data Layer & Design",
+    accent: { dark: "#ffa14d", light: "#9a3f00" },
     skills: [
       { name: "MongoDB", icon: "mongodb", url: "https://www.mongodb.com" },
+      { name: "DuckDB", icon: "duckdb", url: "https://duckdb.org" },
       { name: "Drizzle ORM", icon: "drizzle", url: "https://orm.drizzle.team" },
       { name: "shadcn/ui", icon: "shadcn", url: "https://ui.shadcn.com" },
-      { name: "Mermaid", icon: "mermaid", url: "https://mermaid.js.org" },
       { name: "Figma", icon: "figma", url: "https://www.figma.com" },
+      { name: "Mermaid", icon: "mermaid", url: "https://mermaid.js.org" },
     ],
   },
   {
-    title: "Tools",
-    accent: { dark: "#8fd3f4", light: "#0f5c7a" },
+    title: "Tools & Hardware",
+    accent: { dark: "#67d2ff", light: "#0b5f8a" },
     skills: [
       { name: "Git", icon: "git", url: "https://git-scm.com" },
       { name: "GitHub", icon: "github", url: "https://github.com" },
@@ -170,7 +205,13 @@ export const skillCategories: SkillCategory[] = [
         icon: "intellij",
         url: "https://www.jetbrains.com/idea/",
       },
-      { name: "Eclipse", icon: "eclipse", url: "https://eclipseide.org" },
+      {
+        name: "Raspberry Pi",
+        icon: "raspberrypi",
+        url: "https://www.raspberrypi.com",
+      },
+      { name: "Arduino", icon: "arduino", url: "https://www.arduino.cc" },
+      { name: "LaTeX", icon: "latex", url: "https://www.latex-project.org" },
     ],
   },
 ];

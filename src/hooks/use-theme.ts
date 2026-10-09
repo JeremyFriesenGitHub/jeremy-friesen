@@ -8,8 +8,8 @@ const STORAGE_KEY = "theme";
 
 /** Keep in sync with `viewport.themeColor` in app/layout.tsx and the tokens in globals.css. */
 const THEME_COLOR: Record<Theme, string> = {
-  light: "#f3f5fb",
-  dark: "#070a12",
+  light: "#f7f7fa",
+  dark: "#08080d",
 };
 
 function currentTheme(): Theme {

@@ -96,7 +96,7 @@ export function Navbar() {
       <nav
         aria-label="Primary"
         className={cn(
-          "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 transition-shadow duration-300 glass-strong",
+          "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 glass-clear transition-shadow duration-300 xl:max-w-6xl",
           scrolled && "shadow-[0_18px_50px_-20px_var(--glass-shadow)]",
         )}
       >
@@ -117,7 +117,7 @@ export function Navbar() {
         <DesktopLinks active={active} />
 
         <div className="flex items-center gap-0.5">
-          <div className="hidden items-center gap-0.5 lg:flex">
+          <div className="hidden items-center gap-0.5 xl:flex">
             {socials.map(({ href, label, Icon }) => (
               <MagneticElement key={label} distance={0.25}>
                 <a
@@ -137,7 +137,7 @@ export function Navbar() {
             href={socialLinks.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 md:inline-flex"
+            className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 lg:inline-flex"
           >
             <LuFileText size={16} aria-hidden="true" />
             Resume
@@ -271,7 +271,7 @@ function DesktopLinks({ active }: { active: string | null }) {
               href={link.href}
               aria-current={isActive ? "location" : undefined}
               className={cn(
-                "inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium transition-colors duration-200 lg:px-4",
+                "inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors duration-200 lg:px-3.5",
                 isActive
                   ? "text-foreground"
                   : "text-foreground/70 hover:text-foreground",

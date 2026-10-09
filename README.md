@@ -1,6 +1,6 @@
 # jeremy-friesen.com
 
-Personal portfolio of Jeremy Friesen — Computer Science student at Carleton University.
+Personal portfolio of Jeremy Friesen, Computer Science student at Carleton University.
 Live at [jeremy-friesen.com](https://jeremy-friesen.com).
 
 ## Stack
@@ -32,13 +32,14 @@ npm run format:write
 
 All copy and links live in `src/data/`:
 
-| File               | What it drives                                       |
-| ------------------ | ---------------------------------------------------- |
-| `social-links.ts`  | Profile, hero copy, about text, nav items, socials   |
-| `experience.ts`    | Timeline entries                                     |
-| `projects.ts`      | "Selected work" bento grid (images in `public/images`) |
-| `hackathons.ts`    | Devpost submissions, awards and stats                |
-| `skills.ts`        | Skill categories and icon mapping                    |
+| File              | What it drives                                             |
+| ----------------- | ---------------------------------------------------------- |
+| `social-links.ts` | Profile, hero copy, about text, nav items, socials         |
+| `experience.ts`   | Timeline entries                                           |
+| `projects.ts`     | "Selected work" bento grid (images in `public/images`)     |
+| `hackathons.ts`   | Hackathon submissions, awards, judging and stats           |
+| `community.ts`    | Club and team roles (CAIS, Blackbird UAV, cuHacking, CCSS) |
+| `skills.ts`       | Skill categories and icon mapping                          |
 
 ## Design notes
 
@@ -81,9 +82,9 @@ All copy and links live in `src/data/`:
 
 ## Environment
 
-| Variable               | Purpose                                        | Default                      |
-| ---------------------- | ---------------------------------------------- | ---------------------------- |
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata/sitemap/robots   | `https://jeremy-friesen.com` |
+| Variable               | Purpose                                      | Default                      |
+| ---------------------- | -------------------------------------------- | ---------------------------- |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata/sitemap/robots | `https://jeremy-friesen.com` |
 
 ## Contributing
 
@@ -94,4 +95,4 @@ that ships with Node 22 in CI.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

@@ -239,7 +239,7 @@ export function LiquidBackground() {
       gl.uniform3fv(loc.k2, pal.colors[1]);
       gl.uniform3fv(loc.k3, pal.colors[2]);
       gl.uniform3fv(loc.k4, pal.colors[3]);
-      gl.uniform1f(loc.int, pal.dark ? 0.62 : 0.82);
+      gl.uniform1f(loc.int, pal.dark ? 0.78 : 0.82);
     };
 
     /**
