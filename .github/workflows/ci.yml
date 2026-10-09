@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Pinned to commit SHAs; Dependabot (github-actions ecosystem) keeps them current.
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # The token is never needed after checkout; don't leave it in .git/config
           # for ~440 packages' install scripts to find.
