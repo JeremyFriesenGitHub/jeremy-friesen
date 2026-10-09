@@ -31,7 +31,10 @@ export default function Home() {
   return (
     <>
       <LiquidBackgroundLoader />
-      <div aria-hidden="true" className="noise pointer-events-none fixed inset-0 z-0 opacity-[0.035] dark:opacity-[0.045]" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 noise opacity-[0.035] dark:opacity-[0.045]"
+      />
       <Navbar />
       <main id="main" className="relative z-10">
         <Hero />

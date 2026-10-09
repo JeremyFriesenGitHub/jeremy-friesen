@@ -25,12 +25,20 @@ export function Experience() {
         />
 
         {experiences.map((exp, i) => (
-          <li key={`${exp.title}-${exp.date}`} className="relative pb-8 pl-12 last:pb-0 sm:pl-16">
+          <li
+            key={`${exp.title}-${exp.date}`}
+            className="relative pb-8 pl-12 last:pb-0 sm:pl-16"
+          >
             {/* Dot */}
             <span
               aria-hidden="true"
               className="accent-scope absolute top-5 left-0 flex size-8 items-center justify-center rounded-full border border-(--item-accent)/40 bg-background text-(--item-accent) shadow-[0_0_0_4px_var(--background)] sm:size-10"
-              style={{ "--accent-dark": exp.color, "--accent-light": exp.colorLight } as CSSProperties}
+              style={
+                {
+                  "--accent-dark": exp.color,
+                  "--accent-light": exp.colorLight,
+                } as CSSProperties
+              }
             >
               <LiaCanadianMapleLeaf size={18} />
             </span>
@@ -42,8 +50,12 @@ export function Experience() {
               >
                 <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
                   <div>
-                    <h3 className="text-lg font-semibold tracking-tight sm:text-xl">{exp.title}</h3>
-                    <p className="mt-0.5 font-medium text-(--item-accent)">{exp.company}</p>
+                    <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
+                      {exp.title}
+                    </h3>
+                    <p className="mt-0.5 font-medium text-(--item-accent)">
+                      {exp.company}
+                    </p>
                   </div>
                   <Chip className="px-3 py-1.5 text-xs">{exp.date}</Chip>
                 </div>

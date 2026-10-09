@@ -43,16 +43,24 @@ export function About() {
                 alt="Jeremy Friesen"
                 width={160}
                 height={160}
-                priority
                 sizes="160px"
                 className="relative size-36 rounded-full border-2 border-white/60 object-cover shadow-[0_20px_40px_-20px_var(--glass-shadow)] sm:size-40 dark:border-white/20"
               />
             </div>
-            <h3 className="mt-6 text-2xl font-bold tracking-tight">{profile.name}</h3>
+            <h3 className="mt-6 text-2xl font-bold tracking-tight">
+              {profile.name}
+            </h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               {facts.map(({ Icon, text }) => (
-                <li key={text} className="flex items-center justify-center gap-2">
-                  <Icon size={15} className="shrink-0 text-primary-strong" aria-hidden="true" />
+                <li
+                  key={text}
+                  className="flex items-center justify-center gap-2"
+                >
+                  <Icon
+                    size={15}
+                    className="shrink-0 text-primary-strong"
+                    aria-hidden="true"
+                  />
                   <span>{text}</span>
                 </li>
               ))}
@@ -65,7 +73,7 @@ export function About() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="glass-pill inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[transform,color] hover:-translate-y-0.5 hover:text-foreground"
+                  className="inline-flex size-10 items-center justify-center rounded-full text-foreground/80 glass-pill transition-[translate,color] hover:-translate-y-0.5 hover:text-foreground"
                 >
                   <Icon size={17} aria-hidden="true" />
                 </a>
@@ -82,14 +90,19 @@ export function About() {
               </p>
               <ul className="mt-6 space-y-3">
                 {aboutText.points.map((point) => (
-                  <li key={point.highlight} className="flex gap-3 text-base text-muted-foreground">
+                  <li
+                    key={point.highlight}
+                    className="flex gap-3 text-base text-muted-foreground"
+                  >
                     <span
                       aria-hidden="true"
                       className="mt-2.5 size-1.5 shrink-0 rounded-full bg-linear-to-r from-primary to-accent"
                     />
                     <span>
                       {point.text}{" "}
-                      <strong className="font-semibold text-foreground">{point.highlight}</strong>
+                      <strong className="font-semibold text-foreground">
+                        {point.highlight}
+                      </strong>
                     </span>
                   </li>
                 ))}

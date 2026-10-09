@@ -19,7 +19,12 @@ interface RevealProps {
  * hidden state only applies when JS is running (`html.js`), so the page stays
  * fully readable without it.
  */
-export function Reveal({ children, className, delay = 0, y = 22 }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  y = 22,
+}: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

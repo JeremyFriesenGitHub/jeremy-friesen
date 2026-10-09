@@ -11,7 +11,7 @@ export function Chip({ children, className, accent = false }: ChipProps) {
   return (
     <span
       className={cn(
-        "glass-pill inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[11px] leading-none font-medium whitespace-nowrap text-muted-foreground",
+        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[11px] leading-none font-medium whitespace-nowrap text-muted-foreground glass-pill",
         accent && "text-(--item-accent)",
         className,
       )}

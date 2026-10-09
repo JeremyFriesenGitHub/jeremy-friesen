@@ -24,7 +24,10 @@ export function GlassCard({
   const { ref, onPointerMove } = usePointerGlow<HTMLDivElement>();
 
   const accentVars = accent
-    ? ({ "--accent-dark": accent.dark, "--accent-light": accent.light } as CSSProperties)
+    ? ({
+        "--accent-dark": accent.dark,
+        "--accent-light": accent.light,
+      } as CSSProperties)
     : undefined;
 
   return (
@@ -33,9 +36,9 @@ export function GlassCard({
       onPointerMove={interactive ? onPointerMove : undefined}
       style={{ ...accentVars, ...style }}
       className={cn(
-        "glass accent-scope rounded-3xl",
+        "accent-scope glass rounded-3xl",
         interactive &&
-          "transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_32px_70px_-30px_var(--glass-shadow)]",
+          "transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_32px_70px_-30px_var(--glass-shadow)]",
         className,
       )}
     >

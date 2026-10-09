@@ -106,7 +106,8 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Shazam 4 Drones",
-    tagline: "A drone classification and detection platform built with Blackbird UAV.",
+    tagline:
+      "A drone classification and detection platform built with Blackbird UAV.",
     hackathon: "Shazam for Drones Hackathon",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
     builtWith: ["Next.js", "FastAPI", "scikit-learn", "SciPy", "Twilio"],

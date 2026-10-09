@@ -74,7 +74,9 @@ export function useTheme() {
     (origin?: { x: number; y: number }) => {
       const next: Theme = currentTheme() === "dark" ? "light" : "dark";
       const doc = document as ViewTransitionDocument;
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       if (!doc.startViewTransition || reduce) {
         setTheme(next);
         return;

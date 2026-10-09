@@ -24,10 +24,13 @@ export function ThemeToggle({ className, size = 20 }: ThemeToggleProps) {
         // Measure the button rather than the pointer so keyboard activation
         // (clientX/Y = 0) still sweeps the new theme out from the control.
         const rect = e.currentTarget.getBoundingClientRect();
-        toggleTheme({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+        toggleTheme({
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2,
+        });
       }}
       className={cn(
-        "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color,transform] duration-200 hover:bg-foreground/8 hover:text-foreground active:scale-95",
+        "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color,scale] duration-200 hover:bg-foreground/8 hover:text-foreground active:scale-95",
         className,
       )}
     >

@@ -19,7 +19,10 @@ import { projects, type ProjectIcon } from "~/data/projects";
 import { socialLinks } from "~/data/social-links";
 import { cn } from "~/lib/utils";
 
-const icons: Record<ProjectIcon, React.ComponentType<{ size?: number; className?: string }>> = {
+const icons: Record<
+  ProjectIcon,
+  React.ComponentType<{ size?: number; className?: string }>
+> = {
   timer: LuTimer,
   docs: LuBookOpen,
   graph: LuWaypoints,
@@ -59,7 +62,10 @@ export function Projects() {
               >
                 <div className="flex h-44 gap-2 overflow-hidden rounded-2xl sm:h-48">
                   {project.images.map((img) => (
-                    <div key={img.src} className="relative min-w-0 flex-1 overflow-hidden rounded-2xl">
+                    <div
+                      key={img.src}
+                      className="relative min-w-0 flex-1 overflow-hidden rounded-2xl"
+                    >
                       <Image
                         src={img.src}
                         alt={img.alt}
@@ -98,7 +104,9 @@ export function Projects() {
                       size={18}
                     />
                   </div>
-                  <p className="mt-3 text-sm text-pretty text-muted-foreground">{project.description}</p>
+                  <p className="mt-3 text-sm text-pretty text-muted-foreground">
+                    {project.description}
+                  </p>
                   <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
                     {project.tags.map((tag) => (
                       <Chip key={tag}>{tag}</Chip>

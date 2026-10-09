@@ -37,7 +37,7 @@ export function GlassButton({
       aria-label={ariaLabel}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-[transform,box-shadow,background-color,border-color] duration-300 ease-out active:scale-[0.97]",
+        "inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-[translate,scale,box-shadow,background-color,border-color] duration-300 ease-out active:scale-[0.97]",
         variants[variant],
         sizes[size],
         className,

@@ -1,10 +1,5 @@
 export type ProjectIcon =
-  | "timer"
-  | "docs"
-  | "graph"
-  | "computer"
-  | "database"
-  | "ai";
+  "timer" | "docs" | "graph" | "computer" | "database" | "ai";
 
 export interface Project {
   title: string;
@@ -73,7 +68,8 @@ export const projects: Project[] = [
   },
   {
     title: "Statsbomb DBMS",
-    description: "An open-source football data DBMS built on StatsBomb open data.",
+    description:
+      "An open-source football data DBMS built on StatsBomb open data.",
     url: "https://github.com/JeremyFriesenGitHub/Statsbomb_DBMS",
     images: [{ src: "/images/statsbomb-1.webp", alt: "Statsbomb DBMS code" }],
     accent: { dark: "#6ec4e8", light: "#125672" },

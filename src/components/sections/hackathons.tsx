@@ -1,6 +1,11 @@
 import { FaGithub } from "react-icons/fa6";
 import { SiDevpost } from "react-icons/si";
-import { LuArrowUpRight, LuAward, LuExternalLink, LuTrophy } from "react-icons/lu";
+import {
+  LuArrowUpRight,
+  LuAward,
+  LuExternalLink,
+  LuTrophy,
+} from "react-icons/lu";
 import { Chip } from "~/components/ui/chip";
 import { GlassButton } from "~/components/ui/glass-button";
 import { GlassCard } from "~/components/ui/glass-card";
@@ -35,9 +40,16 @@ export function Hackathons() {
       <Reveal>
         <ul className="mb-6 grid grid-cols-3 gap-3 sm:gap-5">
           {stats.map((s) => (
-            <li key={s.label} className="glass rounded-3xl px-3 py-4 text-center sm:px-6 sm:py-6">
-              <span className="block text-3xl font-bold tracking-tight text-liquid sm:text-4xl">{s.value}</span>
-              <span className="mt-1 block text-xs text-muted-foreground sm:text-sm">{s.label}</span>
+            <li
+              key={s.label}
+              className="glass rounded-3xl px-3 py-4 text-center sm:px-6 sm:py-6"
+            >
+              <span className="block text-liquid text-3xl font-bold tracking-tight sm:text-4xl">
+                {s.value}
+              </span>
+              <span className="mt-1 block text-xs text-muted-foreground sm:text-sm">
+                {s.label}
+              </span>
             </li>
           ))}
         </ul>
@@ -47,7 +59,10 @@ export function Hackathons() {
         {hackathonProjects.map((p, i) => (
           <li key={p.title} className="h-full">
             <Reveal delay={Math.min((i % 4) * 0.06, 0.2)} className="h-full">
-              <GlassCard accent={p.accent} className="group flex h-full flex-col p-5">
+              <GlassCard
+                accent={p.accent}
+                className="group flex h-full flex-col p-5"
+              >
                 <div className="flex items-start justify-between gap-3">
                   <p className="pt-1.5 font-mono text-[11px] leading-snug font-medium tracking-[0.14em] text-muted-foreground uppercase">
                     {p.hackathon}
@@ -70,11 +85,17 @@ export function Hackathons() {
                     {p.title}
                   </a>
                 </h3>
-                <p className="mt-2 line-clamp-3 text-sm text-pretty text-muted-foreground">{p.tagline}</p>
+                <p className="mt-2 line-clamp-3 text-sm text-pretty text-muted-foreground">
+                  {p.tagline}
+                </p>
 
                 {p.award && (
                   <p className="mt-3 flex items-start gap-1.5 text-sm font-medium text-(--item-accent)">
-                    <LuAward size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
+                    <LuAward
+                      size={15}
+                      className="mt-0.5 shrink-0"
+                      aria-hidden="true"
+                    />
                     <span>{p.award}</span>
                   </p>
                 )}
@@ -89,14 +110,18 @@ export function Hackathons() {
 
                 <div className="mt-4 flex items-center gap-1.5 border-t border-border/70 pt-3 text-xs text-muted-foreground">
                   <SiDevpost size={13} aria-hidden="true" />
-                  <span className="transition-colors group-hover:text-foreground">Devpost</span>
+                  <span className="transition-colors group-hover:text-foreground">
+                    Devpost
+                  </span>
                   <LuArrowUpRight
                     size={13}
                     aria-hidden="true"
                     className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
                   <span className="ml-auto flex items-center gap-0.5">
-                    {p.date && <span className="mr-1.5 font-mono">{p.date}</span>}
+                    {p.date && (
+                      <span className="mr-1.5 font-mono">{p.date}</span>
+                    )}
                     {p.site && (
                       <a
                         href={p.site}

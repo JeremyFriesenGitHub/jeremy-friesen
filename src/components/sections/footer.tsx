@@ -1,5 +1,11 @@
 import { FaGithub, FaLinkedinIn, FaReact } from "react-icons/fa6";
-import { SiDevpost, SiNextdotjs, SiTailwindcss, SiTypescript, SiVercel } from "react-icons/si";
+import {
+  SiDevpost,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiTypescript,
+  SiVercel,
+} from "react-icons/si";
 import { LuFileText } from "react-icons/lu";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 
@@ -13,8 +19,16 @@ const elsewhere = [
 const stack = [
   { href: "https://nextjs.org", label: "Next.js", Icon: SiNextdotjs },
   { href: "https://react.dev", label: "React", Icon: FaReact },
-  { href: "https://www.typescriptlang.org", label: "TypeScript", Icon: SiTypescript },
-  { href: "https://tailwindcss.com", label: "Tailwind CSS", Icon: SiTailwindcss },
+  {
+    href: "https://www.typescriptlang.org",
+    label: "TypeScript",
+    Icon: SiTypescript,
+  },
+  {
+    href: "https://tailwindcss.com",
+    label: "Tailwind CSS",
+    Icon: SiTailwindcss,
+  },
   { href: "https://vercel.com", label: "Vercel", Icon: SiVercel },
 ] as const;
 
@@ -29,13 +43,18 @@ export function Footer() {
       <div className="glass mx-auto max-w-6xl rounded-3xl p-6 sm:p-8">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <a href="#top" className="inline-flex items-center gap-2.5 font-semibold tracking-tight">
+            <a
+              href="#top"
+              className="inline-flex items-center gap-2.5 font-semibold tracking-tight"
+            >
               <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-primary via-accent to-tertiary font-mono text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.45)]">
                 JF
               </span>
               {profile.name}
             </a>
-            <p className="mt-3 text-sm text-pretty text-muted-foreground">{profile.tagline}</p>
+            <p className="mt-3 text-sm text-pretty text-muted-foreground">
+              {profile.tagline}
+            </p>
             <div className="mt-5 flex items-center gap-2">
               {elsewhere.slice(0, 3).map(({ href, label, Icon }) => (
                 <a
@@ -44,7 +63,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="glass-pill inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[transform,color] hover:-translate-y-0.5 hover:text-foreground"
+                  className="inline-flex size-10 items-center justify-center rounded-full text-foreground/80 glass-pill transition-[translate,color] hover:-translate-y-0.5 hover:text-foreground"
                 >
                   <Icon size={17} aria-hidden="true" />
                 </a>
@@ -74,7 +93,12 @@ export function Footer() {
               <ul className="mt-3 space-y-2">
                 {elsewhere.map(({ href, label, Icon }) => (
                   <li key={label}>
-                    <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={linkClass}
+                    >
                       <Icon size={14} aria-hidden="true" />
                       {label}
                     </a>
@@ -89,7 +113,12 @@ export function Footer() {
               <ul className="mt-3 space-y-2">
                 {stack.map(({ href, label, Icon }) => (
                   <li key={label}>
-                    <a href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={linkClass}
+                    >
                       <Icon size={14} aria-hidden="true" />
                       {label}
                     </a>
@@ -104,7 +133,12 @@ export function Footer() {
           <p>
             © {year} {profile.name}. {profile.location}.
           </p>
-          <a href={socialLinks.repo} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-foreground">
+          <a
+            href={socialLinks.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
             Source on GitHub
           </a>
         </div>

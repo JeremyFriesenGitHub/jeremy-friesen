@@ -85,7 +85,13 @@ type Rgb = [number, number, number];
 
 function hexToRgb(hex: string, fallback: Rgb): Rgb {
   const h = hex.trim().replace("#", "");
-  const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+  const full =
+    h.length === 3
+      ? h
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : h;
   if (!/^[0-9a-f]{6}$/i.test(full)) return fallback;
   const n = parseInt(full, 16);
   return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
@@ -112,9 +118,15 @@ function readPalette() {
 function fieldAt(t: number) {
   return {
     c1: [-0.55 + 0.25 * Math.sin(t * 1.1), 0.35 + 0.2 * Math.cos(t * 0.9)],
-    c2: [0.6 + 0.2 * Math.cos(t * 0.8 + 1), 0.25 + 0.25 * Math.sin(t * 1.2 + 2)],
+    c2: [
+      0.6 + 0.2 * Math.cos(t * 0.8 + 1),
+      0.25 + 0.25 * Math.sin(t * 1.2 + 2),
+    ],
     c3: [0.1 + 0.3 * Math.sin(t * 0.7 + 4), -0.5 + 0.2 * Math.cos(t + 1.5)],
-    c4: [-0.3 + 0.25 * Math.cos(t * 0.9 + 2.5), -0.25 + 0.3 * Math.sin(t * 0.6 + 0.5)],
+    c4: [
+      -0.3 + 0.25 * Math.cos(t * 0.9 + 2.5),
+      -0.25 + 0.3 * Math.sin(t * 0.6 + 0.5),
+    ],
     wa: [4 * Math.sin(t * 0.3), 4 * Math.cos(t * 0.3)],
     wb: [4 * Math.cos(t * 0.25 + 1) + 3.1, 4 * Math.sin(t * 0.25 + 2)],
     wd: [3 * Math.sin(t * 0.2), 3 * Math.cos(t * 0.2)],
@@ -230,17 +242,25 @@ export function LiquidBackground() {
       gl.uniform1f(loc.int, pal.dark ? 0.62 : 0.82);
     };
 
+    /**
+     * Sizes the drawing buffer from the canvas's own CSS box (100lvh, so the
+     * mobile URL bar showing/hiding does not reallocate it). Returns true when
+     * the buffer was reallocated, which also clears it: the caller must redraw
+     * immediately or the compositor presents a black frame.
+     */
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const scale = (coarsePointer ? 0.45 : 0.55) * dpr;
-      const w = Math.max(1, Math.floor(window.innerWidth * scale));
-      const h = Math.max(1, Math.floor(window.innerHeight * scale));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-        gl.viewport(0, 0, w, h);
-        gl.uniform2f(loc.res, w, h);
-      }
+      const cssW = canvas.clientWidth || window.innerWidth;
+      const cssH = canvas.clientHeight || window.innerHeight;
+      const w = Math.max(1, Math.floor(cssW * scale));
+      const h = Math.max(1, Math.floor(cssH * scale));
+      if (canvas.width === w && canvas.height === h) return false;
+      canvas.width = w;
+      canvas.height = h;
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(loc.res, w, h);
+      return true;
     };
 
     const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
@@ -265,16 +285,20 @@ export function LiquidBackground() {
     let raf = 0;
     let last = 0;
     const start = performance.now();
+    const fieldTime = (now: number) => ((now - start) / 1000) * 0.06;
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
       // Below the hero the field is mostly covered by content: 20 fps is plenty.
+      // The 4ms tolerance keeps a steady every-2nd/3rd-frame cadence on 60Hz
+      // displays instead of flapping on the exact vsync multiple.
       const minInterval = window.scrollY > window.innerHeight ? 50 : 33;
-      if (now - last < minInterval) return;
-      last = now;
+      const elapsed = now - last;
+      if (elapsed < minInterval - 4) return;
+      last = now - (elapsed % minInterval);
       mouse.x += (mouse.tx - mouse.x) * 0.06;
       mouse.y += (mouse.ty - mouse.y) * 0.06;
-      draw(((now - start) / 1000) * 0.06);
+      draw(fieldTime(now));
     };
 
     const renderStatic = () => {
@@ -310,8 +334,10 @@ export function LiquidBackground() {
     const onResize = () => {
       window.clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(() => {
-        resize();
+        if (!resize()) return;
+        // Reallocating cleared the buffer: paint it again before the next vsync.
         if (isStatic()) renderStatic();
+        else draw(fieldTime(performance.now()));
       }, 120);
     };
     const onContextLost = (e: Event) => {
@@ -372,16 +398,25 @@ function AuroraFallback() {
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
       <div
-        className="animate-float absolute -top-[10%] -left-[10%] h-[70vmax] w-[70vmax] rounded-full opacity-70 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, var(--aurora-1), transparent 70%)" }}
+        className="absolute -top-[10%] -left-[10%] h-[70vmax] w-[70vmax] animate-float rounded-full opacity-70 blur-3xl"
+        style={{
+          background:
+            "radial-gradient(closest-side, var(--aurora-1), transparent 70%)",
+        }}
       />
       <div
-        className="animate-float absolute top-[5%] -right-[15%] h-[65vmax] w-[65vmax] rounded-full opacity-60 blur-3xl [animation-delay:-3s]"
-        style={{ background: "radial-gradient(closest-side, var(--aurora-2), transparent 70%)" }}
+        className="absolute top-[5%] -right-[15%] h-[65vmax] w-[65vmax] animate-float rounded-full opacity-60 blur-3xl [animation-delay:-3s]"
+        style={{
+          background:
+            "radial-gradient(closest-side, var(--aurora-2), transparent 70%)",
+        }}
       />
       <div
-        className="animate-float absolute -bottom-[25%] left-[20%] h-[70vmax] w-[70vmax] rounded-full opacity-60 blur-3xl [animation-delay:-6s]"
-        style={{ background: "radial-gradient(closest-side, var(--aurora-3), transparent 70%)" }}
+        className="absolute -bottom-[25%] left-[20%] h-[70vmax] w-[70vmax] animate-float rounded-full opacity-60 blur-3xl [animation-delay:-6s]"
+        style={{
+          background:
+            "radial-gradient(closest-side, var(--aurora-3), transparent 70%)",
+        }}
       />
     </div>
   );

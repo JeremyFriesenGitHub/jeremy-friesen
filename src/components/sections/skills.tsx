@@ -96,11 +96,20 @@ export function Skills() {
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {skillCategories.map((category, i) => (
-          <Reveal key={category.title} delay={Math.min((i % 3) * 0.07, 0.2)} className="h-full">
+          <Reveal
+            key={category.title}
+            delay={Math.min((i % 3) * 0.07, 0.2)}
+            className="h-full"
+          >
             <GlassCard accent={category.accent} className="h-full p-5 sm:p-6">
               <div className="flex items-center gap-2.5">
-                <span aria-hidden="true" className="size-2 rounded-full bg-(--item-accent)" />
-                <h3 className="font-semibold tracking-tight">{category.title}</h3>
+                <span
+                  aria-hidden="true"
+                  className="size-2 rounded-full bg-(--item-accent)"
+                />
+                <h3 className="font-semibold tracking-tight">
+                  {category.title}
+                </h3>
               </div>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {category.skills.map((skill) => {
@@ -111,9 +120,13 @@ export function Skills() {
                         href={skill.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="glass-pill inline-flex items-center gap-2 rounded-full py-1.5 pr-3 pl-2 text-sm text-foreground/85 transition-[transform,color,background-color] duration-200 hover:-translate-y-0.5 hover:bg-foreground/8 hover:text-foreground"
+                        className="inline-flex items-center gap-2 rounded-full py-1.5 pr-3 pl-2 text-sm text-foreground/85 glass-pill transition-[translate,color,background-color] duration-200 hover:-translate-y-0.5 hover:bg-foreground/8 hover:text-foreground"
                       >
-                        <Icon size={16} className="shrink-0 text-(--item-accent)" aria-hidden="true" />
+                        <Icon
+                          size={16}
+                          className="shrink-0 text-(--item-accent)"
+                          aria-hidden="true"
+                        />
                         {skill.name}
                       </a>
                     </li>
