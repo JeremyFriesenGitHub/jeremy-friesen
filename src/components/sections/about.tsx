@@ -52,7 +52,7 @@ export function About() {
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               {facts.map(({ Icon, text }) => (
                 <li key={text} className="flex items-center justify-center gap-2">
-                  <Icon size={15} className="shrink-0 text-primary" aria-hidden="true" />
+                  <Icon size={15} className="shrink-0 text-primary-strong" aria-hidden="true" />
                   <span>{text}</span>
                 </li>
               ))}

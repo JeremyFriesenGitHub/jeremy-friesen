@@ -12,6 +12,9 @@ import { cn } from "~/lib/utils";
 
 const sectionIds = navLinks.map((l) => l.href.slice(1));
 
+/** Tailwind `md`: the mobile menu only exists below this. */
+const DESKTOP_QUERY = "(min-width: 48rem)";
+
 const socials = [
   { href: socialLinks.github, label: "GitHub", Icon: FaGithub },
   { href: socialLinks.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
@@ -25,7 +28,18 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const active = useActiveSection(sectionIds);
-  const close = useCallback(() => setOpen(false), []);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLButtonElement>(null);
+
+  /** Closes the menu and hands focus back to the toggle if it was inside. */
+  const close = useCallback(() => {
+    const activeEl = document.activeElement;
+    const inside =
+      (menuRef.current?.contains(activeEl) ?? false) || activeEl === backdropRef.current;
+    setOpen(false);
+    if (inside) toggleRef.current?.focus();
+  }, []);
 
   // Slightly stronger shadow once the page has scrolled.
   useEffect(() => {
@@ -35,21 +49,43 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Escape closes the mobile menu; lock body scroll while it is open.
+  // While open: Escape closes, body scroll is locked, and growing past the
+  // desktop breakpoint (rotation, resize) closes it so the lock can't strand.
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    const mql = window.matchMedia(DESKTOP_QUERY);
+    const onBreakpoint = (e: MediaQueryListEvent) => {
+      if (e.matches) close();
+    };
     window.addEventListener("keydown", onKey);
+    mql.addEventListener("change", onBreakpoint);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       window.removeEventListener("keydown", onKey);
+      mql.removeEventListener("change", onBreakpoint);
       document.body.style.overflow = prev;
     };
   }, [open, close]);
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4">
+      {/* Tap-outside backdrop. A sibling of the nav on purpose: the nav's
+          backdrop-filter would otherwise become this element's containing block. */}
+      {open && (
+        <button
+          ref={backdropRef}
+          type="button"
+          tabIndex={-1}
+          aria-hidden="true"
+          onClick={close}
+          className="pointer-events-auto fixed inset-0 cursor-default bg-background/40 md:hidden"
+        />
+      )}
+
       <nav
         aria-label="Primary"
         className={cn(
@@ -98,8 +134,9 @@ export function Navbar() {
             Resume
           </a>
           <button
+            ref={toggleRef}
             type="button"
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => (open ? close() : setOpen(true))}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -110,61 +147,54 @@ export function Navbar() {
         </div>
 
         {open && (
-          <>
-            <button
-              type="button"
-              aria-label="Close menu"
-              onClick={close}
-              className="fixed inset-0 -z-10 cursor-default bg-background/40 md:hidden"
-            />
-            <div
-              id="mobile-menu"
-              className="glass glass-strong animate-menu-in absolute inset-x-0 top-[calc(100%+0.5rem)] rounded-3xl p-2 md:hidden"
-            >
-              <ul className="flex flex-col">
-                {navLinks.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      onClick={close}
-                      className={cn(
-                        "flex items-center justify-between rounded-2xl px-4 py-3 text-base font-medium transition-colors hover:bg-foreground/6",
-                        active === link.href.slice(1) && "bg-foreground/6",
-                      )}
-                    >
-                      {link.label}
-                    </a>
-                  </li>
+          <div
+            id="mobile-menu"
+            ref={menuRef}
+            className="glass glass-strong animate-menu-in absolute inset-x-0 top-[calc(100%+0.5rem)] rounded-3xl p-2 md:hidden"
+          >
+            <ul className="flex flex-col">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={close}
+                    className={cn(
+                      "flex items-center justify-between rounded-2xl px-4 py-3 text-base font-medium transition-colors hover:bg-foreground/6",
+                      active === link.href.slice(1) && "bg-foreground/6",
+                    )}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="mx-2 my-2 h-px bg-border" />
+            <div className="flex items-center justify-between px-2 pb-1">
+              <div className="flex items-center gap-1">
+                {socials.map(({ href, label, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className={iconLinkClass}
+                  >
+                    <Icon size={18} aria-hidden="true" />
+                  </a>
                 ))}
-              </ul>
-              <div className="mx-2 my-2 h-px bg-border" />
-              <div className="flex items-center justify-between px-2 pb-1">
-                <div className="flex items-center gap-1">
-                  {socials.map(({ href, label, Icon }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={label}
-                      className={iconLinkClass}
-                    >
-                      <Icon size={18} aria-hidden="true" />
-                    </a>
-                  ))}
-                </div>
-                <a
-                  href={socialLinks.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background"
-                >
-                  <LuFileText size={16} aria-hidden="true" />
-                  Resume
-                </a>
               </div>
+              <a
+                href={socialLinks.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background"
+              >
+                <LuFileText size={16} aria-hidden="true" />
+                Resume
+              </a>
             </div>
-          </>
+          </div>
         )}
       </nav>
     </header>

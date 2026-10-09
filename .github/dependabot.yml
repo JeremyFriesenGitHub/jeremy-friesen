@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # Security updates are enabled separately in the repository settings and land
+  # as soon as an advisory is published. These are the routine version bumps,
+  # grouped so they arrive as at most two PRs a month.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      production:
+        dependency-type: production
+      development:
+        dependency-type: development
+    open-pull-requests-limit: 4
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

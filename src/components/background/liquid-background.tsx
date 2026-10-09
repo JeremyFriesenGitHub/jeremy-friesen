@@ -126,6 +126,10 @@ export function LiquidBackground() {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
+    // Once failed, the fallback is rendered and there is nothing to set up.
+    // Depending on `failed` also makes React tear down every listener below
+    // the moment a real context loss flips it.
+    if (failed) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -343,9 +347,11 @@ export function LiquidBackground() {
       themeObserver.disconnect();
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      // Deliberately no loseContext(): React StrictMode re-runs this effect in
+      // development, and a context that was explicitly lost cannot be reused
+      // on the same canvas. The context is released with the element instead.
     };
-  }, []);
+  }, [failed]);
 
   if (failed) return <AuroraFallback />;
 

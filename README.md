@@ -22,7 +22,7 @@ npm run dev        # http://localhost:3000
 Other scripts:
 
 ```bash
-npm run check      # eslint + tsc --noEmit (what CI runs)
+npm run check      # eslint + tsc --noEmit (CI runs this and then `npm run build`)
 npm run build      # production build
 npm run preview    # build, then serve the production build
 npm run format:write
@@ -88,7 +88,9 @@ All copy and links live in `src/data/`:
 ## Contributing
 
 Issues and pull requests are welcome. `main` is protected: open a PR and let the
-`check` workflow run.
+CI workflow's `check` job run. After changing dependencies, regenerate the lockfile
+with `npx npm@10 install --package-lock-only` so it stays compatible with the npm
+that ships with Node 22 in CI.
 
 ## License
 

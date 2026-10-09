@@ -17,6 +17,9 @@ expect an acknowledgement within a week.
 
 ## Dependencies
 
-Dependabot keeps dependencies current and CI runs `npm audit --omit=dev` on every
-build. Development-only tooling that has no patched release upstream may show up
-in a full `npm audit`; those packages never ship to the browser.
+Dependabot security updates are enabled for this repository, and
+`.github/dependabot.yml` schedules grouped version updates. CI runs an advisory
+`npm audit --omit=dev --audit-level=high` on every build; it reports production
+advisories in the job log but does not block merges on its own. Development-only
+tooling that has no patched release upstream may show up in a full `npm audit`;
+those packages never ship to the browser.

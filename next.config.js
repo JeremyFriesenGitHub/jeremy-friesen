@@ -7,13 +7,19 @@ import "./src/env.js";
 const isDev = process.env.NODE_ENV === "development";
 
 /**
+ * Vercel preview deployments inject the preview toolbar from vercel.live. Allow it there only;
+ * production keeps the strict policy below.
+ */
+const isPreview = process.env.VERCEL_ENV === "preview";
+
+/**
  * `'unsafe-inline'` is required for scripts because the App Router emits inline bootstrap and
  * RSC payload scripts, and `src/app/layout.tsx` inlines the theme-flash guard. Tightening this
  * to nonces would mean introducing middleware to stamp every response. Styles need it too:
- * Tailwind and the motion components set inline `style` attributes.
+ * Tailwind and the components set inline `style` attributes.
  *
  * Every asset the site renders is first-party, so `img-src`, `font-src` and `connect-src` are
- * locked to `'self'` (plus `data:`/`blob:` for inline SVG noise textures and canvas exports).
+ * locked to `'self'` (plus `data:` for the inline SVG noise texture and self-hosted fonts).
  */
 const csp = [
   `default-src 'self'`,
@@ -21,14 +27,14 @@ const csp = [
   `form-action 'self'`,
   `frame-ancestors 'none'`,
   `object-src 'none'`,
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-  `style-src 'self' 'unsafe-inline'`,
-  `img-src 'self' data: blob:`,
-  `font-src 'self' data:`,
-  `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${isPreview ? " https://vercel.live" : ""}`,
+  `style-src 'self' 'unsafe-inline'${isPreview ? " https://vercel.live" : ""}`,
+  `img-src 'self' data:${isPreview ? " https://vercel.live https://vercel.com" : ""}`,
+  `font-src 'self' data:${isPreview ? " https://vercel.live https://assets.vercel.com" : ""}`,
+  `connect-src 'self'${isDev ? " ws: wss:" : ""}${isPreview ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
   `manifest-src 'self'`,
-  `frame-src 'none'`,
-  `worker-src 'self' blob:`,
+  `frame-src ${isPreview ? "https://vercel.live" : "'none'"}`,
+  `worker-src 'self'`,
   `upgrade-insecure-requests`,
 ].join("; ");
 
@@ -41,7 +47,8 @@ const securityHeaders = [
   { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value:
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()",
   },
   {
     key: "Strict-Transport-Security",

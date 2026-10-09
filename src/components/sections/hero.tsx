@@ -121,18 +121,17 @@ export function Hero() {
           </div>
         </div>
 
-        <dl
+        <ul
           className="animate-fade-up mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
           style={delay(320)}
         >
           {stats.map((s) => (
-            <div key={s.label} className="flex items-baseline gap-2">
-              <dt className="sr-only">{s.label}</dt>
-              <dd className="text-2xl font-bold tracking-tight sm:text-3xl">{s.value}</dd>
-              <dd className="text-sm text-muted-foreground">{s.label}</dd>
-            </div>
+            <li key={s.label} className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold tracking-tight sm:text-3xl">{s.value}</span>
+              <span className="text-sm text-muted-foreground">{s.label}</span>
+            </li>
           ))}
-        </dl>
+        </ul>
       </div>
 
       <a

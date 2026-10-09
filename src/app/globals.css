@@ -19,6 +19,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-strong: var(--primary-strong);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-tertiary: var(--tertiary);
@@ -102,6 +103,8 @@
   --card-foreground: #0b1020;
   --primary: #1d5fd6;
   --primary-foreground: #ffffff;
+  /* Text-safe primary: holds 4.5:1 even over the brightest aurora blob. */
+  --primary-strong: #143f9e;
   --accent: #6246ea;
   --accent-foreground: #ffffff;
   --tertiary: #0f8f80;
@@ -133,11 +136,12 @@
   --background: #070a12;
   --foreground: #eef2ff;
   --muted: #141a2a;
-  --muted-foreground: #aab4cf;
+  --muted-foreground: #b4bdd6;
   --card: rgba(255, 255, 255, 0.05);
   --card-foreground: #eef2ff;
   --primary: #7cc4ff;
   --primary-foreground: #06111f;
+  --primary-strong: #8fcbff;
   --accent: #b39dff;
   --accent-foreground: #120a2e;
   --tertiary: #5eead4;

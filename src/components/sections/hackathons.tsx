@@ -33,14 +33,14 @@ export function Hackathons() {
       />
 
       <Reveal>
-        <dl className="mb-6 grid grid-cols-3 gap-3 sm:gap-5">
+        <ul className="mb-6 grid grid-cols-3 gap-3 sm:gap-5">
           {stats.map((s) => (
-            <div key={s.label} className="glass rounded-3xl px-3 py-4 text-center sm:px-6 sm:py-6">
-              <dd className="text-3xl font-bold tracking-tight text-liquid sm:text-4xl">{s.value}</dd>
-              <dt className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.label}</dt>
-            </div>
+            <li key={s.label} className="glass rounded-3xl px-3 py-4 text-center sm:px-6 sm:py-6">
+              <span className="block text-3xl font-bold tracking-tight text-liquid sm:text-4xl">{s.value}</span>
+              <span className="mt-1 block text-xs text-muted-foreground sm:text-sm">{s.label}</span>
+            </li>
           ))}
-        </dl>
+        </ul>
       </Reveal>
 
       <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

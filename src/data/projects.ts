@@ -50,7 +50,7 @@ export const projects: Project[] = [
     title: "cuTunnel",
     description:
       "Find the shortest route through Carleton's underground tunnel system.",
-    url: "https://cutunnel.study",
+    url: "https://devpost.com/software/cu-tunnels",
     repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
     images: [
       { src: "/images/cutunnel-1.webp", alt: "cuTunnel route map" },
