@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaGithub } from "react-icons/fa6";
+import { FaGithub, FaYoutube } from "react-icons/fa6";
 import { SiDevpost } from "react-icons/si";
 import {
   LuArrowUpRight,
@@ -150,6 +150,17 @@ export function Hackathons() {
                     <span className="ml-auto flex items-center gap-0.5">
                       {p.date && (
                         <span className="mr-1.5 font-mono">{p.date}</span>
+                      )}
+                      {p.video && (
+                        <a
+                          href={p.video}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${p.title} demo video`}
+                          className={iconLinkClass}
+                        >
+                          <FaYoutube size={14} aria-hidden="true" />
+                        </a>
                       )}
                       {p.site && p.site !== primary.href && (
                         <a

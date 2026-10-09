@@ -1,7 +1,8 @@
 /**
  * Hackathon submissions. Devpost entries are sourced from
  * https://devpost.com/JeremyFriesenGitHub; the rest ran off Devpost
- * (AGI Ventures Canada and the SSSC's InnovateNow!).
+ * (AGI Ventures Canada and the SSSC's InnovateNow!). Hackathon backends are
+ * long gone, so cards link to Devpost, demo videos and source rather than live apps.
  * Winners are listed first (most recent hackathon first), then the rest.
  */
 export interface HackathonProject {
@@ -14,7 +15,9 @@ export interface HackathonProject {
   award?: string;
   /** Devpost submission page, when the hackathon ran on Devpost. */
   url?: string;
-  /** Live demo, when one is still up. */
+  /** Demo video (YouTube), the preferred way to see a hackathon build. */
+  video?: string;
+  /** Live site, only when it still works without a backend. */
   site?: string;
   /** Source repository, when public. */
   repo?: string;
@@ -63,7 +66,6 @@ export const hackathonProjects: HackathonProject[] = [
     date: "Sep 2026",
     award: "1st place · CSE: Log & Order",
     url: "https://devpost.com/software/loggr",
-    site: "https://trace.cooking",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
     builtWith: ["Python", "PyTorch", "scikit-learn", "PyOD", "Flask"],
     accent: { dark: "#ff6b7a", light: "#b3101f" },
@@ -76,7 +78,8 @@ export const hackathonProjects: HackathonProject[] = [
     date: "Jan 2026",
     award: "MLH · Best Use of Gemini API",
     url: "https://devpost.com/software/product-creator-temp-name-conu-x",
-    site: "https://www.peter-griffin.tech",
+    video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
+    repo: "https://github.com/chantalzhang/conuhacks26",
     builtWith: ["Next.js", "React", "Flask", "Gemini API", "Snowflake Cortex"],
     accent: { dark: "#ffd166", light: "#8a5a00" },
   },
@@ -88,6 +91,8 @@ export const hackathonProjects: HackathonProject[] = [
     date: "Jan 2026",
     award: "Best Designed Hack",
     url: "https://devpost.com/software/plante",
+    video: "https://www.youtube.com/watch?v=7n9EgHPRCC8",
+    repo: "https://github.com/JowiAoun/Plante",
     builtWith: ["Next.js", "MongoDB", "Gemini", "Raspberry Pi", "Arduino"],
     accent: { dark: "#7dd49e", light: "#1e5b35" },
   },
@@ -98,6 +103,8 @@ export const hackathonProjects: HackathonProject[] = [
     date: "Sep 2025",
     award: "CSE: Network Traffic Exploration",
     url: "https://devpost.com/software/network-threat-explorer",
+    video: "https://www.youtube.com/watch?v=ZuAKIEh6PcA",
+    repo: "https://github.com/JeremyFriesenGitHub/nte",
     builtWith: ["Python", "Flask", "DuckDB", "Cohere", "Arkime"],
     accent: { dark: "#6b93ff", light: "#1536b8" },
   },
@@ -108,7 +115,6 @@ export const hackathonProjects: HackathonProject[] = [
     hackathon: "AGI Ventures Canada · Hackathon 3.0: Build to Convert",
     date: "Sep 2025",
     award: "Best UI",
-    site: "https://jeremyfriesengithub.github.io/prodly/",
     repo: "https://github.com/JeremyFriesenGitHub/prodly",
     builtWith: ["Next.js", "TypeScript", "Tailwind CSS", "AI"],
     accent: { dark: "#b08cff", light: "#5b21b6" },
@@ -121,6 +127,7 @@ export const hackathonProjects: HackathonProject[] = [
     date: "Mar 2025",
     award: "Wolfram Award (Top 5) · People's Choice",
     url: "https://devpost.com/software/cu-tunnels",
+    video: "https://www.youtube.com/watch?v=mcY5xvBvbc0",
     repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
     builtWith: ["JavaScript", "Cytoscape.js", "HTML", "CSS"],
     accent: { dark: "#ffa14d", light: "#9a3f00" },
@@ -143,7 +150,8 @@ export const hackathonProjects: HackathonProject[] = [
     hackathon: "GenAI Genesis 2026",
     date: "Mar 2026",
     url: "https://devpost.com/software/agent-o3l6si",
-    site: "https://www.agentsquared.tech",
+    video: "https://www.youtube.com/watch?v=hvT3rvw54yo",
+    repo: "https://github.com/chantalzhang/genaigenesis2026",
     builtWith: ["Python", "FastAPI", "AWS", "PersonaPlex", "Playwright"],
     accent: { dark: "#ff6b7a", light: "#b3101f" },
   },
@@ -151,9 +159,8 @@ export const hackathonProjects: HackathonProject[] = [
     title: "Startup Idea Validator",
     tagline:
       "Five AI personas (VC, engineer, ethicist, user, analyst) stress-test a startup idea with persistent memory.",
-    hackathon: "AGI Ventures Canada · Mini Hacker House",
+    hackathon: "AGI Ventures Canada · Hacker House Challenge",
     date: "Jan 2026",
-    site: "https://jeremyfriesengithub.github.io/startup-idea-validator/",
     repo: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
     builtWith: ["FastAPI", "Backboard.io", "JavaScript", "Python"],
     accent: { dark: "#b08cff", light: "#5b21b6" },
@@ -163,6 +170,7 @@ export const hackathonProjects: HackathonProject[] = [
     tagline: "Signed attestation chains for Canadian defence procurement.",
     hackathon: "Verified Canadian Supply Chains",
     url: "https://devpost.com/software/ctl-claude-del",
+    repo: "https://github.com/JowiAoun/MapleVault",
     builtWith: ["TypeScript", "FastAPI", "Docker"],
     accent: { dark: "#ffa14d", light: "#9a3f00" },
   },

@@ -16,6 +16,8 @@ export interface Project {
   url: string;
   /** Source repository, when it differs from `url`. */
   repo?: string;
+  /** Demo video (YouTube). */
+  video?: string;
   /** Screenshot(s). Empty for code-only work, which gets an icon banner instead. */
   images: { src: string; alt: string }[];
   accent: { dark: string; light: string };
@@ -32,7 +34,7 @@ export const projects: Project[] = [
     title: "Trace",
     description:
       "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabeled Apache log lines, then groups related events into incidents for analysts.",
-    url: "https://trace.cooking",
+    url: "https://devpost.com/software/loggr",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
     images: [{ src: "/images/trace-1.webp", alt: "Trace landing page" }],
     accent: { dark: "#ff6b7a", light: "#b3101f" },
@@ -45,8 +47,7 @@ export const projects: Project[] = [
     title: "Prodly",
     description:
       "An AI productivity platform with a Pomodoro timer, planner and assistant.",
-    url: "https://jeremyfriesengithub.github.io/prodly/",
-    repo: "https://github.com/JeremyFriesenGitHub/prodly",
+    url: "https://github.com/JeremyFriesenGitHub/prodly",
     images: [{ src: "/images/prodly-1.webp", alt: "Prodly landing page" }],
     accent: { dark: "#b08cff", light: "#5b21b6" },
     icon: "timer",
@@ -74,6 +75,7 @@ export const projects: Project[] = [
       "Find the shortest route through Carleton's underground tunnel system with an interactive graph of the campus.",
     url: "https://devpost.com/software/cu-tunnels",
     repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
+    video: "https://www.youtube.com/watch?v=mcY5xvBvbc0",
     images: [{ src: "/images/cutunnel-1.webp", alt: "cuTunnel route map" }],
     accent: { dark: "#ffa14d", light: "#9a3f00" },
     icon: "graph",
@@ -99,8 +101,7 @@ export const projects: Project[] = [
     title: "Startup Idea Validator",
     description:
       "Five AI personas stress-test a startup idea and remember earlier validations.",
-    url: "https://jeremyfriesengithub.github.io/startup-idea-validator/",
-    repo: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
+    url: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
     images: [
       { src: "/images/validator-1.webp", alt: "Startup Idea Validator app" },
     ],
