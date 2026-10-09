@@ -346,4 +346,62 @@
   .dark .accent-scope {
     --item-accent: var(--accent-dark, var(--primary));
   }
+
+  /* Scroll reveal (see components/ui/reveal.tsx). Hidden only once JS has
+     marked <html class="js">, so content is never trapped invisible. */
+  .reveal {
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .js .reveal[data-reveal="pending"] {
+    opacity: 0;
+    translate: 0 var(--reveal-y, 22px);
+  }
+
+  /* Hero rotating word (see components/sections/rotating-word.tsx). */
+  .word-in {
+    animation: word-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .word-out {
+    animation: word-out 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes word-in {
+    from {
+      opacity: 0;
+      translate: 0 0.7em;
+      filter: blur(5px);
+    }
+    to {
+      opacity: 1;
+      translate: none;
+      filter: none;
+    }
+  }
+  @keyframes word-out {
+    from {
+      opacity: 1;
+      translate: none;
+      filter: none;
+    }
+    to {
+      opacity: 0;
+      translate: 0 -0.7em;
+      filter: blur(5px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal[data-reveal="pending"] {
+      opacity: 1;
+      translate: none;
+    }
+    .word-in,
+    .word-out {
+      animation: none;
+    }
+    .word-out {
+      display: none;
+    }
+  }
 }

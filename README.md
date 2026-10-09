@@ -7,7 +7,8 @@ Live at [jeremy-friesen.com](https://jeremy-friesen.com).
 
 - **Next.js 16** (App Router, Turbopack) on **React 19** and **TypeScript**
 - **Tailwind CSS v4** with a CSS-first design system (`src/app/globals.css`)
-- **Motion** for scroll reveals and the hero word rotation (`LazyMotion`, animation features only)
+- No animation library: scroll reveals, the hero word rotation and magnetic hover are
+  CSS transitions/keyframes driven by one `IntersectionObserver` and a few pointer handlers
 - A single-pass **WebGL** "liquid aurora" background with a CSS fallback
 - Hosted on **Vercel**; CI on GitHub Actions (`npm ci`, lint, typecheck, build, audit)
 
@@ -64,12 +65,11 @@ All copy and links live in `src/data/`:
 │   ├── components/
 │   │   ├── background/          # WebGL aurora + loader
 │   │   ├── effects/             # magnetic hover
-│   │   ├── providers/           # LazyMotion / MotionConfig
 │   │   ├── sections/            # hero, about, experience, projects, hackathons, skills, footer
 │   │   ├── ui/                  # glass-card, glass-button, chip, reveal, section, theme-toggle
 │   │   └── navbar.tsx
 │   ├── data/                    # all site content
-│   ├── hooks/                   # use-theme, use-active-section, use-pointer-glow, use-magnetic
+│   ├── hooks/                   # use-theme, use-active-section, use-pointer-glow
 │   ├── lib/                     # cn(), site constants
 │   └── env.js                   # validated environment variables
 ├── eslint.config.js

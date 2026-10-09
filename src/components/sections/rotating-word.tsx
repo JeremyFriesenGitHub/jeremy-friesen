@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, m } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 
@@ -11,46 +10,62 @@ interface RotatingWordProps {
   interval?: number;
 }
 
+const SWAP_MS = 450;
+
 /**
- * Cycles through `words` with a short slide/fade. The container animates its
- * width to the incoming word (measured from hidden copies), so the sentence
- * around it reflows smoothly instead of reserving the longest word's space.
+ * Cycles through `words` with a short slide/fade (CSS keyframes). The
+ * container animates its width to the incoming word, measured from hidden
+ * copies and written straight to the DOM, so the sentence around it reflows
+ * smoothly without extra renders.
  */
 export function RotatingWord({ words, className, interval = 2600 }: RotatingWordProps) {
-  const [index, setIndex] = useState(0);
-  const [width, setWidth] = useState<number | null>(null);
+  const [state, setState] = useState<{ index: number; leaving: number | null }>({
+    index: 0,
+    leaving: null,
+  });
+  const containerRef = useRef<HTMLSpanElement>(null);
   const measureRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     if (words.length < 2) return;
-    const id = window.setInterval(
-      () => setIndex((i) => (i + 1) % words.length),
-      interval,
-    );
-    return () => window.clearInterval(id);
+    let clear = 0;
+    const tick = window.setInterval(() => {
+      setState((s) => ({ index: (s.index + 1) % words.length, leaving: s.index }));
+      window.clearTimeout(clear);
+      clear = window.setTimeout(
+        () => setState((s) => ({ ...s, leaving: null })),
+        SWAP_MS + 50,
+      );
+    }, interval);
+    return () => {
+      window.clearInterval(tick);
+      window.clearTimeout(clear);
+    };
   }, [words.length, interval]);
 
-  // Measure the current word; re-measure when fonts load or the viewport changes.
+  // Size the container to the current word; re-measure when fonts load or the viewport changes.
   useLayoutEffect(() => {
     const measure = () => {
-      const el = measureRefs.current[index];
-      if (el) setWidth(el.offsetWidth);
+      const el = measureRefs.current[state.index];
+      const container = containerRef.current;
+      if (el && container) container.style.width = `${el.offsetWidth}px`;
     };
     measure();
     void document.fonts.ready.then(measure);
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [index]);
+  }, [state.index]);
 
-  const word = words[index] ?? words[0] ?? "";
+  const word = words[state.index] ?? words[0] ?? "";
+  const leaving = state.leaving;
 
   return (
     <span
+      ref={containerRef}
       className={cn(
         "relative inline-block overflow-hidden align-bottom transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
         className,
       )}
-      style={width !== null ? { width } : undefined}
     >
       <span className="sr-only">{words.join(", ")}</span>
       {/* Hidden copies used only for measurement. */}
@@ -67,19 +82,22 @@ export function RotatingWord({ words, className, interval = 2600 }: RotatingWord
           </span>
         ))}
       </span>
-      <AnimatePresence initial={false}>
-        <m.span
-          key={word}
+      {leaving !== null && leaving !== state.index && (
+        <span
+          key={`out-${leaving}`}
           aria-hidden="true"
-          className="inline-block whitespace-nowrap"
-          initial={{ y: "0.7em", opacity: 0, filter: "blur(5px)" }}
-          animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-          exit={{ y: "-0.7em", opacity: 0, filter: "blur(5px)", position: "absolute", left: 0 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="word-out pointer-events-none absolute top-0 left-0 whitespace-nowrap"
         >
-          {word}
-        </m.span>
-      </AnimatePresence>
+          {words[leaving]}
+        </span>
+      )}
+      <span
+        key={`in-${state.index}`}
+        aria-hidden="true"
+        className={cn("inline-block whitespace-nowrap", leaving !== null && "word-in")}
+      >
+        {word}
+      </span>
     </span>
   );
 }

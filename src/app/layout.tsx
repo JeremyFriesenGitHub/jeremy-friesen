@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, IBM_Plex_Mono } from "next/font/google";
-import { MotionProvider } from "~/components/providers/motion-provider";
 import { siteDescription, siteName, siteUrl } from "~/lib/site";
 import "~/app/globals.css";
 
@@ -69,9 +68,11 @@ export const viewport: Viewport = {
 
 /**
  * Applies the saved theme (or the OS preference) before first paint so there is
- * no flash of the wrong theme. Kept tiny and dependency-free on purpose.
+ * no flash of the wrong theme, and marks the document as JS-capable so scroll
+ * reveals only hide content when they can actually run. Kept tiny and
+ * dependency-free on purpose.
  */
-const themeScript = `(function(){try{var s=localStorage.getItem("theme");var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;var c=document.documentElement.classList;if(d){c.add("dark")}else{c.remove("dark")}}catch(e){}})();`;
+const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");try{var s=localStorage.getItem("theme");var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;if(d){c.add("dark")}else{c.remove("dark")}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -92,7 +93,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <MotionProvider>{children}</MotionProvider>
+        {children}
       </body>
     </html>
   );
