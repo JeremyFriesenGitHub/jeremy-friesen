@@ -5,6 +5,10 @@ on:
   push:
     branches: [main]
 
+# Nothing in this workflow writes to the repository.
+permissions:
+  contents: read
+
 # Cancel superseded runs on the same branch.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,15 +18,21 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      # Pinned to commit SHAs; Dependabot (github-actions ecosystem) keeps them current.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          node-version: '22'
+          # The token is never needed after checkout; don't leave it in .git/config
+          # for ~440 packages' install scripts to find.
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
           cache: npm
 
       # Fails outright on a malformed or out-of-sync lockfile, which is the
       # point: a lockfile with merge conflict markers reached main once.
+      # Node 22 ships npm 10; regenerate the lockfile with `npx npm@10` locally.
       - run: npm ci
 
       - run: npm run lint

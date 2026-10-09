@@ -1,204 +1,287 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { LuX, LuSun, LuMoon } from "react-icons/lu";
-import { VscGithubAlt, VscThreeBars } from "react-icons/vsc";
-import { CiLinkedin } from "react-icons/ci";
-import { MdOutlineContactPage } from "react-icons/md";
-import Link from "next/link";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { SiDevpost } from "react-icons/si";
+import { LuFileText, LuMenu, LuX } from "react-icons/lu";
 import { MagneticElement } from "~/components/effects/magnetic-element";
-import { socialLinks, navLinks } from "~/data/social-links";
-import { useScrollDirection } from "~/hooks/use-scroll-direction";
-import { useTheme } from "~/hooks/use-theme";
+import { ThemeToggle } from "~/components/ui/theme-toggle";
+import { navLinks, socialLinks } from "~/data/social-links";
+import { useActiveSection } from "~/hooks/use-active-section";
+import { cn } from "~/lib/utils";
+
+const sectionIds = navLinks.map((l) => l.href.slice(1));
+
+/** Tailwind `md`: the mobile menu only exists below this. */
+const DESKTOP_QUERY = "(min-width: 48rem)";
+
+const socials = [
+  { href: socialLinks.github, label: "GitHub", Icon: FaGithub },
+  { href: socialLinks.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
+  { href: socialLinks.devpost, label: "Devpost", Icon: SiDevpost },
+] as const;
+
+const iconLinkClass =
+  "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color] duration-200 hover:bg-foreground/8 hover:text-foreground";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const visible = useScrollDirection(10, isOpen);
-  const { theme, toggleTheme } = useTheme();
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const active = useActiveSection(sectionIds);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLButtonElement>(null);
 
-  // Close mobile menu on Escape
+  /** Closes the menu and hands focus back to the toggle if it was inside. */
+  const close = useCallback(() => {
+    const activeEl = document.activeElement;
+    const inside =
+      (menuRef.current?.contains(activeEl) ?? false) ||
+      activeEl === backdropRef.current;
+    setOpen(false);
+    if (inside) toggleRef.current?.focus();
+  }, []);
+
+  // Slightly stronger shadow once the page has scrolled.
   useEffect(() => {
-    if (!isOpen) return;
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // While open: Escape closes, body scroll is locked, and growing past the
+  // desktop breakpoint (rotation, resize) closes it so the lock can't strand.
+  useEffect(() => {
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") close();
+    };
+    const mql = window.matchMedia(DESKTOP_QUERY);
+    const onBreakpoint = (e: MediaQueryListEvent) => {
+      if (e.matches) close();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isOpen]);
+    mql.addEventListener("change", onBreakpoint);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      mql.removeEventListener("change", onBreakpoint);
+      document.body.style.overflow = prev;
+    };
+  }, [open, close]);
 
   return (
-    <nav
-      className={`glass sticky top-0 z-50 px-3 py-3 text-foreground transition-transform duration-300 sm:px-4 sm:py-4 ${
-        visible ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
-        <MagneticElement distance={0.2}>
-          <a
-            href="#"
-            className="glass-pill block rounded-full px-3 py-1 text-sm font-medium transition-all hover:bg-foreground/10 hover:font-bold sm:text-base"
-          >
-            Home
-          </a>
-        </MagneticElement>
+    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4">
+      {/* Tap-outside backdrop. A sibling of the nav on purpose: the nav's
+          backdrop-filter would otherwise become this element's containing block. */}
+      {open && (
+        <button
+          ref={backdropRef}
+          type="button"
+          tabIndex={-1}
+          aria-hidden="true"
+          onClick={close}
+          className="pointer-events-auto fixed inset-0 cursor-default bg-background/40 md:hidden"
+        />
+      )}
 
-        <div className="absolute left-1/2 hidden -translate-x-1/2 transform md:flex">
-          <div className="glass-pill flex space-x-1 rounded-full px-2 py-1">
-            {navLinks.map((link) => (
-              <MagneticElement key={link.href} distance={0.2}>
+      <nav
+        aria-label="Primary"
+        className={cn(
+          "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 transition-shadow duration-300 glass-strong",
+          scrolled && "shadow-[0_18px_50px_-20px_var(--glass-shadow)]",
+        )}
+      >
+        <a
+          href="#top"
+          onClick={close}
+          aria-label="Back to top"
+          className="flex items-center gap-2.5 rounded-full py-1 pr-3 pl-1 font-semibold tracking-tight transition-colors hover:bg-foreground/5"
+        >
+          <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-primary via-accent to-tertiary font-mono text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.45)]">
+            JF
+          </span>
+          <span className="hidden sm:inline md:hidden lg:inline">
+            Jeremy Friesen
+          </span>
+        </a>
+
+        <DesktopLinks active={active} />
+
+        <div className="flex items-center gap-0.5">
+          <div className="hidden items-center gap-0.5 lg:flex">
+            {socials.map(({ href, label, Icon }) => (
+              <MagneticElement key={label} distance={0.25}>
                 <a
-                  href={link.href}
-                  className="rounded-full px-3 py-1 text-sm transition-all hover:bg-foreground/10 hover:font-bold hover:text-foreground lg:text-base"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className={iconLinkClass}
                 >
-                  {link.label}
+                  <Icon size={18} aria-hidden="true" />
                 </a>
               </MagneticElement>
             ))}
           </div>
-        </div>
-
-        <div className="hidden items-center space-x-3 md:flex lg:space-x-4">
-          <MagneticElement distance={0.3}>
-            <button
-              onClick={toggleTheme}
-              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <LuSun size={22} /> : <LuMoon size={22} />}
-            </button>
-          </MagneticElement>
-          <MagneticElement distance={0.3}>
-            <Link
-              href={socialLinks.resume}
-              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Resume"
-            >
-              <MdOutlineContactPage size={22} />
-            </Link>
-          </MagneticElement>
-          <MagneticElement distance={0.3}>
-            <Link
-              href={socialLinks.github}
-              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-            >
-              <VscGithubAlt size={22} />
-            </Link>
-          </MagneticElement>
-          <MagneticElement distance={0.3}>
-            <Link
-              href={socialLinks.linkedin}
-              className="inline-flex items-center justify-center transition-colors hover:text-foreground"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              <CiLinkedin size={22} />
-            </Link>
-          </MagneticElement>
-        </div>
-
-        <div className="flex items-center gap-3 md:hidden">
-          <button
-            onClick={toggleTheme}
-            className="inline-flex items-center justify-center transition-colors hover:text-foreground"
-            aria-label="Toggle theme"
+          <ThemeToggle />
+          <a
+            href={socialLinks.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 md:inline-flex"
           >
-            {theme === "dark" ? <LuSun size={22} /> : <LuMoon size={22} />}
-          </button>
+            <LuFileText size={16} aria-hidden="true" />
+            Resume
+          </a>
           <button
-            className="relative z-10 inline-flex items-center justify-center"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle Menu"
-            aria-expanded={isOpen}
+            ref={toggleRef}
+            type="button"
+            onClick={() => (open ? close() : setOpen(true))}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className={cn(iconLinkClass, "md:hidden")}
           >
-            {isOpen ? <LuX size={24} /> : <VscThreeBars size={24} />}
+            {open ? (
+              <LuX size={22} aria-hidden="true" />
+            ) : (
+              <LuMenu size={22} aria-hidden="true" />
+            )}
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile dropdown menu */}
-      {isOpen && (
-        <>
-          {/* Tap-outside backdrop (below dropdown, above page content) */}
-          <div
-            className="fixed inset-0 z-40 md:hidden"
-            onClick={() => setIsOpen(false)}
-            aria-hidden="true"
-          />
-
-          {/* Dropdown panel — anchored under the navbar */}
-          <div
-            className="absolute inset-x-3 top-full z-50 mt-2 origin-top-right overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-background/65 shadow-[0_12px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl backdrop-saturate-150 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200 md:hidden"
-            role="menu"
-          >
-            <div className="flex flex-col p-2">
-              <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Sections
-              </div>
-              <a
-                href="#"
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
-                onClick={() => setIsOpen(false)}
-                role="menuitem"
-              >
-                Home
-              </a>
-              {navLinks.map((link) => (
+      {/* Also a sibling of the nav: a backdrop-filter element is the backdrop
+          root for its descendants, so a menu nested in the glass nav would blur
+          nothing but the nav itself. */}
+      {open && (
+        <div
+          id="mobile-menu"
+          ref={menuRef}
+          className="glass pointer-events-auto absolute inset-x-3 top-[calc(100%+0.5rem)] max-h-[calc(100dvh-5.5rem)] animate-menu-in overflow-y-auto overscroll-contain rounded-3xl p-2 glass-strong md:hidden"
+        >
+          <ul className="flex flex-col">
+            {navLinks.map((link) => (
+              <li key={link.href}>
                 <a
-                  key={link.href}
                   href={link.href}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
-                  onClick={() => setIsOpen(false)}
-                  role="menuitem"
+                  onClick={close}
+                  className={cn(
+                    "flex items-center justify-between rounded-2xl px-4 py-3 text-base font-medium transition-colors hover:bg-foreground/6",
+                    active === link.href.slice(1) && "bg-foreground/6",
+                  )}
                 >
                   {link.label}
                 </a>
+              </li>
+            ))}
+          </ul>
+          <div className="mx-2 my-2 h-px bg-border" />
+          <div className="flex items-center justify-between px-2 pb-1">
+            <div className="flex items-center gap-1">
+              {socials.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className={iconLinkClass}
+                >
+                  <Icon size={18} aria-hidden="true" />
+                </a>
               ))}
-
-              <div className="my-2 h-px bg-[var(--glass-border)]" />
-
-              <div className="px-3 pb-1 pt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                Links
-              </div>
-              <Link
-                href={socialLinks.resume}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                role="menuitem"
-              >
-                <MdOutlineContactPage size={18} /> Resume
-              </Link>
-              <Link
-                href={socialLinks.github}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                role="menuitem"
-              >
-                <VscGithubAlt size={18} /> GitHub
-              </Link>
-              <Link
-                href={socialLinks.linkedin}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground/[0.08] active:bg-foreground/[0.14]"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                role="menuitem"
-              >
-                <CiLinkedin size={18} /> LinkedIn
-              </Link>
             </div>
+            <a
+              href={socialLinks.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background"
+            >
+              <LuFileText size={16} aria-hidden="true" />
+              Resume
+            </a>
           </div>
-        </>
+        </div>
       )}
-    </nav>
+    </header>
+  );
+}
+
+/** Centre links with a highlight pill that glides to the active section. */
+function DesktopLinks({ active }: { active: string | null }) {
+  const listRef = useRef<HTMLUListElement>(null);
+  const [pill, setPill] = useState<{ x: number; w: number } | null>(null);
+
+  const measure = useCallback(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const el = active
+      ? list.querySelector<HTMLAnchorElement>(`a[href="#${active}"]`)
+      : null;
+    if (!el) {
+      setPill(null);
+      return;
+    }
+    const listRect = list.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    setPill({ x: rect.left - listRect.left, w: rect.width });
+  }, [active]);
+
+  useLayoutEffect(measure, [measure]);
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, [measure]);
+
+  return (
+    <ul
+      ref={listRef}
+      className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex"
+    >
+      <li
+        aria-hidden="true"
+        className={cn(
+          "pointer-events-none absolute top-0 left-0 h-9 rounded-full bg-foreground/8 transition-[transform,width,opacity] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          pill ? "opacity-100" : "opacity-0",
+        )}
+        style={{
+          transform: `translate3d(${pill?.x ?? 0}px, 0, 0)`,
+          width: pill?.w ?? 0,
+        }}
+      />
+      {navLinks.map((link) => {
+        const isActive = active === link.href.slice(1);
+        return (
+          <li key={link.href} className="relative">
+            <a
+              href={link.href}
+              aria-current={isActive ? "location" : undefined}
+              className={cn(
+                "inline-flex h-9 items-center rounded-full px-3.5 text-sm font-medium transition-colors duration-200 lg:px-4",
+                isActive
+                  ? "text-foreground"
+                  : "text-foreground/70 hover:text-foreground",
+              )}
+            >
+              {link.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
