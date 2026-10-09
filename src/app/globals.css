@@ -98,62 +98,69 @@
 :root {
   color-scheme: light;
 
-  --background: #f3f5fb;
-  --foreground: #0b1020;
-  --muted: #e4e8f2;
-  --muted-foreground: #46506b;
-  --card: rgba(255, 255, 255, 0.62);
-  --card-foreground: #0b1020;
-  --primary: #1d5fd6;
+  --background: #f7f7fa;
+  --foreground: #0c0c14;
+  --muted: #e9e9f0;
+  --muted-foreground: #3e4158;
+  --card: rgba(255, 255, 255, 0.55);
+  --card-foreground: #0c0c14;
+  /* Primary colours: true blue, true red, and a yellow highlight. */
+  --primary: #1e4fe6;
   --primary-foreground: #ffffff;
   /* Text-safe primary: holds 4.5:1 even over the brightest aurora blob. */
-  --primary-strong: #143f9e;
-  --accent: #6246ea;
+  --primary-strong: #1536b8;
+  --accent: #e0162b;
   --accent-foreground: #ffffff;
-  --tertiary: #0f8f80;
+  --tertiary: #f5b800;
   --success: #15803d;
-  --border: rgba(11, 16, 32, 0.1);
-  --ring: #1d5fd6;
+  --border: rgba(12, 12, 20, 0.1);
+  --ring: #1e4fe6;
 
-  /* Glass surfaces */
-  --glass-from: rgba(255, 255, 255, 0.74);
-  --glass-to: rgba(255, 255, 255, 0.42);
+  /* Glass surfaces. --glass-from/-to is the default panel; the -clear pair is
+     the near-transparent navbar variant (see .glass-clear). */
+  --glass-from: rgba(255, 255, 255, 0.56);
+  --glass-to: rgba(255, 255, 255, 0.28);
+  --glass-clear-from: rgba(255, 255, 255, 0.4);
+  --glass-clear-to: rgba(255, 255, 255, 0.18);
   --glass-rim: rgba(255, 255, 255, 0.95);
-  --glass-edge: rgba(11, 16, 32, 0.1);
+  --glass-edge: rgba(12, 12, 20, 0.1);
   --glass-hi: rgba(255, 255, 255, 0.95);
-  --glass-lo: rgba(11, 16, 32, 0.05);
-  --glass-shadow: rgba(20, 28, 56, 0.16);
+  --glass-lo: rgba(12, 12, 20, 0.05);
+  --glass-shadow: rgba(30, 20, 40, 0.16);
   --glass-glow: rgba(255, 255, 255, 0.85);
   --glass-blur: 18px;
 
-  /* Aurora palette shared by the WebGL background and the CSS fallback */
-  --aurora-1: #7fb5ff;
-  --aurora-2: #bda7ff;
-  --aurora-3: #86e6d6;
-  --aurora-4: #ffb8db;
+  /* Aurora palette shared by the WebGL background and the CSS fallback:
+     red, blue, yellow and a pale blue to keep the field airy. */
+  --aurora-1: #ff5f70;
+  --aurora-2: #4f7dff;
+  --aurora-3: #ffd23f;
+  --aurora-4: #9bb8ff;
 }
 
 .dark {
   color-scheme: dark;
 
-  --background: #070a12;
-  --foreground: #eef2ff;
-  --muted: #141a2a;
-  --muted-foreground: #b4bdd6;
+  --background: #08080d;
+  --foreground: #f3f3f8;
+  --muted: #15151f;
+  --muted-foreground: #b3b6cc;
   --card: rgba(255, 255, 255, 0.05);
-  --card-foreground: #eef2ff;
-  --primary: #7cc4ff;
-  --primary-foreground: #06111f;
-  --primary-strong: #8fcbff;
-  --accent: #b39dff;
-  --accent-foreground: #120a2e;
-  --tertiary: #5eead4;
+  --card-foreground: #f3f3f8;
+  --primary: #6b93ff;
+  --primary-foreground: #04102a;
+  --primary-strong: #8fb0ff;
+  --accent: #ff5468;
+  --accent-foreground: #2a0509;
+  --tertiary: #ffd166;
   --success: #4ade80;
   --border: rgba(255, 255, 255, 0.1);
-  --ring: #7cc4ff;
+  --ring: #6b93ff;
 
-  --glass-from: rgba(255, 255, 255, 0.1);
-  --glass-to: rgba(255, 255, 255, 0.035);
+  --glass-from: rgba(255, 255, 255, 0.085);
+  --glass-to: rgba(255, 255, 255, 0.03);
+  --glass-clear-from: rgba(255, 255, 255, 0.06);
+  --glass-clear-to: rgba(255, 255, 255, 0.022);
   --glass-rim: rgba(255, 255, 255, 0.28);
   --glass-edge: rgba(255, 255, 255, 0.08);
   --glass-hi: rgba(255, 255, 255, 0.16);
@@ -162,10 +169,10 @@
   --glass-glow: rgba(255, 255, 255, 0.16);
   --glass-blur: 20px;
 
-  --aurora-1: #2457d6;
-  --aurora-2: #6d3bd6;
-  --aurora-3: #0f8a80;
-  --aurora-4: #b0266b;
+  --aurora-1: #c8102e;
+  --aurora-2: #1d4fe8;
+  --aurora-3: #f5a524;
+  --aurora-4: #0e7bd1;
 }
 
 /* Blur is the one expensive thing on this page; dial it back on phones. */
@@ -239,7 +246,9 @@
  *  .glass        translucent panel: gradient fill, backdrop blur, gradient rim,
  *                inner highlight, soft drop shadow, and a specular highlight that
  *                follows the pointer via --mx/--my (set by usePointerGlow).
- *  .glass-strong more opaque variant for the navbar and hero chips.
+ *  .glass-strong more opaque variant for the mobile menu and hero chips.
+ *  .glass-clear  near-transparent variant for the floating navbar: the page
+ *                shows through, with a stronger blur keeping text legible.
  *  .glass-pill   lightweight pill with NO backdrop blur, for chips nested inside
  *                a .glass card (nested backdrop filters are slow and buggy).
  * ------------------------------------------------------------------------ */
@@ -312,6 +321,15 @@
   --glass-to: color-mix(in oklab, var(--background) 50%, transparent);
 }
 
+@utility glass-clear {
+  --glass-from: var(--glass-clear-from);
+  --glass-to: var(--glass-clear-to);
+  --glass-blur: 24px;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(190%)
+    brightness(1.04);
+  backdrop-filter: blur(var(--glass-blur)) saturate(190%) brightness(1.04);
+}
+
 @utility glass-pill {
   background: color-mix(in oklab, var(--foreground) 5%, transparent);
   border: 1px solid var(--glass-edge);
@@ -327,10 +345,20 @@
 /* Gradient text. Static by default; add text-liquid-animate for the slow shimmer
    (a repaint-only animation, so it is reserved for the hero surname). */
 @utility text-liquid {
+  /* Plain gradient first; the oklch one below replaces it where supported,
+     so unsupported browsers never drop the background and lose the text. */
   background-image: linear-gradient(
     100deg,
     var(--primary) 0%,
-    var(--accent) 30%,
+    var(--accent) 35%,
+    var(--tertiary) 55%,
+    var(--accent) 75%,
+    var(--primary) 100%
+  );
+  background-image: linear-gradient(
+    100deg in oklch,
+    var(--primary) 0%,
+    var(--accent) 35%,
     var(--tertiary) 55%,
     var(--accent) 75%,
     var(--primary) 100%

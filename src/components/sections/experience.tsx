@@ -63,6 +63,19 @@ export function Experience() {
                   <LuMapPin size={14} aria-hidden="true" />
                   {exp.location}, {exp.country}
                 </p>
+                {exp.highlights.length > 0 && (
+                  <ul className="mt-3 space-y-1.5 border-t border-border/70 pt-3 text-sm text-muted-foreground">
+                    {exp.highlights.map((h) => (
+                      <li key={h} className="flex gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className="mt-2 size-1.5 shrink-0 rounded-full bg-(--item-accent)"
+                        />
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </GlassCard>
             </Reveal>
           </li>

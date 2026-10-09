@@ -19,7 +19,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteName} — CS @ Carleton · Security, Cloud & AI/ML`,
+    default: `${siteName} | CS @ Carleton · Security, Cloud & AI/ML`,
     template: `%s · ${siteName}`,
   },
   description: siteDescription,
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
     siteName,
     title: siteName,
     description:
-      "CS student at Carleton University — security, cloud infrastructure, data science and AI/ML. 5× hackathon winner.",
+      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. 7× hackathon winner.",
     locale: "en_CA",
   },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description:
-      "CS student at Carleton University — security, cloud infrastructure, data science and AI/ML.",
+      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML.",
   },
   robots: { index: true, follow: true },
 };
@@ -61,8 +61,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f5fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#070a12" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f7fa" },
+    { media: "(prefers-color-scheme: dark)", color: "#08080d" },
   ],
 };
 
