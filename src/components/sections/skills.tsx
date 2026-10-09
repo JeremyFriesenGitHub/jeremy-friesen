@@ -1,118 +1,142 @@
-"use client";
-
+import type { IconType } from "react-icons";
+import { BiLogoFlask } from "react-icons/bi";
 import {
-  FaPython,
-  FaJava,
-  FaReact,
+  FaAws,
   FaDocker,
-  FaGitAlt,
   FaFigma,
-} from "react-icons/fa";
+  FaGitAlt,
+  FaGithub,
+  FaJava,
+  FaNode,
+  FaPython,
+  FaReact,
+} from "react-icons/fa6";
+import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
 import {
-  SiPostgresql,
-  SiTypescript,
-  SiExpress,
-  SiDrizzle,
-  SiShadcnui,
-  SiPandas,
-  SiGeopandas,
-  SiFolium,
-  SiMermaid,
-  SiScikitlearn,
-  SiNetlify,
-  SiGithubactions,
-  SiJupyter,
-  SiPycharm,
-  SiIntellijidea,
-  SiEclipseide,
   SiCytoscapedotjs,
+  SiDrizzle,
+  SiEclipseide,
+  SiExpress,
+  SiFastapi,
+  SiFolium,
+  SiGeopandas,
+  SiGithubactions,
+  SiIntellijidea,
+  SiJupyter,
+  SiMermaid,
+  SiMongodb,
+  SiNetlify,
+  SiNextdotjs,
+  SiPandas,
+  SiPostgresql,
+  SiPycharm,
+  SiPytorch,
+  SiScikitlearn,
+  SiShadcnui,
   SiTailwindcss,
+  SiTypescript,
   SiVercel,
 } from "react-icons/si";
-import { TbBrandNextjs } from "react-icons/tb";
-import { BiLogoFlask } from "react-icons/bi";
-import { VscAzure, VscGithubAlt, VscVscode } from "react-icons/vsc";
-import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
-import { FaNode } from "react-icons/fa6";
-import Link from "next/link";
+import { VscAzure, VscVscode } from "react-icons/vsc";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Reveal } from "~/components/ui/reveal";
+import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
-import { ScrollMorph } from "~/components/effects/scroll-morph";
-import { skillCategories, categoryColors, categoryColorsLight } from "~/data/skills";
-import { useIsDark } from "~/hooks/use-is-dark";
+import { skillCategories, type SkillIcon } from "~/data/skills";
 
-const iconMap: Record<string, React.ReactNode> = {
-  FaPython: <FaPython />,
-  SiPostgresql: <SiPostgresql />,
-  SiTypescript: <SiTypescript />,
-  FaJava: <FaJava />,
-  IoLogoHtml5: <IoLogoHtml5 />,
-  IoLogoCss3: <IoLogoCss3 />,
-  IoLogoJavascript: <IoLogoJavascript />,
-  TbBrandNextjs: <TbBrandNextjs />,
-  SiExpress: <SiExpress />,
-  BiLogoFlask: <BiLogoFlask />,
-  SiTailwindcss: <SiTailwindcss />,
-  FaNode: <FaNode />,
-  FaReact: <FaReact />,
-  SiDrizzle: <SiDrizzle />,
-  SiShadcnui: <SiShadcnui />,
-  SiPandas: <SiPandas />,
-  SiGeopandas: <SiGeopandas />,
-  SiFolium: <SiFolium />,
-  SiMermaid: <SiMermaid />,
-  SiScikitlearn: <SiScikitlearn />,
-  SiCytoscapedotjs: <SiCytoscapedotjs />,
-  VscAzure: <VscAzure />,
-  SiNetlify: <SiNetlify />,
-  FaDocker: <FaDocker />,
-  SiGithubactions: <SiGithubactions />,
-  FaGitAlt: <FaGitAlt />,
-  VscGithubAlt: <VscGithubAlt />,
-  VscVscode: <VscVscode />,
-  SiJupyter: <SiJupyter />,
-  SiPycharm: <SiPycharm />,
-  SiIntellijidea: <SiIntellijidea />,
-  SiEclipseide: <SiEclipseide />,
-  FaFigma: <FaFigma />,
-  SiVercel: <SiVercel />,
+const icons: Record<SkillIcon, IconType> = {
+  python: FaPython,
+  postgresql: SiPostgresql,
+  typescript: SiTypescript,
+  java: FaJava,
+  html: IoLogoHtml5,
+  css: IoLogoCss3,
+  javascript: IoLogoJavascript,
+  nextjs: SiNextdotjs,
+  express: SiExpress,
+  flask: BiLogoFlask,
+  fastapi: SiFastapi,
+  tailwind: SiTailwindcss,
+  node: FaNode,
+  react: FaReact,
+  pytorch: SiPytorch,
+  drizzle: SiDrizzle,
+  shadcn: SiShadcnui,
+  pandas: SiPandas,
+  geopandas: SiGeopandas,
+  folium: SiFolium,
+  mermaid: SiMermaid,
+  scikit: SiScikitlearn,
+  cytoscape: SiCytoscapedotjs,
+  mongodb: SiMongodb,
+  azure: VscAzure,
+  aws: FaAws,
+  netlify: SiNetlify,
+  docker: FaDocker,
+  githubactions: SiGithubactions,
+  vercel: SiVercel,
+  git: FaGitAlt,
+  github: FaGithub,
+  vscode: VscVscode,
+  jupyter: SiJupyter,
+  pycharm: SiPycharm,
+  intellij: SiIntellijidea,
+  eclipse: SiEclipseide,
+  figma: FaFigma,
 };
 
 export function Skills() {
-  const isDark = useIsDark();
-
   return (
-    <section id="skills" className="relative z-10 px-4 py-12 sm:px-8 sm:py-20">
-      <SectionHeading>Skills</SectionHeading>
+    <Section id="skills">
+      <SectionHeading
+        eyebrow="Skills"
+        title="Tools I reach for."
+        description="Languages, frameworks and platforms I use day to day, grouped by where they fit in the stack."
+      />
 
-      <div className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-        {skillCategories.map((category, index) => {
-          const colors = isDark ? categoryColors : categoryColorsLight;
-          const color = colors[index % colors.length]!;
-          return (
-            <ScrollMorph key={index}>
-              <GlassCard className="group h-full transition-all duration-300 hover:border-border" glowColor={color}>
-                <h3 className="mb-3 text-center text-lg font-semibold text-foreground sm:mb-4 sm:text-xl">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {skillCategories.map((category, i) => (
+          <Reveal
+            key={category.title}
+            delay={Math.min((i % 3) * 0.07, 0.2)}
+            className="h-full"
+          >
+            <GlassCard accent={category.accent} className="h-full p-5 sm:p-6">
+              <div className="flex items-center gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className="size-2 rounded-full bg-(--item-accent)"
+                />
+                <h3 className="font-semibold tracking-tight">
                   {category.title}
                 </h3>
-                <div className="grid grid-cols-3 items-center justify-center gap-3 sm:gap-4">
-                  {category.skills.map((skill, idx) => (
-                    <Link
-                      key={idx}
-                      href={skill.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center text-3xl text-foreground transition-colors sm:text-4xl md:text-5xl"
-                    >
-                      {iconMap[skill.iconName]}
-                    </Link>
-                  ))}
-                </div>
-              </GlassCard>
-            </ScrollMorph>
-          );
-        })}
+              </div>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {category.skills.map((skill) => {
+                  const Icon = icons[skill.icon];
+                  return (
+                    <li key={skill.name}>
+                      <a
+                        href={skill.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full py-1.5 pr-3 pl-2 text-sm text-foreground/85 glass-pill transition-[translate,color,background-color] duration-200 hover:-translate-y-0.5 hover:bg-foreground/8 hover:text-foreground"
+                      >
+                        <Icon
+                          size={16}
+                          className="shrink-0 text-(--item-accent)"
+                          aria-hidden="true"
+                        />
+                        {skill.name}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </GlassCard>
+          </Reveal>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }
