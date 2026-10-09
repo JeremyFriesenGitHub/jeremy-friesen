@@ -8,4 +8,4 @@ export const siteUrl = (
 export const siteName = "Jeremy Friesen";
 
 export const siteDescription =
-  "Portfolio of Jeremy Friesen — Computer Science student at Carleton University and Cyber Security Intern at the Government of Canada, building at the intersection of security, cloud infrastructure, data science and AI/ML.";
+  "Portfolio of Jeremy Friesen, a Computer Science student at Carleton University and Cyber Security Intern at the Government of Canada, building at the intersection of security, cloud infrastructure, data science and AI/ML.";

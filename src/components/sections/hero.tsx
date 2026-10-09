@@ -11,7 +11,7 @@ import { VscAzure } from "react-icons/vsc";
 import { LuArrowDown, LuChevronDown, LuFileText } from "react-icons/lu";
 import { RotatingWord } from "~/components/sections/rotating-word";
 import { GlassButton } from "~/components/ui/glass-button";
-import { devpostStats } from "~/data/hackathons";
+import { hackathonStats } from "~/data/hackathons";
 import { experiences } from "~/data/experience";
 import { profile, socialLinks } from "~/data/social-links";
 import { cn } from "~/lib/utils";
@@ -62,8 +62,8 @@ const tiles = [
 ] as const;
 
 const stats = [
-  { value: `${devpostStats.wins}×`, label: "hackathon winner" },
-  { value: String(devpostStats.hackathons), label: "hackathons" },
+  { value: `${hackathonStats.wins}×`, label: "hackathon winner" },
+  { value: String(hackathonStats.entered), label: "hackathons" },
   { value: String(experiences.length), label: "internships" },
 ] as const;
 
@@ -77,7 +77,7 @@ export function Hero() {
       id="top"
       className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 pt-28 pb-20 sm:px-6"
     >
-      {/* Floating glass tiles — decorative, hidden from assistive tech and on phones. */}
+      {/* Floating glass tiles: decorative, hidden from assistive tech and on phones. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 hidden md:block"

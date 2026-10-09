@@ -3,6 +3,7 @@ import { Navbar } from "~/components/navbar";
 import { Hero } from "~/components/sections/hero";
 import { About } from "~/components/sections/about";
 import { Experience } from "~/components/sections/experience";
+import { Community } from "~/components/sections/community";
 import { Projects } from "~/components/sections/projects";
 import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
@@ -40,6 +41,7 @@ export default function Home() {
         <Hero />
         <About />
         <Experience />
+        <Community />
         <Projects />
         <Hackathons />
         <Skills />
