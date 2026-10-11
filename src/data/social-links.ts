@@ -14,10 +14,10 @@ export const profile = {
   role: "Cyber Security Intern",
   organization: "Government of Canada",
   school: "Carleton University",
-  program: "4th-year Computer Science",
+  program: "fourth-year Computer Science",
   location: "Ottawa, ON",
   /** Rotates through the hero headline. */
-  focus: ["Security", "Cloud & DevOps", "AI / ML", "Data Science"],
+  focus: ["Security", "Cloud & DevOps", "AI/ML", "Data Science"],
   tagline:
     "I build secure, data-driven software, from cloud infrastructure and DevSecOps to AI/ML.",
 } as const;

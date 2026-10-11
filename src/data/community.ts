@@ -20,7 +20,7 @@ export const communityRoles: CommunityRole[] = [
     url: "https://carletonai.com",
     roles: [
       { title: "President", date: "May 2026 - Present" },
-      { title: "Developer", date: "Jun. 2025 - Sept. 2025" },
+      { title: "Developer", date: "Jun 2025 - Sep 2025" },
     ],
     highlights: [
       "Lead the society and design technical workshops that turn research-level ML material into hands-on sessions.",
@@ -34,7 +34,7 @@ export const communityRoles: CommunityRole[] = [
     org: "Blackbird UAV",
     blurb: "Carleton's UAV engineering and design team",
     url: "https://blackbirduav.ca",
-    roles: [{ title: "Software Lead", date: "Jul. 2025 - Aug. 2026" }],
+    roles: [{ title: "Software Lead", date: "Jul 2025 - Aug 2026" }],
     highlights: [
       "Led the software sub-team building autonomous flight control and payload systems in Python and C++ on Raspberry Pi and Arduino for the AEAC competition.",
       "Built the team's public website in React and Next.js to market its goals and mission.",
@@ -47,8 +47,8 @@ export const communityRoles: CommunityRole[] = [
     blurb: "Carleton University's official hackathon",
     url: "https://cuhacking.ca",
     roles: [
-      { title: "Judge", date: "Jul. 2026" },
-      { title: "Software Developer", date: "Aug. 2024 - Dec. 2024" },
+      { title: "Judge", date: "Jul 2026" },
+      { title: "Software Developer", date: "Aug 2024 - Dec 2024" },
     ],
     highlights: [
       "Contributed to the website, portal and documentation site, introducing Agile, Extreme Programming and trunk-based development.",
@@ -64,7 +64,7 @@ export const communityRoles: CommunityRole[] = [
     url: "https://ccss.carleton.ca",
     roles: [
       { title: "Developer", date: "Summer 2025" },
-      { title: "Resources Committee Volunteer", date: "Jun. 2024 - May 2025" },
+      { title: "Resources Committee Volunteer", date: "Jun 2024 - May 2025" },
     ],
     highlights: [
       "Wrote FAQs and articles for the student resources site.",

@@ -1,115 +1,9 @@
-import type { IconType } from "react-icons";
-import { BiLogoFlask } from "react-icons/bi";
-import {
-  FaAws,
-  FaDocker,
-  FaFigma,
-  FaGitAlt,
-  FaGithub,
-  FaJava,
-  FaLinux,
-  FaMasksTheater,
-  FaNode,
-  FaPython,
-  FaReact,
-} from "react-icons/fa6";
-import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
-import { LuChartLine, LuRadar } from "react-icons/lu";
-import {
-  SiArduino,
-  SiCplusplus,
-  SiDrizzle,
-  SiDuckdb,
-  SiExpress,
-  SiFastapi,
-  SiFolium,
-  SiGeopandas,
-  SiGithubactions,
-  SiGnubash,
-  SiGooglecloud,
-  SiGooglegemini,
-  SiIntellijidea,
-  SiJupyter,
-  SiKubernetes,
-  SiLatex,
-  SiMermaid,
-  SiMongodb,
-  SiNextdotjs,
-  SiNumpy,
-  SiPandas,
-  SiPostgresql,
-  SiPycharm,
-  SiPytorch,
-  SiRaspberrypi,
-  SiScikitlearn,
-  SiShadcnui,
-  SiTailwindcss,
-  SiTerraform,
-  SiTypescript,
-  SiVercel,
-  SiWireshark,
-} from "react-icons/si";
-import { VscAzure, VscTerminalPowershell, VscVscode } from "react-icons/vsc";
+import { Icon } from "~/components/ui/icon";
 import { GlassCard } from "~/components/ui/glass-card";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
-import { skillCategories, type SkillIcon } from "~/data/skills";
-
-const icons: Record<SkillIcon, IconType> = {
-  python: FaPython,
-  typescript: SiTypescript,
-  javascript: IoLogoJavascript,
-  java: FaJava,
-  cpp: SiCplusplus,
-  postgresql: SiPostgresql,
-  html: IoLogoHtml5,
-  css: IoLogoCss3,
-  bash: SiGnubash,
-  powershell: VscTerminalPowershell,
-  nextjs: SiNextdotjs,
-  react: FaReact,
-  node: FaNode,
-  express: SiExpress,
-  flask: BiLogoFlask,
-  fastapi: SiFastapi,
-  tailwind: SiTailwindcss,
-  playwright: FaMasksTheater,
-  pytorch: SiPytorch,
-  scikit: SiScikitlearn,
-  numpy: SiNumpy,
-  pandas: SiPandas,
-  geopandas: SiGeopandas,
-  folium: SiFolium,
-  matplotlib: LuChartLine,
-  jupyter: SiJupyter,
-  gemini: SiGooglegemini,
-  azure: VscAzure,
-  aws: FaAws,
-  gcp: SiGooglecloud,
-  docker: FaDocker,
-  kubernetes: SiKubernetes,
-  terraform: SiTerraform,
-  githubactions: SiGithubactions,
-  vercel: SiVercel,
-  linux: FaLinux,
-  wireshark: SiWireshark,
-  arkime: LuRadar,
-  mongodb: SiMongodb,
-  duckdb: SiDuckdb,
-  drizzle: SiDrizzle,
-  shadcn: SiShadcnui,
-  figma: FaFigma,
-  mermaid: SiMermaid,
-  git: FaGitAlt,
-  github: FaGithub,
-  vscode: VscVscode,
-  pycharm: SiPycharm,
-  intellij: SiIntellijidea,
-  raspberrypi: SiRaspberrypi,
-  arduino: SiArduino,
-  latex: SiLatex,
-};
+import { skillCategories } from "~/data/skills";
 
 export function Skills() {
   return (
@@ -139,7 +33,6 @@ export function Skills() {
               </div>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {category.skills.map((skill) => {
-                  const Icon = icons[skill.icon];
                   return (
                     <li key={skill.name}>
                       <a
@@ -149,9 +42,9 @@ export function Skills() {
                         className="inline-flex items-center gap-2 rounded-full py-1.5 pr-3 pl-2 text-sm text-foreground/85 glass-pill transition-[translate,color,background-color] duration-200 hover:-translate-y-0.5 hover:bg-foreground/8 hover:text-foreground"
                       >
                         <Icon
+                          name={skill.icon}
                           size={16}
                           className="shrink-0 text-(--item-accent)"
-                          aria-hidden="true"
                         />
                         {skill.name}
                       </a>

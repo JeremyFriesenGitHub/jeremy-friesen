@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, IBM_Plex_Mono } from "next/font/google";
 import { siteDescription, siteName, siteUrl } from "~/lib/site";
+import { THEME_COLOR } from "~/lib/theme";
 import "~/app/globals.css";
 
 const geist = Geist({
@@ -11,7 +12,7 @@ const geist = Geist({
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500", "600"],
   variable: "--font-plex-mono",
   display: "swap",
 });
@@ -37,23 +38,12 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: siteName, url: siteUrl }],
   creator: siteName,
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    url: siteUrl,
-    siteName,
-    title: siteName,
-    description:
-      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. 7× hackathon winner.",
-    locale: "en_CA",
-  },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description:
       "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML.",
   },
-  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -61,18 +51,24 @@ export const viewport: Viewport = {
   initialScale: 1,
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f7fa" },
-    { media: "(prefers-color-scheme: dark)", color: "#08080d" },
+    { media: "(prefers-color-scheme: light)", color: THEME_COLOR.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLOR.dark },
   ],
 };
 
 /**
  * Applies the saved theme (or the OS preference) before first paint so there is
  * no flash of the wrong theme, and marks the document as JS-capable so scroll
- * reveals only hide content when they can actually run. Kept tiny and
+ * reveals only hide content when they can actually run. Storage can be blocked
+ * (Safari's "Block all cookies"), so only the read sits in the try; and a
+ * script that fails to load or parse (a browser older than the build targets,
+ * a blocked chunk) takes the mark back, so the page reads as it would without
+ * JS instead of hiding everything below the hero. The theme-color metas,
+ * which Next renders after this script, are set once they exist, so the
+ * browser chrome matches a stored theme before React runs. Kept tiny and
  * dependency-free on purpose.
  */
-const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");try{var s=localStorage.getItem("theme");var d=s?s==="dark":matchMedia("(prefers-color-scheme: dark)").matches;if(d){c.add("dark")}else{c.remove("dark")}}catch(e){}})();`;
+const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");addEventListener("error",function(){c.remove("js")},true);var s=null;try{s=localStorage.getItem("theme")}catch(e){}var d=s==="dark"||(s!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);c.toggle("dark",d);function m(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(e){e.content=d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}"})}m();addEventListener("DOMContentLoaded",m)})();`;
 
 export default function RootLayout({
   children,

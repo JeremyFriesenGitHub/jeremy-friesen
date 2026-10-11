@@ -48,14 +48,14 @@ const tiles = [
   {
     Icon: FaDocker,
     label: "Docker",
-    className: "top-[82%] left-[32%] hidden lg:flex",
+    className: "top-[88%] left-[22%]",
     tilt: "4deg",
     delay: "-2s",
   },
   {
     Icon: FaAws,
     label: "AWS",
-    className: "top-[10%] right-[30%] hidden lg:flex",
+    className: "top-[10%] right-[30%]",
     tilt: "-4deg",
     delay: "-6s",
   },
@@ -77,10 +77,11 @@ export function Hero() {
       id="top"
       className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 pt-28 pb-20 sm:px-6"
     >
-      {/* Floating glass tiles: decorative, hidden from assistive tech and on phones. */}
+      {/* Floating glass tiles: decorative, hidden from assistive tech, and only
+          shown from xl, where they clear the headline, buttons and stats. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden md:block"
+        className="pointer-events-none absolute inset-0 hidden xl:block"
       >
         {tiles.map(({ Icon, label, className, tilt, delay: d }) => (
           <div

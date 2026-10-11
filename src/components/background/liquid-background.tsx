@@ -239,7 +239,9 @@ export function LiquidBackground() {
       gl.uniform3fv(loc.k2, pal.colors[1]);
       gl.uniform3fv(loc.k3, pal.colors[2]);
       gl.uniform3fv(loc.k4, pal.colors[3]);
-      gl.uniform1f(loc.int, pal.dark ? 0.78 : 0.82);
+      // Quieter in the dark: light copy over a bright amber or red blob
+      // fell below 2:1 at full strength.
+      gl.uniform1f(loc.int, pal.dark ? 0.45 : 0.72);
     };
 
     /**
@@ -385,7 +387,7 @@ export function LiquidBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-lvh w-full"
+      className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-lvh w-full print:hidden"
     />
   );
 }
@@ -395,7 +397,7 @@ function AuroraFallback() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden print:hidden"
     >
       <div
         className="absolute -top-[10%] -left-[10%] h-[70vmax] w-[70vmax] animate-float rounded-full opacity-70 blur-3xl"
