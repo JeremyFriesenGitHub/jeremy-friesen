@@ -149,7 +149,9 @@ export function Hackathons() {
                     />
                     <span className="ml-auto flex items-center gap-0.5">
                       {p.date && (
-                        <span className="mr-1.5 font-mono">{p.date}</span>
+                        <span className="mr-1.5 font-mono font-medium">
+                          {p.date}
+                        </span>
                       )}
                       {p.video && (
                         <a
@@ -212,7 +214,7 @@ export function Hackathons() {
           </div>
           <ul className="grid flex-1 gap-3 sm:grid-cols-2">
             {judging.map((j) => (
-              <li key={j.event}>
+              <li key={j.event} className="min-w-0">
                 <a
                   href={j.url}
                   target="_blank"
@@ -227,7 +229,7 @@ export function Hackathons() {
                       {j.organizer}
                     </span>
                   </span>
-                  <span className="shrink-0 font-mono text-xs text-muted-foreground">
+                  <span className="shrink-0 font-mono text-xs font-medium text-muted-foreground">
                     {j.date}
                   </span>
                 </a>

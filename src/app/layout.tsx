@@ -11,7 +11,7 @@ const geist = Geist({
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500", "600"],
   variable: "--font-plex-mono",
   display: "swap",
 });
@@ -37,23 +37,12 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: siteName, url: siteUrl }],
   creator: siteName,
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    url: siteUrl,
-    siteName,
-    title: siteName,
-    description:
-      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. 7× hackathon winner.",
-    locale: "en_CA",
-  },
   twitter: {
     card: "summary_large_image",
     title: siteName,
     description:
       "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML.",
   },
-  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { LiquidBackgroundLoader } from "~/components/background/liquid-background-loader";
 import { Navbar } from "~/components/navbar";
 import { Hero } from "~/components/sections/hero";
@@ -9,7 +10,21 @@ import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
 import { Footer } from "~/components/sections/footer";
 import { profile, socialLinks } from "~/data/social-links";
-import { siteUrl } from "~/lib/site";
+import { siteName, siteUrl } from "~/lib/site";
+
+/** The canonical URL and Open Graph card are the home page's, not every route's. */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName,
+    title: siteName,
+    description:
+      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. 7× hackathon winner.",
+    locale: "en_CA",
+  },
+};
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -18,7 +33,7 @@ const personJsonLd = {
   url: siteUrl,
   jobTitle: profile.role,
   worksFor: { "@type": "Organization", name: profile.organization },
-  alumniOf: { "@type": "CollegeOrUniversity", name: profile.school },
+  affiliation: { "@type": "CollegeOrUniversity", name: profile.school },
   address: {
     "@type": "PostalAddress",
     addressLocality: "Ottawa",
