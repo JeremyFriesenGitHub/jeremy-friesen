@@ -1,26 +1,10 @@
-import {
-  LuArrowUpRight,
-  LuBrainCircuit,
-  LuCode,
-  LuPlane,
-  LuUsersRound,
-} from "react-icons/lu";
 import { Chip } from "~/components/ui/chip";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
-import { communityRoles, type CommunityIcon } from "~/data/community";
-
-const icons: Record<
-  CommunityIcon,
-  React.ComponentType<{ size?: number; className?: string }>
-> = {
-  brain: LuBrainCircuit,
-  plane: LuPlane,
-  keyboard: LuCode,
-  users: LuUsersRound,
-};
+import { communityRoles } from "~/data/community";
 
 export function Community() {
   return (
@@ -33,7 +17,6 @@ export function Community() {
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
         {communityRoles.map((role, i) => {
-          const Icon = icons[role.icon];
           const current = role.roles[0];
           return (
             <li key={role.org} className="h-full">
@@ -44,7 +27,7 @@ export function Community() {
                 >
                   <div className="flex items-start gap-4">
                     <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-(--item-accent)/14 text-(--item-accent)">
-                      <Icon size={24} />
+                      <Icon name={role.icon} size={24} />
                     </span>
                     <div className="min-w-0 flex-1">
                       <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
@@ -55,9 +38,9 @@ export function Community() {
                           className="inline-flex items-center gap-1.5 after:absolute after:inset-0 after:rounded-3xl"
                         >
                           {role.org}
-                          <LuArrowUpRight
+                          <Icon
+                            name="arrow-up-right"
                             size={16}
-                            aria-hidden="true"
                             className="text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
                           />
                         </a>

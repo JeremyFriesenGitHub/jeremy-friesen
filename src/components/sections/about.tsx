@@ -1,24 +1,22 @@
 import Image from "next/image";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
-import { SiDevpost } from "react-icons/si";
-import { LuBriefcase, LuGraduationCap, LuMapPin } from "react-icons/lu";
 import { Chip } from "~/components/ui/chip";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
 import { aboutText, profile, socialLinks } from "~/data/social-links";
 
 const facts = [
-  { Icon: LuBriefcase, text: `${profile.role}, ${profile.organization}` },
-  { Icon: LuGraduationCap, text: `${profile.program}, ${profile.school}` },
-  { Icon: LuMapPin, text: profile.location },
+  { icon: "briefcase", text: `${profile.role}, ${profile.organization}` },
+  { icon: "graduation-cap", text: `${profile.program}, ${profile.school}` },
+  { icon: "map-pin", text: profile.location },
 ] as const;
 
 const socials = [
-  { href: socialLinks.github, label: "GitHub", Icon: FaGithub },
-  { href: socialLinks.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
-  { href: socialLinks.devpost, label: "Devpost", Icon: SiDevpost },
+  { href: socialLinks.github, label: "GitHub", icon: "github" },
+  { href: socialLinks.linkedin, label: "LinkedIn", icon: "linkedin" },
+  { href: socialLinks.devpost, label: "Devpost", icon: "devpost" },
 ] as const;
 
 export function About() {
@@ -51,22 +49,22 @@ export function About() {
               {profile.name}
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {facts.map(({ Icon, text }) => (
+              {facts.map(({ icon, text }) => (
                 <li
                   key={text}
                   className="flex items-center justify-center gap-2"
                 >
                   <Icon
+                    name={icon}
                     size={15}
                     className="shrink-0 text-primary-strong"
-                    aria-hidden="true"
                   />
                   <span>{text}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-6 flex items-center gap-2">
-              {socials.map(({ href, label, Icon }) => (
+              {socials.map(({ href, label, icon }) => (
                 <a
                   key={label}
                   href={href}
@@ -75,7 +73,7 @@ export function About() {
                   aria-label={label}
                   className="inline-flex size-10 items-center justify-center rounded-full text-foreground/80 glass-pill transition-[translate,color] hover:-translate-y-0.5 hover:text-foreground"
                 >
-                  <Icon size={17} aria-hidden="true" />
+                  <Icon name={icon} size={17} />
                 </a>
               ))}
             </div>

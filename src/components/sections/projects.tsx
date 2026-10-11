@@ -1,42 +1,14 @@
 import Image from "next/image";
-import { FaGithub } from "react-icons/fa6";
-import {
-  LuArrowUpRight,
-  LuAward,
-  LuBrainCircuit,
-  LuLaptop,
-  LuPlane,
-  LuRocket,
-  LuSatellite,
-  LuShieldCheck,
-  LuTimer,
-  LuWaypoints,
-  LuWorkflow,
-} from "react-icons/lu";
 import { Chip } from "~/components/ui/chip";
 import { GlassButton } from "~/components/ui/glass-button";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
-import { projects, type ProjectIcon } from "~/data/projects";
+import { projects } from "~/data/projects";
 import { socialLinks } from "~/data/social-links";
 import { cn } from "~/lib/utils";
-
-const icons: Record<
-  ProjectIcon,
-  React.ComponentType<{ size?: number; className?: string }>
-> = {
-  shield: LuShieldCheck,
-  timer: LuTimer,
-  plane: LuPlane,
-  graph: LuWaypoints,
-  brain: LuBrainCircuit,
-  laptop: LuLaptop,
-  rocket: LuRocket,
-  satellite: LuSatellite,
-  workflow: LuWorkflow,
-};
 
 export function Projects() {
   return (
@@ -47,16 +19,15 @@ export function Projects() {
         description="Live demos, club platforms and open-source tools, from campus utilities to AI products."
         action={
           <GlassButton href={socialLinks.github} external>
-            <FaGithub size={16} aria-hidden="true" />
+            <Icon name="github" size={16} />
             All repositories
-            <LuArrowUpRight size={16} aria-hidden="true" />
+            <Icon name="arrow-up-right" size={16} />
           </GlassButton>
         }
       />
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, i) => {
-          const Icon = icons[project.icon];
           return (
             <Reveal
               key={project.title}
@@ -100,7 +71,7 @@ export function Projects() {
                   >
                     <span className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:28px_28px] opacity-60" />
                     <span className="relative flex size-20 items-center justify-center rounded-3xl bg-(--item-accent)/15 text-(--item-accent) transition-transform duration-500 ease-out group-hover:scale-110">
-                      <Icon size={40} />
+                      <Icon name={project.icon} size={40} />
                     </span>
                   </div>
                 )}
@@ -109,7 +80,7 @@ export function Projects() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2.5">
                       <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/12 text-(--item-accent)">
-                        <Icon size={18} />
+                        <Icon name={project.icon} size={18} />
                       </span>
                       <h3 className="text-lg font-semibold tracking-tight">
                         <a
@@ -122,8 +93,8 @@ export function Projects() {
                         </a>
                       </h3>
                     </div>
-                    <LuArrowUpRight
-                      aria-hidden="true"
+                    <Icon
+                      name="arrow-up-right"
                       className="mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
                       size={18}
                     />
@@ -133,7 +104,7 @@ export function Projects() {
                   </p>
                   {project.note && (
                     <p className="mt-3 flex items-center gap-1.5 text-sm font-medium text-(--item-accent)">
-                      <LuAward size={15} aria-hidden="true" />
+                      <Icon name="award" size={15} />
                       {project.note}
                     </p>
                   )}
@@ -149,7 +120,7 @@ export function Projects() {
                         aria-label={`${project.title} source on GitHub`}
                         className="relative z-10 ml-auto inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
                       >
-                        <FaGithub size={15} aria-hidden="true" />
+                        <Icon name="github" size={15} />
                       </a>
                     )}
                   </div>

@@ -1,35 +1,23 @@
-import { FaGithub, FaLinkedinIn, FaReact } from "react-icons/fa6";
-import {
-  SiDevpost,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiTypescript,
-  SiVercel,
-} from "react-icons/si";
-import { LuFileText } from "react-icons/lu";
+import { Icon } from "~/components/ui/icon";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 
 const elsewhere = [
-  { href: socialLinks.github, label: "GitHub", Icon: FaGithub },
-  { href: socialLinks.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
-  { href: socialLinks.devpost, label: "Devpost", Icon: SiDevpost },
-  { href: socialLinks.resume, label: "Resume", Icon: LuFileText },
+  { href: socialLinks.github, label: "GitHub", icon: "github" },
+  { href: socialLinks.linkedin, label: "LinkedIn", icon: "linkedin" },
+  { href: socialLinks.devpost, label: "Devpost", icon: "devpost" },
+  { href: socialLinks.resume, label: "Resume", icon: "file-text" },
 ] as const;
 
 const stack = [
-  { href: "https://nextjs.org", label: "Next.js", Icon: SiNextdotjs },
-  { href: "https://react.dev", label: "React", Icon: FaReact },
+  { href: "https://nextjs.org", label: "Next.js", icon: "nextjs" },
+  { href: "https://react.dev", label: "React", icon: "react" },
   {
     href: "https://www.typescriptlang.org",
     label: "TypeScript",
-    Icon: SiTypescript,
+    icon: "typescript",
   },
-  {
-    href: "https://tailwindcss.com",
-    label: "Tailwind CSS",
-    Icon: SiTailwindcss,
-  },
-  { href: "https://vercel.com", label: "Vercel", Icon: SiVercel },
+  { href: "https://tailwindcss.com", label: "Tailwind CSS", icon: "tailwind" },
+  { href: "https://vercel.com", label: "Vercel", icon: "vercel" },
 ] as const;
 
 const linkClass =
@@ -56,7 +44,7 @@ export function Footer() {
               {profile.tagline}
             </p>
             <div className="mt-5 flex items-center gap-2">
-              {elsewhere.slice(0, 3).map(({ href, label, Icon }) => (
+              {elsewhere.slice(0, 3).map(({ href, label, icon }) => (
                 <a
                   key={label}
                   href={href}
@@ -65,7 +53,7 @@ export function Footer() {
                   aria-label={label}
                   className="inline-flex size-10 items-center justify-center rounded-full text-foreground/80 glass-pill transition-[translate,color] hover:-translate-y-0.5 hover:text-foreground"
                 >
-                  <Icon size={17} aria-hidden="true" />
+                  <Icon name={icon} size={17} />
                 </a>
               ))}
             </div>
@@ -91,7 +79,7 @@ export function Footer() {
                 Elsewhere
               </p>
               <ul className="mt-3 space-y-2">
-                {elsewhere.map(({ href, label, Icon }) => (
+                {elsewhere.map(({ href, label, icon }) => (
                   <li key={label}>
                     <a
                       href={href}
@@ -99,7 +87,7 @@ export function Footer() {
                       rel="noopener noreferrer"
                       className={linkClass}
                     >
-                      <Icon size={14} aria-hidden="true" />
+                      <Icon name={icon} size={14} />
                       {label}
                     </a>
                   </li>
@@ -111,7 +99,7 @@ export function Footer() {
                 Built with
               </p>
               <ul className="mt-3 space-y-2">
-                {stack.map(({ href, label, Icon }) => (
+                {stack.map(({ href, label, icon }) => (
                   <li key={label}>
                     <a
                       href={href}
@@ -119,7 +107,7 @@ export function Footer() {
                       rel="noopener noreferrer"
                       className={linkClass}
                     >
-                      <Icon size={14} aria-hidden="true" />
+                      <Icon name={icon} size={14} />
                       {label}
                     </a>
                   </li>

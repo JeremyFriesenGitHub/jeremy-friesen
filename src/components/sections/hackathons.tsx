@@ -1,16 +1,7 @@
-import type { IconType } from "react-icons";
-import { FaGithub, FaYoutube } from "react-icons/fa6";
-import { SiDevpost } from "react-icons/si";
-import {
-  LuArrowUpRight,
-  LuAward,
-  LuExternalLink,
-  LuGavel,
-  LuTrophy,
-} from "react-icons/lu";
 import { Chip } from "~/components/ui/chip";
 import { GlassButton } from "~/components/ui/glass-button";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
@@ -21,6 +12,7 @@ import {
   type HackathonProject,
 } from "~/data/hackathons";
 import { socialLinks } from "~/data/social-links";
+import type { SpriteIcon } from "~/lib/icons";
 
 const stats = [
   { value: hackathonStats.wins, label: "winning submissions" },
@@ -31,17 +23,18 @@ const stats = [
 interface Link {
   href: string;
   label: string;
-  Icon: IconType;
+  icon: SpriteIcon;
 }
 
 /** The card's main link: Devpost when the hackathon ran there, else the demo, else the code. */
 function primaryLink(p: HackathonProject): Link {
-  if (p.url) return { href: p.url, label: "Devpost", Icon: SiDevpost };
-  if (p.site) return { href: p.site, label: "Live demo", Icon: LuExternalLink };
+  if (p.url) return { href: p.url, label: "Devpost", icon: "devpost" };
+  if (p.site)
+    return { href: p.site, label: "Live demo", icon: "external-link" };
   return {
     href: p.repo ?? socialLinks.devpost,
     label: "Source",
-    Icon: FaGithub,
+    icon: "github",
   };
 }
 
@@ -57,9 +50,9 @@ export function Hackathons() {
         description="Hack the North, ConUHacks, uOttaHack, cuHacking, AGI Ventures Canada and more. Devpost has the full record."
         action={
           <GlassButton href={socialLinks.devpost} external>
-            <SiDevpost size={16} aria-hidden="true" />
+            <Icon name="devpost" size={16} />
             View Devpost profile
-            <LuArrowUpRight size={16} aria-hidden="true" />
+            <Icon name="arrow-up-right" size={16} />
           </GlassButton>
         }
       />
@@ -98,7 +91,7 @@ export function Hackathons() {
                     </p>
                     {p.award && (
                       <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-(--item-accent)/14 text-(--item-accent)">
-                        <LuTrophy size={15} aria-hidden="true" />
+                        <Icon name="trophy" size={15} />
                         <span className="sr-only">Winner</span>
                       </span>
                     )}
@@ -120,10 +113,10 @@ export function Hackathons() {
 
                   {p.award && (
                     <p className="mt-3 flex items-start gap-1.5 text-sm font-medium text-(--item-accent)">
-                      <LuAward
+                      <Icon
+                        name="award"
                         size={15}
                         className="mt-0.5 shrink-0"
-                        aria-hidden="true"
                       />
                       <span>{p.award}</span>
                     </p>
@@ -138,13 +131,13 @@ export function Hackathons() {
                   </ul>
 
                   <div className="mt-4 flex items-center gap-1.5 border-t border-border/70 pt-3 text-xs text-muted-foreground">
-                    <primary.Icon size={13} aria-hidden="true" />
+                    <Icon name={primary.icon} size={13} />
                     <span className="transition-colors group-hover:text-foreground">
                       {primary.label}
                     </span>
-                    <LuArrowUpRight
+                    <Icon
+                      name="arrow-up-right"
                       size={13}
-                      aria-hidden="true"
                       className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     />
                     <span className="ml-auto flex items-center gap-0.5">
@@ -161,7 +154,7 @@ export function Hackathons() {
                           aria-label={`${p.title} demo video`}
                           className={iconLinkClass}
                         >
-                          <FaYoutube size={14} aria-hidden="true" />
+                          <Icon name="youtube" size={14} />
                         </a>
                       )}
                       {p.site && p.site !== primary.href && (
@@ -172,7 +165,7 @@ export function Hackathons() {
                           aria-label={`${p.title} live site`}
                           className={iconLinkClass}
                         >
-                          <LuExternalLink size={14} aria-hidden="true" />
+                          <Icon name="external-link" size={14} />
                         </a>
                       )}
                       {p.repo && p.repo !== primary.href && (
@@ -183,7 +176,7 @@ export function Hackathons() {
                           aria-label={`${p.title} source on GitHub`}
                           className={iconLinkClass}
                         >
-                          <FaGithub size={14} aria-hidden="true" />
+                          <Icon name="github" size={14} />
                         </a>
                       )}
                     </span>
@@ -203,7 +196,7 @@ export function Hackathons() {
         >
           <div className="flex items-center gap-3 sm:w-56 sm:shrink-0">
             <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/12 text-primary-strong">
-              <LuGavel size={20} aria-hidden="true" />
+              <Icon name="gavel" size={20} />
             </span>
             <div>
               <h3 className="font-semibold tracking-tight">Judging</h3>

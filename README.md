@@ -53,6 +53,11 @@ All copy and links live in `src/data/`:
   roughly half resolution, caps itself at 30 fps (20 fps below the hero), pauses
   when the tab is hidden, and draws a single static frame for reduced-motion or
   data-saver users.
+- **Icons:** the sections draw their icons from one SVG sprite, served at
+  `/icons.svg` by `src/app/icons.svg/route.ts` and placed with `<use>` by
+  `components/ui/icon.tsx`. Add an icon to `src/lib/icons.ts` (it is still
+  `react-icons` data) and use it by name. The hero, navbar and theme toggle
+  inline theirs, so nothing above the fold waits for the sprite.
 - **Security headers** (CSP, HSTS, COOP/CORP, Permissions-Policy) are set in
   `next.config.js`.
 
@@ -62,16 +67,16 @@ All copy and links live in `src/data/`:
 ├── .github/workflows/ci.yml
 ├── public/images/               # optimised WebP assets
 ├── src/
-│   ├── app/                     # layout, page, globals.css, metadata routes, icons
+│   ├── app/                     # layout, page, not-found, globals.css, metadata routes, icons, icons.svg
 │   ├── components/
 │   │   ├── background/          # WebGL aurora + loader
 │   │   ├── effects/             # magnetic hover
 │   │   ├── sections/            # hero, about, experience, projects, hackathons, skills, footer
-│   │   ├── ui/                  # glass-card, glass-button, chip, reveal, section, theme-toggle
+│   │   ├── ui/                  # glass-card, glass-button, chip, icon, reveal, section, theme-toggle
 │   │   └── navbar.tsx
 │   ├── data/                    # all site content
 │   ├── hooks/                   # use-theme, use-active-section, use-pointer-glow
-│   ├── lib/                     # cn(), site constants
+│   ├── lib/                     # cn(), site constants, the icon registry and sprite
 │   └── env.js                   # validated environment variables
 ├── eslint.config.js
 ├── next.config.js

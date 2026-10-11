@@ -1,8 +1,7 @@
 import type { CSSProperties } from "react";
-import { LiaCanadianMapleLeaf } from "react-icons/lia";
-import { LuMapPin } from "react-icons/lu";
 import { Chip } from "~/components/ui/chip";
 import { GlassCard } from "~/components/ui/glass-card";
+import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
@@ -40,7 +39,7 @@ export function Experience() {
                 } as CSSProperties
               }
             >
-              <LiaCanadianMapleLeaf size={18} />
+              <Icon name="maple-leaf" size={18} />
             </span>
 
             <Reveal delay={Math.min(i * 0.06, 0.3)}>
@@ -60,7 +59,7 @@ export function Experience() {
                   <Chip className="px-3 py-1.5 text-xs">{exp.date}</Chip>
                 </div>
                 <p className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <LuMapPin size={14} aria-hidden="true" />
+                  <Icon name="map-pin" size={14} />
                   {exp.location}, {exp.country}
                 </p>
                 {exp.highlights.length > 0 && (
