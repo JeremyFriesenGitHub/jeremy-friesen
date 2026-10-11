@@ -2,6 +2,8 @@ export type CommunityIcon = "brain" | "plane" | "keyboard" | "users";
 
 export interface CommunityRole {
   org: string;
+  /** The organization's mark, square, under public/logos. */
+  logo?: string;
   /** What the organization is, in a few words. */
   blurb: string;
   url: string;
@@ -16,6 +18,7 @@ export interface CommunityRole {
 export const communityRoles: CommunityRole[] = [
   {
     org: "Carleton AI Society",
+    logo: "/logos/carleton-ai-society.webp",
     blurb: "Carleton's AI and machine learning club, 100+ members",
     url: "https://carletonai.com",
     roles: [
@@ -28,10 +31,11 @@ export const communityRoles: CommunityRole[] = [
       "Built the club website and documentation site, now the most active contributor to both.",
     ],
     icon: "brain",
-    accent: { dark: "#ff6b7a", light: "#b3101f" },
+    accent: { dark: "#9ba4ff", light: "#3730a3" },
   },
   {
     org: "Blackbird UAV",
+    logo: "/logos/blackbird-uav.webp",
     blurb: "Carleton's UAV engineering and design team",
     url: "https://blackbirduav.ca",
     roles: [{ title: "Software Lead", date: "Jul 2025 - Aug 2026" }],
@@ -44,6 +48,7 @@ export const communityRoles: CommunityRole[] = [
   },
   {
     org: "cuHacking",
+    logo: "/logos/cuhacking.webp",
     blurb: "Carleton University's official hackathon",
     url: "https://cuhacking.ca",
     roles: [
@@ -60,6 +65,7 @@ export const communityRoles: CommunityRole[] = [
   },
   {
     org: "Carleton Computer Science Society",
+    logo: "/logos/carleton-computer-science-society.webp",
     blurb: "The student society for Carleton's CS program",
     url: "https://ccss.carleton.ca",
     roles: [
@@ -71,6 +77,6 @@ export const communityRoles: CommunityRole[] = [
       "Worked with the dev team on the society's GitHub organization and handbook.",
     ],
     icon: "users",
-    accent: { dark: "#ffd166", light: "#8a5a00" },
+    accent: { dark: "#5eead4", light: "#0f766e" },
   },
 ];
