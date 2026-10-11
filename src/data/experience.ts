@@ -1,6 +1,8 @@
 export interface Experience {
   title: string;
   company: string;
+  /** The employer's mark, square, under public/logos. */
+  logo?: string;
   location: string;
   country: string;
   date: string;
@@ -14,6 +16,7 @@ export const experiences: Experience[] = [
   {
     title: "Cyber Security Intern",
     company: "Government of Canada",
+    logo: "/logos/government-of-canada.webp",
     location: "Ottawa, ON",
     country: "Canada",
     date: "May 2026 - Present",
@@ -21,24 +24,26 @@ export const experiences: Experience[] = [
       "Distil protocol specifications, cryptographic standards and mathematical papers into implementation-ready solutions.",
       "Develop and maintain encryption and decryption capabilities supporting cyber defence requirements.",
     ],
-    color: "#ff6b7a",
-    colorLight: "#b3101f",
+    color: "#9ba4ff",
+    colorLight: "#3730a3",
   },
   {
     title: "IT Analyst Intern",
     company: "Government of Canada",
+    logo: "/logos/government-of-canada.webp",
     location: "Ottawa, ON",
     country: "Canada",
     date: "May 2025 - Aug 2025",
     highlights: [
       "Automated Azure administration with PowerShell, DevOps and Agile practices, standardizing the team's CI/CD workflows.",
     ],
-    color: "#ffd166",
-    colorLight: "#8a5a00",
+    color: "#5eead4",
+    colorLight: "#0f766e",
   },
   {
     title: "Cloud Analyst Intern",
     company: "Government of Canada",
+    logo: "/logos/government-of-canada.webp",
     location: "Ottawa, ON",
     country: "Canada",
     date: "Jan 2025 - Apr 2025",
@@ -51,6 +56,7 @@ export const experiences: Experience[] = [
   {
     title: "IT Analyst Intern",
     company: "Royal Canadian Mounted Police",
+    logo: "/logos/rcmp.webp",
     location: "Ottawa, ON",
     country: "Canada",
     date: "Sep 2024 - Dec 2024",
@@ -63,6 +69,7 @@ export const experiences: Experience[] = [
   {
     title: "Data Scientist Intern",
     company: "National Research Council of Canada",
+    logo: "/logos/government-of-canada.webp",
     location: "Ottawa, ON",
     country: "Canada",
     date: "May 2024 - Aug 2024",
@@ -70,7 +77,7 @@ export const experiences: Experience[] = [
       "Automated bivariate and multivariate analysis workflows for the AI for Logistics program's road-freight project.",
       "Analysed 200+ sensor and geospatial datasets with Matplotlib, GeoPandas and Folium, producing 300+ pages of reports.",
     ],
-    color: "#ffa14d",
-    colorLight: "#9a3f00",
+    color: "#6ee7b7",
+    colorLight: "#047857",
   },
 ];

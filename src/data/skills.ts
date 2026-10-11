@@ -108,7 +108,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     title: "Frameworks & Libraries",
-    accent: { dark: "#ff6b7a", light: "#b3101f" },
+    accent: { dark: "#9ba4ff", light: "#3730a3" },
     skills: [
       { name: "Next.js", icon: "nextjs", url: "https://nextjs.org" },
       { name: "React", icon: "react", url: "https://react.dev" },
@@ -153,7 +153,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     title: "Cloud, DevOps & Security",
-    accent: { dark: "#ffd166", light: "#8a5a00" },
+    accent: { dark: "#5eead4", light: "#0f766e" },
     skills: [
       { name: "Azure", icon: "azure", url: "https://azure.microsoft.com" },
       { name: "AWS", icon: "aws", url: "https://aws.amazon.com" },
@@ -178,7 +178,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     title: "Data Layer & Design",
-    accent: { dark: "#ffa14d", light: "#9a3f00" },
+    accent: { dark: "#6ee7b7", light: "#047857" },
     skills: [
       { name: "MongoDB", icon: "mongodb", url: "https://www.mongodb.com" },
       { name: "DuckDB", icon: "duckdb", url: "https://duckdb.org" },
