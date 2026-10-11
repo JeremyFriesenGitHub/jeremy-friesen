@@ -1,6 +1,5 @@
 export type ProjectIcon =
   | "shield"
-  | "timer"
   | "plane"
   | "graph"
   | "brain"
@@ -12,6 +11,8 @@ export type ProjectIcon =
 export interface Project {
   title: string;
   description: string;
+  /** When it was built: "Sep 2026", "Aug - Dec 2024", or "2025 - Present". */
+  date: string;
   /** Primary destination (live site or repository). */
   url: string;
   /** Source repository, when it differs from `url`. */
@@ -29,64 +30,16 @@ export interface Project {
   note?: string;
 }
 
+/**
+ * Newest first, with anything still in progress at the top. Keep the order
+ * when adding a project: the grid shows them as listed.
+ */
 export const projects: Project[] = [
-  {
-    title: "Trace",
-    description:
-      "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabelled Apache log lines and grouped related events into incidents for analysts.",
-    url: "https://devpost.com/software/loggr",
-    repo: "https://github.com/JeremyFriesenGitHub/htn26",
-    images: [{ src: "/images/trace-1.webp", alt: "Trace landing page" }],
-    accent: { dark: "#ff6b7a", light: "#b3101f" },
-    icon: "shield",
-    colSpan: 2,
-    tags: ["Python", "PyTorch", "scikit-learn", "Flask"],
-    note: "1st place, Hack the North 2026",
-  },
-  {
-    title: "Prodly",
-    description:
-      "An AI productivity platform with a Pomodoro timer, planner and assistant.",
-    url: "https://github.com/JeremyFriesenGitHub/prodly",
-    images: [{ src: "/images/prodly-1.webp", alt: "Prodly landing page" }],
-    accent: { dark: "#b08cff", light: "#5b21b6" },
-    icon: "timer",
-    colSpan: 1,
-    tags: ["Next.js", "TypeScript", "AI"],
-    note: "Best UI, Build to Convert",
-  },
-  {
-    title: "Blackbird UAV website",
-    description:
-      "Public site for Carleton's UAV design team, built and shipped as the team's top contributor.",
-    url: "https://blackbirduav.ca",
-    repo: "https://github.com/Blackbird-UAV/BlackbirdUAV-Website",
-    images: [
-      { src: "/images/blackbird-1.webp", alt: "Blackbird UAV homepage" },
-    ],
-    accent: { dark: "#67d2ff", light: "#0b5f8a" },
-    icon: "plane",
-    colSpan: 1,
-    tags: ["React", "Next.js", "GitHub Actions"],
-  },
-  {
-    title: "cuTunnel",
-    description:
-      "Find the shortest route through Carleton's underground tunnel system with an interactive graph of the campus.",
-    url: "https://devpost.com/software/cu-tunnels",
-    repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
-    video: "https://www.youtube.com/watch?v=mcY5xvBvbc0",
-    images: [{ src: "/images/cutunnel-1.webp", alt: "cuTunnel route map" }],
-    accent: { dark: "#ffa14d", light: "#9a3f00" },
-    icon: "graph",
-    colSpan: 2,
-    tags: ["JavaScript", "Dijkstra", "Cytoscape.js"],
-    note: "Wolfram Award and People's Choice, cuHacking 6",
-  },
   {
     title: "Carleton AI Society",
     description:
       "The club's website and documentation hub, which I now run as President.",
+    date: "2025 - Present",
     url: "https://carletonai.com",
     repo: "https://github.com/carletonai/cais-website",
     images: [
@@ -98,9 +51,51 @@ export const projects: Project[] = [
     tags: ["React", "Vite", "Tailwind CSS"],
   },
   {
+    title: "Trace",
+    description:
+      "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabelled Apache log lines and grouped related events into incidents for analysts.",
+    date: "Sep 2026",
+    url: "https://devpost.com/software/loggr",
+    repo: "https://github.com/JeremyFriesenGitHub/htn26",
+    images: [{ src: "/images/trace-1.webp", alt: "Trace landing page" }],
+    accent: { dark: "#ff6b7a", light: "#b3101f" },
+    icon: "shield",
+    colSpan: 2,
+    tags: ["Python", "PyTorch", "scikit-learn", "Flask"],
+    note: "1st place, Hack the North 2026",
+  },
+  {
+    title: "AEAC 2026 flight software",
+    description:
+      "Autonomous flight control, gimbal control and payload systems for Blackbird UAV's competition drone: Python and C++ on Raspberry Pi and Arduino, linked over Tailscale.",
+    date: "2025 - 2026",
+    url: "https://github.com/Blackbird-UAV/AEAC-2026",
+    images: [],
+    accent: { dark: "#ffd166", light: "#8a5a00" },
+    icon: "satellite",
+    colSpan: 2,
+    tags: ["Python", "C++", "Raspberry Pi", "Arduino"],
+  },
+  {
+    title: "Blackbird UAV website",
+    description:
+      "Public site for Carleton's UAV design team, built and shipped as the team's top contributor.",
+    date: "2025 - 2026",
+    url: "https://blackbirduav.ca",
+    repo: "https://github.com/Blackbird-UAV/BlackbirdUAV-Website",
+    images: [
+      { src: "/images/blackbird-1.webp", alt: "Blackbird UAV homepage" },
+    ],
+    accent: { dark: "#67d2ff", light: "#0b5f8a" },
+    icon: "plane",
+    colSpan: 1,
+    tags: ["React", "Next.js", "GitHub Actions"],
+  },
+  {
     title: "Startup Idea Validator",
     description:
       "Five AI personas stress-test a startup idea and remember earlier validations.",
+    date: "Jan 2026",
     url: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
     images: [
       { src: "/images/validator-1.webp", alt: "Startup Idea Validator app" },
@@ -111,9 +106,25 @@ export const projects: Project[] = [
     tags: ["FastAPI", "Backboard.io", "JavaScript"],
   },
   {
+    title: "cuTunnel",
+    description:
+      "Find the shortest route through Carleton's underground tunnel system with an interactive graph of the campus.",
+    date: "Mar 2025",
+    url: "https://devpost.com/software/cu-tunnels",
+    repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
+    video: "https://www.youtube.com/watch?v=mcY5xvBvbc0",
+    images: [{ src: "/images/cutunnel-1.webp", alt: "cuTunnel route map" }],
+    accent: { dark: "#ffa14d", light: "#9a3f00" },
+    icon: "graph",
+    colSpan: 2,
+    tags: ["JavaScript", "Dijkstra", "Cytoscape.js"],
+    note: "Wolfram Award and People's Choice, cuHacking 6",
+  },
+  {
     title: "cuHacking 2025 platform",
     description:
       "Website, portal and docs for Carleton's official hackathon, in an Nx monorepo.",
+    date: "Aug - Dec 2024",
     url: "https://cuhacking.ca",
     repo: "https://github.com/cuhacking/2025",
     images: [{ src: "/images/cuhacking-2.webp", alt: "cuHacking website" }],
@@ -123,20 +134,10 @@ export const projects: Project[] = [
     tags: ["TypeScript", "Next.js", "Nx"],
   },
   {
-    title: "AEAC 2026 flight software",
-    description:
-      "Autonomous flight control, gimbal control and payload systems for Blackbird UAV's competition drone: Python and C++ on Raspberry Pi and Arduino, linked over Tailscale.",
-    url: "https://github.com/Blackbird-UAV/AEAC-2026",
-    images: [],
-    accent: { dark: "#ffd166", light: "#8a5a00" },
-    icon: "satellite",
-    colSpan: 2,
-    tags: ["Python", "C++", "Raspberry Pi", "Arduino"],
-  },
-  {
     title: "Event forms automation",
     description:
       "Playwright workflows that file cuHacking's event risk-management forms, saving the logistics team 10+ hours.",
+    date: "2024",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",
     images: [],
     accent: { dark: "#7dd49e", light: "#1e5b35" },

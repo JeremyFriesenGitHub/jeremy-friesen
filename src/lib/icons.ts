@@ -35,7 +35,6 @@ import {
   LuRocket,
   LuSatellite,
   LuShieldCheck,
-  LuTimer,
   LuTrophy,
   LuUsersRound,
   LuWaypoints,
@@ -158,7 +157,6 @@ export const spriteIcons = {
   latex: SiLatex,
   // Projects and Community
   shield: LuShieldCheck,
-  timer: LuTimer,
   plane: LuPlane,
   graph: LuWaypoints,
   brain: LuBrainCircuit,
