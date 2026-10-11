@@ -96,7 +96,9 @@ export function Navbar() {
       <nav
         aria-label="Primary"
         className={cn(
-          "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 glass-clear transition-shadow duration-300 xl:max-w-6xl",
+          // Phones: a full-width bar, brand left and menu right. From md the
+          // pill hugs its content and sits centred, so the links are centred too.
+          "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 glass-clear transition-shadow duration-300 md:w-auto md:max-w-[calc(100vw-1.5rem)] md:justify-center md:gap-1 md:pl-1.5",
           scrolled && "shadow-[0_18px_50px_-20px_var(--glass-shadow)]",
         )}
       >
@@ -109,7 +111,9 @@ export function Navbar() {
           <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-primary via-accent to-tertiary font-mono text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.45)]">
             JF
           </span>
-          <span className="hidden sm:inline md:hidden lg:inline">
+          {/* The name only fits beside the links, socials and resume from xl;
+              at lg the monogram stands in for it. */}
+          <span className="hidden whitespace-nowrap sm:inline md:hidden xl:inline">
             Jeremy Friesen
           </span>
         </a>
@@ -117,7 +121,7 @@ export function Navbar() {
         <DesktopLinks active={active} />
 
         <div className="flex items-center gap-0.5">
-          <div className="hidden items-center gap-0.5 xl:flex">
+          <div className="hidden items-center gap-0.5 lg:flex">
             {socials.map(({ href, label, Icon }) => (
               <MagneticElement key={label} distance={0.25}>
                 <a
@@ -232,9 +236,11 @@ function DesktopLinks({ active }: { active: string | null }) {
       setPill(null);
       return;
     }
+    // The pill is positioned from the list's padding edge; the list has a
+    // border, so measure from there rather than from the border-box left.
     const listRect = list.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
-    setPill({ x: rect.left - listRect.left, w: rect.width });
+    setPill({ x: rect.left - listRect.left - list.clientLeft, w: rect.width });
   }, [active]);
 
   useLayoutEffect(measure, [measure]);
@@ -250,7 +256,7 @@ function DesktopLinks({ active }: { active: string | null }) {
   return (
     <ul
       ref={listRef}
-      className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex"
+      className="relative mx-1 hidden items-center border-x border-foreground/10 px-1.5 md:flex lg:mx-2 lg:px-2.5"
     >
       <li
         aria-hidden="true"
@@ -271,7 +277,7 @@ function DesktopLinks({ active }: { active: string | null }) {
               href={link.href}
               aria-current={isActive ? "location" : undefined}
               className={cn(
-                "inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors duration-200 lg:px-3.5",
+                "inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium transition-colors duration-200 lg:px-3.5",
                 isActive
                   ? "text-foreground"
                   : "text-foreground/85 hover:text-foreground",
