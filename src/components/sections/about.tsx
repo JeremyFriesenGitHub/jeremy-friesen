@@ -38,7 +38,7 @@ export function About() {
               />
               <Image
                 src="/images/avatar.webp"
-                alt="Jeremy Friesen"
+                alt=""
                 width={160}
                 height={160}
                 sizes="160px"

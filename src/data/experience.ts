@@ -29,7 +29,7 @@ export const experiences: Experience[] = [
     company: "Government of Canada",
     location: "Ottawa, ON",
     country: "Canada",
-    date: "May 2025 - Aug. 2025",
+    date: "May 2025 - Aug 2025",
     highlights: [
       "Automated Azure administration with PowerShell, DevOps and Agile practices, standardizing the team's CI/CD workflows.",
     ],
@@ -41,7 +41,7 @@ export const experiences: Experience[] = [
     company: "Government of Canada",
     location: "Ottawa, ON",
     country: "Canada",
-    date: "Jan. 2025 - Apr. 2025",
+    date: "Jan 2025 - Apr 2025",
     highlights: [
       "Designed scalable cloud architecture and IT infrastructure in Azure for secure internal remote network access.",
     ],
@@ -53,7 +53,7 @@ export const experiences: Experience[] = [
     company: "Royal Canadian Mounted Police",
     location: "Ottawa, ON",
     country: "Canada",
-    date: "Sept. 2024 - Dec. 2024",
+    date: "Sep 2024 - Dec 2024",
     highlights: [
       "Delivered first-level support for 200+ enterprise and law-enforcement applications, diagnosing incidents and outages quickly.",
     ],
@@ -65,7 +65,7 @@ export const experiences: Experience[] = [
     company: "National Research Council of Canada",
     location: "Ottawa, ON",
     country: "Canada",
-    date: "May 2024 - Aug. 2024",
+    date: "May 2024 - Aug 2024",
     highlights: [
       "Automated bivariate and multivariate analysis workflows for the AI for Logistics program's road-freight project.",
       "Analysed 200+ sensor and geospatial datasets with Matplotlib, GeoPandas and Folium, producing 300+ pages of reports.",

@@ -101,14 +101,14 @@
   --background: #f7f7fa;
   --foreground: #0c0c14;
   --muted: #e9e9f0;
-  --muted-foreground: #3e4158;
+  --muted-foreground: #2f3248;
   --card: rgba(255, 255, 255, 0.55);
   --card-foreground: #0c0c14;
   /* Primary colours: true blue, true red, and a yellow highlight. */
   --primary: #1e4fe6;
   --primary-foreground: #ffffff;
-  /* Text-safe primary: holds 4.5:1 even over the brightest aurora blob. */
-  --primary-strong: #1536b8;
+  /* Text-safe primary: holds 4.5:1 over the brightest aurora blob. */
+  --primary-strong: #10309e;
   --accent: #e0162b;
   --accent-foreground: #ffffff;
   --tertiary: #f5b800;
@@ -144,12 +144,12 @@
   --background: #08080d;
   --foreground: #f3f3f8;
   --muted: #15151f;
-  --muted-foreground: #b3b6cc;
+  --muted-foreground: #dfe1ee;
   --card: rgba(255, 255, 255, 0.05);
   --card-foreground: #f3f3f8;
   --primary: #6b93ff;
   --primary-foreground: #04102a;
-  --primary-strong: #8fb0ff;
+  --primary-strong: #bcd0ff;
   --accent: #ff5468;
   --accent-foreground: #2a0509;
   --tertiary: #ffd166;
@@ -157,8 +157,10 @@
   --border: rgba(255, 255, 255, 0.1);
   --ring: #6b93ff;
 
-  --glass-from: rgba(255, 255, 255, 0.085);
-  --glass-to: rgba(255, 255, 255, 0.03);
+  /* Dark glass is tinted with the page colour, not white: copy inside a
+     card must not depend on which aurora blob is passing behind it. */
+  --glass-from: rgba(8, 8, 13, 0.55);
+  --glass-to: rgba(8, 8, 13, 0.38);
   --glass-clear-from: rgba(255, 255, 255, 0.06);
   --glass-clear-to: rgba(255, 255, 255, 0.022);
   --glass-rim: rgba(255, 255, 255, 0.28);
@@ -171,7 +173,7 @@
 
   --aurora-1: #c8102e;
   --aurora-2: #1d4fe8;
-  --aurora-3: #f5a524;
+  --aurora-3: #b26a0e;
   --aurora-4: #0e7bd1;
 }
 
@@ -447,6 +449,16 @@
     }
     .word-out {
       display: none;
+    }
+  }
+
+  /* Paper never scrolls anything into view, so the reveals would leave every
+     page after the first blank. */
+  @media print {
+    .js .reveal[data-reveal="pending"] {
+      opacity: 1;
+      translate: none;
+      transition: none;
     }
   }
 }

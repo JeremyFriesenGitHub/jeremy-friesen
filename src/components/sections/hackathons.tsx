@@ -107,7 +107,7 @@ export function Hackathons() {
                       {p.title}
                     </a>
                   </h3>
-                  <p className="mt-2 line-clamp-3 text-sm text-pretty text-muted-foreground">
+                  <p className="mt-2 text-sm text-pretty text-muted-foreground">
                     {p.tagline}
                   </p>
 
@@ -192,9 +192,9 @@ export function Hackathons() {
       <Reveal className="mt-6">
         <GlassCard
           interactive={false}
-          className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-8 sm:p-6"
+          className="flex flex-col gap-4 p-5 sm:p-6 lg:flex-row lg:items-center lg:gap-8"
         >
-          <div className="flex items-center gap-3 sm:w-56 sm:shrink-0">
+          <div className="flex items-center gap-3 lg:w-56 lg:shrink-0">
             <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/12 text-primary-strong">
               <Icon name="gavel" size={20} />
             </span>
@@ -205,7 +205,7 @@ export function Hackathons() {
               </p>
             </div>
           </div>
-          <ul className="grid flex-1 gap-3 sm:grid-cols-2">
+          <ul className="grid flex-1 gap-3 md:grid-cols-2">
             {judging.map((j) => (
               <li key={j.event} className="min-w-0">
                 <a
@@ -215,10 +215,10 @@ export function Hackathons() {
                   className="flex items-center justify-between gap-3 rounded-2xl px-3 py-2.5 glass-pill transition-colors hover:bg-foreground/8"
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-sm font-medium">
+                    <span className="block text-sm font-medium">
                       Judge · {j.event}
                     </span>
-                    <span className="block truncate text-xs text-muted-foreground">
+                    <span className="block text-xs text-pretty text-muted-foreground">
                       {j.organizer}
                     </span>
                   </span>

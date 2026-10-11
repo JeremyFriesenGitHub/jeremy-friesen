@@ -1,4 +1,5 @@
 import { Icon } from "~/components/ui/icon";
+import { Year } from "~/components/ui/year";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 
 const elsewhere = [
@@ -24,7 +25,7 @@ const linkClass =
   "inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground";
 
 export function Footer() {
-  const year = new Date().getFullYear();
+  const built = new Date().getFullYear();
 
   return (
     <footer className="relative z-10 px-4 pt-4 pb-6 sm:px-6 sm:pb-8">
@@ -119,7 +120,7 @@ export function Footer() {
 
         <div className="mt-8 flex flex-col gap-2 border-t border-border/70 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {profile.name}. {profile.location}.
+            © <Year built={built} /> {profile.name}. {profile.location}.
           </p>
           <a
             href={socialLinks.repo}

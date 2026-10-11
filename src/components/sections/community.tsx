@@ -17,7 +17,7 @@ export function Community() {
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
         {communityRoles.map((role, i) => {
-          const current = role.roles[0];
+          const current = role.roles.find((r) => /present/i.test(r.date));
           return (
             <li key={role.org} className="h-full">
               <Reveal delay={Math.min((i % 2) * 0.08, 0.2)} className="h-full">

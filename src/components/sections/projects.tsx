@@ -16,7 +16,7 @@ export function Projects() {
       <SectionHeading
         eyebrow="Projects"
         title="Selected work."
-        description="Live demos, club platforms and open-source tools, from campus utilities to AI products."
+        description="Hackathon builds, club platforms and open-source tools, from campus utilities to AI products."
         action={
           <GlassButton href={socialLinks.github} external>
             <Icon name="github" size={16} />

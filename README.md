@@ -71,8 +71,8 @@ All copy and links live in `src/data/`:
 │   ├── components/
 │   │   ├── background/          # WebGL aurora + loader
 │   │   ├── effects/             # magnetic hover
-│   │   ├── sections/            # hero, about, experience, projects, hackathons, skills, footer
-│   │   ├── ui/                  # glass-card, glass-button, chip, icon, reveal, section, theme-toggle
+│   │   ├── sections/            # hero, about, experience, community, projects, hackathons, skills, footer, rotating-word
+│   │   ├── ui/                  # glass-card, glass-button, chip, icon, reveal, section, section-heading, theme-toggle, year
 │   │   └── navbar.tsx
 │   ├── data/                    # all site content
 │   ├── hooks/                   # use-theme, use-active-section, use-pointer-glow

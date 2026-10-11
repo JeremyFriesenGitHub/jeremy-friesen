@@ -9,6 +9,7 @@ import { Projects } from "~/components/sections/projects";
 import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
 import { Footer } from "~/components/sections/footer";
+import { hackathonStats } from "~/data/hackathons";
 import { profile, socialLinks } from "~/data/social-links";
 import { siteName, siteUrl } from "~/lib/site";
 
@@ -20,8 +21,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName,
     title: siteName,
-    description:
-      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. 7× hackathon winner.",
+    description: `CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. ${hackathonStats.wins}× hackathon winner.`,
     locale: "en_CA",
   },
 };
@@ -49,7 +49,7 @@ export default function Home() {
       <LiquidBackgroundLoader />
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 noise opacity-[0.035] dark:opacity-[0.045]"
+        className="pointer-events-none fixed inset-0 z-0 noise opacity-[0.035] dark:opacity-[0.045] print:hidden"
       />
       <Navbar />
       <main id="main" className="relative z-10">
@@ -64,7 +64,9 @@ export default function Home() {
       <Footer />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+        }}
       />
     </>
   );
