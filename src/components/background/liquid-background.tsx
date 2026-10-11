@@ -61,20 +61,20 @@ void main(){
   float aspect=u_res.x/u_res.y;
   p.x*=aspect;
   vec2 q=vec2(snoise(p*0.75+u_wa),snoise(p*0.75+u_wb));
-  vec2 w=p+0.5*q-(u_mouse-0.5)*vec2(aspect,1.0)*0.12;
+  vec2 w=p+0.6*q-(u_mouse-0.5)*vec2(aspect,1.0)*0.12;
   vec2 d1=w-u_c1, d2=w-u_c2, d3=w-u_c3, d4=w-u_c4;
-  float b1=exp(-2.1*dot(d1,d1));
-  float b2=exp(-2.0*dot(d2,d2));
-  float b3=exp(-2.4*dot(d3,d3));
-  float b4=exp(-2.7*dot(d4,d4));
+  float b1=exp(-2.4*dot(d1,d1));
+  float b2=exp(-2.3*dot(d2,d2));
+  float b3=exp(-2.8*dot(d3,d3));
+  float b4=exp(-3.1*dot(d4,d4));
   float n=0.5+0.5*snoise(w*2.0+u_wd);
   vec3 col=u_bg;
   col=mix(col,u_k1,min(1.0,b1*(0.7+0.5*n))*u_int);
   col=mix(col,u_k2,min(1.0,b2*(0.8+0.4*(1.0-n)))*u_int);
   col=mix(col,u_k3,min(1.0,b3*(0.7+0.5*n))*u_int);
-  col=mix(col,u_k4,min(1.0,b4*0.7)*u_int*0.85);
-  float v=smoothstep(1.5,0.3,length(p));
-  col=mix(u_bg,col,0.4+0.6*v);
+  col=mix(col,u_k4,min(1.0,b4*0.8)*u_int*0.9);
+  float v=smoothstep(1.6,0.3,length(p));
+  col=mix(u_bg,col,0.55+0.45*v);
   float dither=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
   col+=(dither-0.5)*(1.0/255.0);
   gl_FragColor=vec4(col,1.0);
@@ -117,15 +117,12 @@ function readPalette() {
 /** Everything that moves is a smooth, periodic function of `t`, computed here. */
 function fieldAt(t: number) {
   return {
-    c1: [-0.55 + 0.25 * Math.sin(t * 1.1), 0.35 + 0.2 * Math.cos(t * 0.9)],
-    c2: [
-      0.6 + 0.2 * Math.cos(t * 0.8 + 1),
-      0.25 + 0.25 * Math.sin(t * 1.2 + 2),
-    ],
-    c3: [0.1 + 0.3 * Math.sin(t * 0.7 + 4), -0.5 + 0.2 * Math.cos(t + 1.5)],
+    c1: [-0.55 + 0.35 * Math.sin(t * 1.1), 0.3 + 0.3 * Math.cos(t * 0.9)],
+    c2: [0.6 + 0.3 * Math.cos(t * 0.8 + 1), 0.2 + 0.35 * Math.sin(t * 1.2 + 2)],
+    c3: [0.1 + 0.4 * Math.sin(t * 0.7 + 4), -0.45 + 0.3 * Math.cos(t + 1.5)],
     c4: [
-      -0.3 + 0.25 * Math.cos(t * 0.9 + 2.5),
-      -0.25 + 0.3 * Math.sin(t * 0.6 + 0.5),
+      -0.3 + 0.35 * Math.cos(t * 0.9 + 2.5),
+      -0.2 + 0.4 * Math.sin(t * 0.6 + 0.5),
     ],
     wa: [4 * Math.sin(t * 0.3), 4 * Math.cos(t * 0.3)],
     wb: [4 * Math.cos(t * 0.25 + 1) + 3.1, 4 * Math.sin(t * 0.25 + 2)],
@@ -239,9 +236,9 @@ export function LiquidBackground() {
       gl.uniform3fv(loc.k2, pal.colors[1]);
       gl.uniform3fv(loc.k3, pal.colors[2]);
       gl.uniform3fv(loc.k4, pal.colors[3]);
-      // Quieter in the dark: light copy over a bright amber or red blob
-      // fell below 2:1 at full strength.
-      gl.uniform1f(loc.int, pal.dark ? 0.45 : 0.72);
+      // Quieter in the dark: light copy over a blob at full strength fell
+      // below 4.5:1. Both values are checked by the per-glyph contrast probe.
+      gl.uniform1f(loc.int, pal.dark ? 0.6 : 0.8);
     };
 
     /**
@@ -287,7 +284,10 @@ export function LiquidBackground() {
     let raf = 0;
     let last = 0;
     const start = performance.now();
-    const fieldTime = (now: number) => ((now - start) / 1000) * 0.06;
+    // Field seconds per wall-clock second. At this rate a blob crosses about
+    // a fifth of the viewport every five seconds: slow enough to feel like a
+    // lava lamp, fast enough that the motion registers without staring.
+    const fieldTime = (now: number) => ((now - start) / 1000) * 0.11;
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);

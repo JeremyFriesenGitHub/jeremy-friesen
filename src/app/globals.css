@@ -101,14 +101,16 @@
   --background: #f7f7fa;
   --foreground: #0c0c14;
   --muted: #e9e9f0;
-  --muted-foreground: #2f3248;
+  /* Muted copy sits straight on the aurora: dark enough for 4.5:1 over the
+     brightest blob, checked by the per-glyph contrast probe. */
+  --muted-foreground: #23263a;
   --card: rgba(255, 255, 255, 0.55);
   --card-foreground: #0c0c14;
-  /* Primary colours: true blue, true red, and a yellow highlight. */
+  /* Primary colours: a true blue, a teal accent and a violet tertiary. */
   --primary: #1e4fe6;
   --primary-foreground: #ffffff;
   /* Text-safe primary: holds 4.5:1 over the brightest aurora blob. */
-  --primary-strong: #10309e;
+  --primary-strong: #071b63;
   --accent: #0e7490;
   --accent-foreground: #ffffff;
   --tertiary: #6d28d9;
@@ -120,8 +122,9 @@
      the near-transparent navbar variant (see .glass-clear). */
   --glass-from: rgba(255, 255, 255, 0.56);
   --glass-to: rgba(255, 255, 255, 0.28);
-  --glass-clear-from: rgba(255, 255, 255, 0.4);
-  --glass-clear-to: rgba(255, 255, 255, 0.18);
+  /* Opaque enough that the links stay 4.5:1 as headings scroll under the bar. */
+  --glass-clear-from: rgba(255, 255, 255, 0.66);
+  --glass-clear-to: rgba(255, 255, 255, 0.44);
   --glass-rim: rgba(255, 255, 255, 0.95);
   --glass-edge: rgba(12, 12, 20, 0.1);
   --glass-hi: rgba(255, 255, 255, 0.95);
@@ -131,11 +134,11 @@
   --glass-blur: 18px;
 
   /* Aurora palette shared by the WebGL background and the CSS fallback:
-     red, blue, yellow and a pale blue to keep the field airy. */
-  --aurora-1: #4f7dff;
-  --aurora-2: #5eead4;
-  --aurora-3: #c4b5fd;
-  --aurora-4: #bae6fd;
+     blue, teal, violet and sky, bright enough to read as a moving field. */
+  --aurora-1: #3b6cff;
+  --aurora-2: #2dd4bf;
+  --aurora-3: #a78bfa;
+  --aurora-4: #38bdf8;
 }
 
 .dark {
@@ -144,12 +147,12 @@
   --background: #08080d;
   --foreground: #f3f3f8;
   --muted: #15151f;
-  --muted-foreground: #dfe1ee;
+  --muted-foreground: #e8eaf4;
   --card: rgba(255, 255, 255, 0.05);
   --card-foreground: #f3f3f8;
   --primary: #6b93ff;
   --primary-foreground: #04102a;
-  --primary-strong: #bcd0ff;
+  --primary-strong: #cfdcff;
   --accent: #5eead4;
   --accent-foreground: #042f2e;
   --tertiary: #c4b5fd;
@@ -161,8 +164,10 @@
      card must not depend on which aurora blob is passing behind it. */
   --glass-from: rgba(8, 8, 13, 0.55);
   --glass-to: rgba(8, 8, 13, 0.38);
-  --glass-clear-from: rgba(255, 255, 255, 0.06);
-  --glass-clear-to: rgba(255, 255, 255, 0.022);
+  /* The navbar's clear glass is page-tinted too: its links sit directly over
+     the brightest blobs and need the darkening to hold 4.5:1. */
+  --glass-clear-from: rgba(8, 8, 13, 0.64);
+  --glass-clear-to: rgba(8, 8, 13, 0.46);
   --glass-rim: rgba(255, 255, 255, 0.28);
   --glass-edge: rgba(255, 255, 255, 0.08);
   --glass-hi: rgba(255, 255, 255, 0.16);
@@ -171,10 +176,10 @@
   --glass-glow: rgba(255, 255, 255, 0.16);
   --glass-blur: 20px;
 
-  --aurora-1: #5b21b6;
-  --aurora-2: #1d4fe8;
-  --aurora-3: #0f766e;
-  --aurora-4: #0e7bd1;
+  --aurora-1: #6d28d9;
+  --aurora-2: #2a4fe8;
+  --aurora-3: #0c8a7f;
+  --aurora-4: #0c8fcf;
 }
 
 /* Blur is the one expensive thing on this page; dial it back on phones. */
@@ -319,8 +324,8 @@
 }
 
 @utility glass-strong {
-  --glass-from: color-mix(in oklab, var(--background) 72%, transparent);
-  --glass-to: color-mix(in oklab, var(--background) 50%, transparent);
+  --glass-from: color-mix(in oklab, var(--background) 80%, transparent);
+  --glass-to: color-mix(in oklab, var(--background) 60%, transparent);
 }
 
 @utility glass-clear {
