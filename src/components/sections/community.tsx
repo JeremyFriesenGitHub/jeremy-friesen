@@ -1,6 +1,7 @@
 import { Chip } from "~/components/ui/chip";
 import { GlassCard } from "~/components/ui/glass-card";
 import { Icon } from "~/components/ui/icon";
+import { OrgLogo } from "~/components/ui/org-logo";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
@@ -26,9 +27,13 @@ export function Community() {
                   className="group flex h-full flex-col p-5 sm:p-6"
                 >
                   <div className="flex items-start gap-4">
-                    <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-(--item-accent)/14 text-(--item-accent)">
-                      <Icon name={role.icon} size={24} />
-                    </span>
+                    <OrgLogo
+                      name={role.org}
+                      logo={role.logo}
+                      fallbackIcon={role.icon}
+                      size={48}
+                      className="rounded-2xl"
+                    />
                     <div className="min-w-0 flex-1">
                       <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
                         <a

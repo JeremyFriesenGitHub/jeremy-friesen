@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { Chip } from "~/components/ui/chip";
 import { GlassCard } from "~/components/ui/glass-card";
 import { Icon } from "~/components/ui/icon";
+import { OrgLogo } from "~/components/ui/org-logo";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
@@ -20,7 +21,7 @@ export function Experience() {
         {/* Rail: beside the list, not inside it, so the list holds only items. */}
         <div
           aria-hidden="true"
-          className="absolute top-2 bottom-2 left-[15px] w-px bg-linear-to-b from-primary via-accent to-tertiary opacity-70 sm:left-[19px]"
+          className="absolute top-2 bottom-2 left-[19px] w-px bg-linear-to-b from-primary via-accent to-tertiary opacity-70"
         />
 
         <ol>
@@ -29,10 +30,10 @@ export function Experience() {
               key={`${exp.title}-${exp.date}`}
               className="relative pb-8 pl-12 last:pb-0 sm:pl-16"
             >
-              {/* Dot */}
+              {/* The employer's mark sits on the rail, in place of a dot. */}
               <span
                 aria-hidden="true"
-                className="accent-scope absolute top-5 left-0 flex size-8 items-center justify-center rounded-full border border-(--item-accent)/40 bg-background text-(--item-accent) shadow-[0_0_0_4px_var(--background)] sm:size-10"
+                className="accent-scope absolute top-5 left-0 block rounded-full shadow-[0_0_0_4px_var(--background)] sm:top-4 sm:rounded-xl"
                 style={
                   {
                     "--accent-dark": exp.color,
@@ -40,7 +41,13 @@ export function Experience() {
                   } as CSSProperties
                 }
               >
-                <Icon name="maple-leaf" size={18} />
+                <OrgLogo
+                  name={exp.company}
+                  logo={exp.logo}
+                  fallbackIcon="maple-leaf"
+                  size={40}
+                  className="rounded-full sm:rounded-xl"
+                />
               </span>
 
               <Reveal delay={Math.min(i * 0.06, 0.3)}>

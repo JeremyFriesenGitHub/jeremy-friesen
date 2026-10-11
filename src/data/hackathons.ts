@@ -62,7 +62,7 @@ export const hackathonProjects: HackathonProject[] = [
     url: "https://devpost.com/software/loggr",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
     builtWith: ["Python", "PyTorch", "scikit-learn", "PyOD", "Flask"],
-    accent: { dark: "#ff6b7a", light: "#b3101f" },
+    accent: { dark: "#9ba4ff", light: "#3730a3" },
   },
   {
     title: "Buildo",
@@ -75,7 +75,7 @@ export const hackathonProjects: HackathonProject[] = [
     video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
     repo: "https://github.com/chantalzhang/conuhacks26",
     builtWith: ["Next.js", "React", "Flask", "Gemini API", "Snowflake Cortex"],
-    accent: { dark: "#ffd166", light: "#8a5a00" },
+    accent: { dark: "#5eead4", light: "#0f766e" },
   },
   {
     title: "Plante",
@@ -88,7 +88,7 @@ export const hackathonProjects: HackathonProject[] = [
     video: "https://www.youtube.com/watch?v=7n9EgHPRCC8",
     repo: "https://github.com/JowiAoun/Plante",
     builtWith: ["Next.js", "MongoDB", "Gemini", "Raspberry Pi", "Arduino"],
-    accent: { dark: "#7dd49e", light: "#1e5b35" },
+    accent: { dark: "#93c5fd", light: "#1d4ed8" },
   },
   {
     title: "Network Threat Explorer",
@@ -124,7 +124,7 @@ export const hackathonProjects: HackathonProject[] = [
     video: "https://www.youtube.com/watch?v=mcY5xvBvbc0",
     repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
     builtWith: ["JavaScript", "Cytoscape.js", "HTML", "CSS"],
-    accent: { dark: "#ffa14d", light: "#9a3f00" },
+    accent: { dark: "#6ee7b7", light: "#047857" },
   },
   {
     title: "Telehealth for remote regions",
@@ -147,7 +147,7 @@ export const hackathonProjects: HackathonProject[] = [
     video: "https://www.youtube.com/watch?v=hvT3rvw54yo",
     repo: "https://github.com/chantalzhang/genaigenesis2026",
     builtWith: ["Python", "FastAPI", "AWS", "PersonaPlex", "Playwright"],
-    accent: { dark: "#ff6b7a", light: "#b3101f" },
+    accent: { dark: "#9ba4ff", light: "#3730a3" },
   },
   {
     title: "Startup Idea Validator",
@@ -166,7 +166,7 @@ export const hackathonProjects: HackathonProject[] = [
     url: "https://devpost.com/software/ctl-claude-del",
     repo: "https://github.com/JowiAoun/MapleVault",
     builtWith: ["TypeScript", "FastAPI", "Docker"],
-    accent: { dark: "#ffa14d", light: "#9a3f00" },
+    accent: { dark: "#6ee7b7", light: "#047857" },
   },
   {
     title: "Shazam 4 Drones",

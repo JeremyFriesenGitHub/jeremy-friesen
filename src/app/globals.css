@@ -109,9 +109,9 @@
   --primary-foreground: #ffffff;
   /* Text-safe primary: holds 4.5:1 over the brightest aurora blob. */
   --primary-strong: #10309e;
-  --accent: #e0162b;
+  --accent: #0e7490;
   --accent-foreground: #ffffff;
-  --tertiary: #f5b800;
+  --tertiary: #6d28d9;
   --success: #15803d;
   --border: rgba(12, 12, 20, 0.1);
   --ring: #1e4fe6;
@@ -132,10 +132,10 @@
 
   /* Aurora palette shared by the WebGL background and the CSS fallback:
      red, blue, yellow and a pale blue to keep the field airy. */
-  --aurora-1: #ff5f70;
-  --aurora-2: #4f7dff;
-  --aurora-3: #ffd23f;
-  --aurora-4: #9bb8ff;
+  --aurora-1: #4f7dff;
+  --aurora-2: #5eead4;
+  --aurora-3: #c4b5fd;
+  --aurora-4: #bae6fd;
 }
 
 .dark {
@@ -150,9 +150,9 @@
   --primary: #6b93ff;
   --primary-foreground: #04102a;
   --primary-strong: #bcd0ff;
-  --accent: #ff5468;
-  --accent-foreground: #2a0509;
-  --tertiary: #ffd166;
+  --accent: #5eead4;
+  --accent-foreground: #042f2e;
+  --tertiary: #c4b5fd;
   --success: #4ade80;
   --border: rgba(255, 255, 255, 0.1);
   --ring: #6b93ff;
@@ -171,9 +171,9 @@
   --glass-glow: rgba(255, 255, 255, 0.16);
   --glass-blur: 20px;
 
-  --aurora-1: #c8102e;
+  --aurora-1: #5b21b6;
   --aurora-2: #1d4fe8;
-  --aurora-3: #b26a0e;
+  --aurora-3: #0f766e;
   --aurora-4: #0e7bd1;
 }
 
