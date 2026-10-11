@@ -16,7 +16,7 @@ export function Projects() {
       <SectionHeading
         eyebrow="Projects"
         title="Selected work."
-        description="Hackathon builds, club platforms and open-source tools, from campus utilities to AI products."
+        description="Newest first: hackathon builds, club platforms and open-source tools, from campus utilities to AI products."
         action={
           <GlassButton href={socialLinks.github} external>
             <Icon name="github" size={16} />
@@ -82,16 +82,21 @@ export function Projects() {
                       <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/12 text-(--item-accent)">
                         <Icon name={project.icon} size={18} />
                       </span>
-                      <h3 className="text-lg font-semibold tracking-tight">
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="after:absolute after:inset-0 after:rounded-3xl"
-                        >
-                          {project.title}
-                        </a>
-                      </h3>
+                      <div>
+                        <h3 className="text-lg font-semibold tracking-tight">
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="after:absolute after:inset-0 after:rounded-3xl"
+                          >
+                            {project.title}
+                          </a>
+                        </h3>
+                        <p className="font-mono text-xs text-muted-foreground">
+                          {project.date}
+                        </p>
+                      </div>
                     </div>
                     <Icon
                       name="arrow-up-right"
