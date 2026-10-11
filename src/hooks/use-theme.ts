@@ -6,11 +6,11 @@ export type Theme = "light" | "dark";
 
 const STORAGE_KEY = "theme";
 
-/** Keep in sync with `viewport.themeColor` in app/layout.tsx and the tokens in globals.css. */
-const THEME_COLOR: Record<Theme, string> = {
-  light: "#f7f7fa",
-  dark: "#08080d",
-};
+import { THEME_COLOR } from "~/lib/theme";
+
+/** The theme chosen with the toggle this page load, if any: it must hold even
+ *  when storage is blocked and the OS theme changes. */
+let chosen: Theme | null = null;
 
 function currentTheme(): Theme {
   return document.documentElement.classList.contains("dark") ? "dark" : "light";
@@ -45,8 +45,10 @@ export function useTheme() {
     // Follow OS changes while the visitor has not picked a theme explicitly.
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = (e: MediaQueryListEvent) => {
+      if (chosen) return;
       try {
-        if (localStorage.getItem(STORAGE_KEY)) return;
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored === "dark" || stored === "light") return;
       } catch {
         /* storage blocked: still follow the OS */
       }
@@ -57,6 +59,7 @@ export function useTheme() {
   }, []);
 
   const setTheme = useCallback((theme: Theme) => {
+    chosen = theme;
     applyTheme(theme);
     try {
       localStorage.setItem(STORAGE_KEY, theme);

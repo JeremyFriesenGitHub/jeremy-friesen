@@ -36,12 +36,6 @@ export interface JudgingRole {
  * Counts cover every hackathon entered, on and off Devpost. The Devpost
  * profile lists one more (Hack the Hill III) that was never entered.
  */
-export const hackathonStats = {
-  entered: 11,
-  wins: 7,
-  devpostProjects: 8,
-} as const;
-
 export const judging: JudgingRole[] = [
   {
     event: "cuHacking 2026",
@@ -185,3 +179,10 @@ export const hackathonProjects: HackathonProject[] = [
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
   },
 ];
+
+/** Counted from the cards, so the hero and the stats row never drift from them. */
+export const hackathonStats = {
+  entered: hackathonProjects.length,
+  wins: hackathonProjects.filter((p) => p.award).length,
+  devpostProjects: hackathonProjects.filter((p) => p.url).length,
+};

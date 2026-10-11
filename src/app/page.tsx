@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { LiquidBackgroundLoader } from "~/components/background/liquid-background-loader";
 import { Navbar } from "~/components/navbar";
 import { Hero } from "~/components/sections/hero";
@@ -8,8 +9,22 @@ import { Projects } from "~/components/sections/projects";
 import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
 import { Footer } from "~/components/sections/footer";
+import { hackathonStats } from "~/data/hackathons";
 import { profile, socialLinks } from "~/data/social-links";
-import { siteUrl } from "~/lib/site";
+import { siteName, siteUrl } from "~/lib/site";
+
+/** The canonical URL and Open Graph card are the home page's, not every route's. */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName,
+    title: siteName,
+    description: `CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. ${hackathonStats.wins}× hackathon winner.`,
+    locale: "en_CA",
+  },
+};
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -18,7 +33,7 @@ const personJsonLd = {
   url: siteUrl,
   jobTitle: profile.role,
   worksFor: { "@type": "Organization", name: profile.organization },
-  alumniOf: { "@type": "CollegeOrUniversity", name: profile.school },
+  affiliation: { "@type": "CollegeOrUniversity", name: profile.school },
   address: {
     "@type": "PostalAddress",
     addressLocality: "Ottawa",
@@ -34,7 +49,7 @@ export default function Home() {
       <LiquidBackgroundLoader />
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 noise opacity-[0.035] dark:opacity-[0.045]"
+        className="pointer-events-none fixed inset-0 z-0 noise opacity-[0.035] dark:opacity-[0.045] print:hidden"
       />
       <Navbar />
       <main id="main" className="relative z-10">
@@ -49,7 +64,9 @@ export default function Home() {
       <Footer />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+        }}
       />
     </>
   );

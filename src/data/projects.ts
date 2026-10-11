@@ -33,7 +33,7 @@ export const projects: Project[] = [
   {
     title: "Trace",
     description:
-      "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabeled Apache log lines, then groups related events into incidents for analysts.",
+      "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabelled Apache log lines and grouped related events into incidents for analysts.",
     url: "https://devpost.com/software/loggr",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
     images: [{ src: "/images/trace-1.webp", alt: "Trace landing page" }],

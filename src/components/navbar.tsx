@@ -79,7 +79,7 @@ export function Navbar() {
   }, [open, close]);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4">
+    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4 print:hidden">
       {/* Tap-outside backdrop. A sibling of the nav on purpose: the nav's
           backdrop-filter would otherwise become this element's containing block. */}
       {open && (
@@ -147,7 +147,7 @@ export function Navbar() {
             type="button"
             onClick={() => (open ? close() : setOpen(true))}
             aria-expanded={open}
-            aria-controls="mobile-menu"
+            aria-controls={open ? "mobile-menu" : undefined}
             aria-label={open ? "Close menu" : "Open menu"}
             className={cn(iconLinkClass, "md:hidden")}
           >
@@ -274,7 +274,7 @@ function DesktopLinks({ active }: { active: string | null }) {
                 "inline-flex h-9 items-center rounded-full px-3 text-sm font-medium transition-colors duration-200 lg:px-3.5",
                 isActive
                   ? "text-foreground"
-                  : "text-foreground/70 hover:text-foreground",
+                  : "text-foreground/85 hover:text-foreground",
               )}
             >
               {link.label}
