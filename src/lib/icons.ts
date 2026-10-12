@@ -18,6 +18,7 @@ import {
 import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
 import { LiaCanadianMapleLeaf } from "react-icons/lia";
 import {
+  LuArrowRight,
   LuArrowUpRight,
   LuAward,
   LuBot,
@@ -90,6 +91,7 @@ import type { SkillIcon } from "~/data/skills";
 
 /** Icons the sections use for links, facts and awards, beyond the data files' own. */
 type UiIcon =
+  | "arrow-right"
   | "arrow-up-right"
   | "award"
   | "briefcase"
@@ -184,6 +186,7 @@ export const spriteIcons = {
   keyboard: LuCode,
   users: LuUsersRound,
   // Links, facts and awards
+  "arrow-right": LuArrowRight,
   "arrow-up-right": LuArrowUpRight,
   award: LuAward,
   briefcase: LuBriefcase,

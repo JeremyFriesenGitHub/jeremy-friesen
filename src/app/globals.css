@@ -422,6 +422,13 @@
     translate: 0 var(--reveal-y, 22px);
   }
 
+  /* Effects paused with the toggle (see components/ui/effects-toggle.tsx):
+     the lamp holds a still frame (liquid-background.tsx) and these stop too. */
+  .reduce-effects
+    :is(.animate-float, .animate-lava, .animate-nudge, .text-liquid-animate) {
+    animation: none;
+  }
+
   /* Collapsible grid (see components/ui/show-more.tsx): the first eight
      children stay visible; without JS, and on paper, everything shows. */
   @media screen {
@@ -484,5 +491,32 @@
       translate: none;
       transition: none;
     }
+  }
+}
+
+/* Paper is white whatever the theme: the résumé (app/resume) prints from
+   the same tokens the screen uses, so the dark set is overridden here. */
+@media print {
+  @page {
+    margin: 12mm 14mm;
+  }
+  :root,
+  .dark {
+    /* Chrome paints the page margins from the colour scheme, not the root's background. */
+    color-scheme: light;
+    --background: #ffffff;
+    --foreground: #000000;
+    --muted-foreground: #3f3f4a;
+    --card: #ffffff;
+    --border: #d4d4dc;
+    --primary-strong: #1e3a8a;
+  }
+  html,
+  body {
+    background: #fff;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
   }
 }

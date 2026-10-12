@@ -315,7 +315,12 @@ export function LiquidBackground() {
     const saveData =
       (navigator as Navigator & { connection?: { saveData?: boolean } })
         .connection?.saveData === true;
-    const isStatic = () => reduceMotion.matches || saveData;
+    // Also still when the visitor pauses effects with the navbar toggle.
+    const root = document.documentElement;
+    const isStatic = () =>
+      reduceMotion.matches ||
+      saveData ||
+      root.classList.contains("reduce-effects");
 
     const applyPalette = () => {
       const pal = readPalette();
@@ -455,9 +460,12 @@ export function LiquidBackground() {
       stop();
       setFailed(true);
     };
+    // The class carries both the theme and the paused-effects choice: repaint
+    // with the new palette, then either resume or settle on a still frame.
     const themeObserver = new MutationObserver(() => {
       applyPalette();
-      if (isStatic()) renderStatic();
+      stop();
+      play();
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Chip } from "~/components/ui/chip";
 import { GlassButton } from "~/components/ui/glass-button";
 import { GlassCard } from "~/components/ui/glass-card";
@@ -9,23 +10,9 @@ import { SectionHeading } from "~/components/ui/section-heading";
 import { ShowMore } from "~/components/ui/show-more";
 import { projects } from "~/data/projects";
 import { socialLinks } from "~/data/social-links";
+import { formatMonth, linkHost } from "~/lib/dates";
 import { SHOW_MORE_INITIAL } from "~/lib/show-more";
 import { cn } from "~/lib/utils";
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
 
 /**
  * Width hint per image: a card is full width on phones, half on tablets and a
@@ -36,15 +23,11 @@ function imageSizes(colSpan: 1 | 2, count: number): string {
   return `(max-width: 640px) 100vw, (max-width: 1024px) 50vw, ${desktop}vw`;
 }
 
-/** "2026-09" -> "Sep 2026". Falls back to the raw value for anything else. */
-function formatMonth(ym: string): string {
-  const [y, m] = ym.split("-");
-  const month = MONTHS[Number(m) - 1];
-  return y && month ? `${month} ${y}` : ym;
-}
-
 const iconLinkClass =
   "relative z-10 inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground";
+
+/** The card's main link covers the whole card (the `after:` overlay). */
+const coverLinkClass = "after:absolute after:inset-0 after:rounded-3xl";
 
 export function Projects() {
   // Newest first; ties keep the order in the data file.
@@ -56,7 +39,7 @@ export function Projects() {
       <SectionHeading
         eyebrow="Projects"
         title="Selected work, newest first."
-        description="Hackathon builds, club platforms, research code and open-source tools. Each card links to Devpost, a demo video, the live site or the source."
+        description="Hackathon builds, club platforms, research code and open-source tools. The flagship projects open a case study; the rest link to Devpost, a demo video, the live site or the source."
         action={
           <GlassButton href={socialLinks.github} external>
             <Icon name="github" size={16} />
@@ -128,14 +111,23 @@ export function Projects() {
                     </span>
                     <div className="min-w-0">
                       <h3 className="text-lg leading-tight font-semibold tracking-tight">
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="after:absolute after:inset-0 after:rounded-3xl"
-                        >
-                          {project.title}
-                        </a>
+                        {project.caseStudy ? (
+                          <Link
+                            href={`/projects/${project.slug}`}
+                            className={coverLinkClass}
+                          >
+                            {project.title}
+                          </Link>
+                        ) : (
+                          <a
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={coverLinkClass}
+                          >
+                            {project.title}
+                          </a>
+                        )}
                       </h3>
                       <time
                         dateTime={project.date}
@@ -146,8 +138,13 @@ export function Projects() {
                     </div>
                   </div>
                   <Icon
-                    name="arrow-up-right"
-                    className="mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
+                    name={project.caseStudy ? "arrow-right" : "arrow-up-right"}
+                    className={cn(
+                      "mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:text-foreground",
+                      project.caseStudy
+                        ? "group-hover:translate-x-0.5"
+                        : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
+                    )}
                     size={18}
                   />
                 </div>
@@ -174,32 +171,42 @@ export function Projects() {
                   {project.tags.map((tag) => (
                     <Chip key={tag}>{tag}</Chip>
                   ))}
-                  {(project.video ?? project.repo) && (
-                    <span className="ml-auto flex items-center gap-0.5">
-                      {project.video && (
-                        <a
-                          href={project.video}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${project.title} demo video`}
-                          className={iconLinkClass}
-                        >
-                          <Icon name="youtube" size={15} />
-                        </a>
-                      )}
-                      {project.repo && (
-                        <a
-                          href={project.repo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${project.title} source on GitHub`}
-                          className={iconLinkClass}
-                        >
-                          <Icon name="github" size={15} />
-                        </a>
-                      )}
-                    </span>
-                  )}
+                  <span className="ml-auto flex items-center gap-0.5">
+                    {/* With a case study the title opens it, so the outside link moves here. */}
+                    {project.caseStudy && (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} on ${linkHost(project.url)}`}
+                        className={iconLinkClass}
+                      >
+                        <Icon name="external-link" size={15} />
+                      </a>
+                    )}
+                    {project.video && (
+                      <a
+                        href={project.video}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} demo video`}
+                        className={iconLinkClass}
+                      >
+                        <Icon name="youtube" size={15} />
+                      </a>
+                    )}
+                    {project.repo && (
+                      <a
+                        href={project.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} source on GitHub`}
+                        className={iconLinkClass}
+                      >
+                        <Icon name="github" size={15} />
+                      </a>
+                    )}
+                  </span>
                 </div>
               </div>
             </GlassCard>

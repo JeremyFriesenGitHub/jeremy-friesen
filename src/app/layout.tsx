@@ -58,8 +58,9 @@ export const viewport: Viewport = {
 
 /**
  * Applies the saved theme (or the OS preference) before first paint so there is
- * no flash of the wrong theme, and marks the document as JS-capable so scroll
- * reveals only hide content when they can actually run. Storage can be blocked
+ * no flash of the wrong theme, restores a paused-effects choice the same way,
+ * and marks the document as JS-capable so scroll reveals only hide content
+ * when they can actually run. Storage can be blocked
  * (Safari's "Block all cookies"), so only the read sits in the try; and a
  * script that fails to load or parse (a browser older than the build targets,
  * a blocked chunk) takes the mark back, so the page reads as it would without
@@ -68,7 +69,7 @@ export const viewport: Viewport = {
  * browser chrome matches a stored theme before React runs. Kept tiny and
  * dependency-free on purpose.
  */
-const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");addEventListener("error",function(e){if(e.target&&e.target.tagName==="SCRIPT")c.remove("js")},true);var s=null;try{s=localStorage.getItem("theme")}catch(e){}var d=s==="dark"||(s!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);c.toggle("dark",d);function m(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(e){e.content=d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}"})}m();addEventListener("DOMContentLoaded",m)})();`;
+const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");try{if(localStorage.getItem("effects")==="reduced")c.add("reduce-effects")}catch(e){}addEventListener("error",function(e){if(e.target&&e.target.tagName==="SCRIPT")c.remove("js")},true);var s=null;try{s=localStorage.getItem("theme")}catch(e){}var d=s==="dark"||(s!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);c.toggle("dark",d);function m(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(e){e.content=d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}"})}m();addEventListener("DOMContentLoaded",m)})();`;
 
 export default function RootLayout({
   children,
