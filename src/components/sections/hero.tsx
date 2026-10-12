@@ -77,6 +77,16 @@ export function Hero() {
       id="top"
       className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 pt-28 pb-20 sm:px-6"
     >
+      {/* Soft scrim so the headline stays readable when a bright blob drifts under it. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(62% 58% at 50% 50%, color-mix(in oklab, var(--background) 62%, transparent), transparent 100%)",
+        }}
+      />
+
       {/* Floating glass tiles: decorative, hidden from assistive tech, and only
           shown from xl, where they clear the headline, buttons and stats. */}
       <div

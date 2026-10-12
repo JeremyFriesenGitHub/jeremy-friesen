@@ -27,8 +27,9 @@ export const communityRoles: CommunityRole[] = [
     ],
     highlights: [
       "Lead the society and design technical workshops that turn research-level ML material into hands-on sessions.",
+      "Ran the Intro to Machine Learning workshop at Hack the Hill III (Sept. 2026).",
       "Run club operations: the annual budget, administrative filings and CUSA ratification.",
-      "Built the club website and documentation site, now the most active contributor to both.",
+      "Built the documentation site (its top contributor) and much of the club website.",
     ],
     icon: "brain",
     accent: { dark: "#9ba4ff", light: "#3730a3" },

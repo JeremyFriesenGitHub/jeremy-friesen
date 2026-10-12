@@ -3,17 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Full-viewport "liquid aurora": four soft colour fields drifting through a
- * domain-warped simplex noise field, rendered by a single-triangle WebGL pass.
+ * Full-viewport lava lamp: six blobs of coloured "wax" rise and sink through a
+ * metaball field, stretching as they move and merging when they meet, rendered
+ * by a single-triangle WebGL pass.
  *
  * Performance budget:
  *  - renders at ~0.5× device pixels (the field is smooth, so this is invisible)
  *  - capped at 30 fps in the hero and 20 fps once scrolled past it
  *  - pauses when the tab is hidden; draws one static frame for reduced-motion
- *    or data-saver users; falls back to CSS gradients without WebGL
- *  - all time-dependent maths runs in JS (doubles), so the shader only ever
- *    sees small numbers and stays stable on mediump mobile GPUs
+ *    or data-saver users; falls back to CSS blobs without WebGL
+ *  - blob motion is computed in JS (doubles) every frame; the shader needs
+ *    fragment highp, so GPUs without it get the CSS fallback instead
+ *  - fades to 38% once the hero scrolls away so card text stays readable
+ *  - uniforms are packed into 13 vec4 slots, under the 16 that WebGL 1
+ *    guarantees for fragment shaders
  */
+
+const BLOB_COUNT = 6;
 
 const VERT = `attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0.0,1.0);}`;
 
@@ -23,12 +29,11 @@ precision highp float;
 #else
 precision mediump float;
 #endif
-uniform vec2 u_res;
-uniform vec2 u_mouse;
-uniform vec2 u_c1, u_c2, u_c3, u_c4;
-uniform vec2 u_wa, u_wb, u_wd;
-uniform vec3 u_bg, u_k1, u_k2, u_k3, u_k4;
-uniform float u_int;
+uniform vec4 u_rm;      // res.xy, mouse.xy
+uniform vec4 u_bgi;     // background rgb, intensity
+uniform vec4 u_warp;    // two noise offsets (xy, zw)
+uniform vec3 u_k[4];    // palette
+uniform vec4 u_b[${BLOB_COUNT}];  // x, y, radius, vertical stretch
 
 vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
 vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}
@@ -55,26 +60,78 @@ float snoise(vec2 v){
   return 130.0*dot(m,g);
 }
 
+// Blob i takes its colour from the palette (aurora 1 to 4): 1, 2, 3, 2, 1, 4.
+vec3 blobColor(int i){
+  if(i==0)return u_k[0];
+  if(i==1)return u_k[1];
+  if(i==2)return u_k[2];
+  if(i==3)return u_k[1];
+  if(i==4)return u_k[0];
+  return u_k[3];
+}
+
 void main(){
-  vec2 uv=gl_FragCoord.xy/u_res;
+  vec2 res=u_rm.xy;
+  vec2 uv=gl_FragCoord.xy/res;
   vec2 p=uv-0.5;
-  float aspect=u_res.x/u_res.y;
+  float aspect=res.x/res.y;
   p.x*=aspect;
-  vec2 q=vec2(snoise(p*0.75+u_wa),snoise(p*0.75+u_wb));
-  vec2 w=p+0.6*q-(u_mouse-0.5)*vec2(aspect,1.0)*0.12;
-  vec2 d1=w-u_c1, d2=w-u_c2, d3=w-u_c3, d4=w-u_c4;
-  float b1=exp(-2.4*dot(d1,d1));
-  float b2=exp(-2.3*dot(d2,d2));
-  float b3=exp(-2.8*dot(d3,d3));
-  float b4=exp(-3.1*dot(d4,d4));
-  float n=0.5+0.5*snoise(w*2.0+u_wd);
-  vec3 col=u_bg;
-  col=mix(col,u_k1,min(1.0,b1*(0.7+0.5*n))*u_int);
-  col=mix(col,u_k2,min(1.0,b2*(0.8+0.4*(1.0-n)))*u_int);
-  col=mix(col,u_k3,min(1.0,b3*(0.7+0.5*n))*u_int);
-  col=mix(col,u_k4,min(1.0,b4*0.8)*u_int*0.9);
-  float v=smoothstep(1.6,0.3,length(p));
-  col=mix(u_bg,col,0.55+0.45*v);
+  // A little domain warp keeps the wax from looking like perfect circles.
+  vec2 q=vec2(snoise(p*1.6+u_warp.xy),snoise(p*1.6+u_warp.zw));
+  vec2 w=p+0.045*q-(u_rm.zw-0.5)*vec2(aspect,1.0)*0.05;
+
+  // Steep metaball kernel (r^4 / d^4): blobs only merge when they nearly
+  // touch, and distant wax never tints the whole screen on narrow phones.
+  // Distances are scaled by 4 and the gradient is normalised by (1+f) inside
+  // the loop to keep the intermediates well conditioned.
+  float f=0.0;
+  for(int i=0;i<${BLOB_COUNT};i++){
+    vec4 b=u_b[i];
+    vec2 d=(w-b.xy)*4.0;
+    d.y/=b.w;
+    float dd=dot(d,d)+0.01;
+    float r2=b.z*b.z*16.0;
+    f+=(r2*r2)/(dd*dd);
+  }
+  float inv=1.0/(1.0+f);
+  float wsum=0.0;
+  vec3 csum=vec3(0.0);
+  vec2 grad=vec2(0.0);
+  for(int i=0;i<${BLOB_COUNT};i++){
+    vec4 b=u_b[i];
+    vec2 d=(w-b.xy)*4.0;
+    d.y/=b.w;
+    float dd=dot(d,d)+0.01;
+    float r2=b.z*b.z*16.0;
+    float fi=(r2*r2)/(dd*dd);
+    float wi=min(fi,64.0);
+    wi*=wi;
+    wsum+=wi;
+    csum+=wi*blobColor(i);
+    grad+=-4.0*(fi*inv)*(d/dd)*inv;
+  }
+  vec3 wax=csum/max(wsum,1e-6);
+
+  // Soft boundary around the metaball threshold, plus a glow halo outside it.
+  float body=smoothstep(0.7,1.5,f);
+  float halo=smoothstep(0.04,0.7,f)*(1.0-body);
+
+  // Dome shading from a bounded height map h = f/(1+f): its gradient fades to
+  // zero at the blob centre, so the top is rounded instead of a cusp.
+  vec3 n=normalize(vec3(-grad*1.8,1.0));
+  vec3 L=normalize(vec3(-0.45,0.7,0.6));
+  float diff=0.72+0.28*max(dot(n,L),0.0);
+  float spec=pow(max(dot(reflect(-L,n),vec3(0.0,0.0,1.0)),0.0),10.0);
+  float core=smoothstep(1.5,6.0,f)*0.06;
+  vec3 lit=wax*diff+(core+spec*0.18)*mix(vec3(1.0),wax,0.4);
+
+  vec3 bg=u_bgi.rgb;
+  float k=u_bgi.a;
+  vec3 col=bg;
+  col=mix(col,mix(bg,wax,0.5),halo*k*0.8);
+  col=mix(col,lit,body*k);
+  float v=smoothstep(1.7,0.45,length(p));
+  col=mix(bg,col,0.55+0.45*v);
   float dither=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
   col+=(dither-0.5)*(1.0/255.0);
   gl_FragColor=vec4(col,1.0);
@@ -104,30 +161,61 @@ function readPalette() {
     hexToRgb(cs.getPropertyValue(name), fallback);
   return {
     dark: root.classList.contains("dark"),
-    bg: get("--background", [0.03, 0.04, 0.07]),
+    bg: get("--background", [0.03, 0.03, 0.05]),
     colors: [
-      get("--aurora-1", [0.14, 0.34, 0.84]),
-      get("--aurora-2", [0.43, 0.23, 0.84]),
-      get("--aurora-3", [0.06, 0.54, 0.5]),
-      get("--aurora-4", [0.69, 0.15, 0.42]),
+      get("--aurora-1", [0.23, 0.42, 1.0]),
+      get("--aurora-2", [0.18, 0.83, 0.75]),
+      get("--aurora-3", [0.65, 0.55, 0.98]),
+      get("--aurora-4", [0.22, 0.74, 0.97]),
     ] as const,
   };
 }
 
-/** Everything that moves is a smooth, periodic function of `t`, computed here. */
-function fieldAt(t: number) {
-  return {
-    c1: [-0.55 + 0.35 * Math.sin(t * 1.1), 0.3 + 0.3 * Math.cos(t * 0.9)],
-    c2: [0.6 + 0.3 * Math.cos(t * 0.8 + 1), 0.2 + 0.35 * Math.sin(t * 1.2 + 2)],
-    c3: [0.1 + 0.4 * Math.sin(t * 0.7 + 4), -0.45 + 0.3 * Math.cos(t + 1.5)],
-    c4: [
-      -0.3 + 0.35 * Math.cos(t * 0.9 + 2.5),
-      -0.2 + 0.4 * Math.sin(t * 0.6 + 0.5),
-    ],
-    wa: [4 * Math.sin(t * 0.3), 4 * Math.cos(t * 0.3)],
-    wb: [4 * Math.cos(t * 0.25 + 1) + 3.1, 4 * Math.sin(t * 0.25 + 2)],
-    wd: [3 * Math.sin(t * 0.2), 3 * Math.cos(t * 0.2)],
-  } as const;
+/**
+ * Each blob bobs on its own slow sine wave (periods of 29 to 52 seconds) so
+ * they drift past each other and merge now and then, like wax in a lamp.
+ * x: resting column (fraction of the width), ax: sway amplitude,
+ * py: vertical period in seconds, ph: phase, r: radius (fraction of height).
+ */
+const BLOBS = [
+  { x: -0.36, ax: 0.05, py: 51, ph: 0.0, r: 0.2 },
+  { x: -0.13, ax: 0.04, py: 41, ph: 2.1, r: 0.16 },
+  { x: 0.1, ax: 0.06, py: 59, ph: 4.0, r: 0.23 },
+  { x: 0.31, ax: 0.05, py: 36, ph: 1.2, r: 0.14 },
+  { x: 0.4, ax: 0.04, py: 47, ph: 5.1, r: 0.19 },
+  { x: -0.42, ax: 0.03, py: 65, ph: 3.3, r: 0.13 },
+] as const;
+
+const TAU = Math.PI * 2;
+
+/** Writes x, y, radius and vertical stretch for every blob at time t (seconds). */
+function fillBlobs(out: Float32Array, t: number, aspect: number) {
+  // Wide screens spread the columns out; portrait phones pull them in and
+  // shrink the wax so a single blob can never swallow the whole viewport.
+  const spread = aspect < 0.9 ? aspect * 1.1 : aspect;
+  const shrink = Math.pow(Math.min(Math.max(aspect, 0.5), 1), 0.8);
+  const count = aspect < 0.7 ? 4 : BLOBS.length;
+  for (let i = 0; i < BLOBS.length; i++) {
+    const b = BLOBS[i]!;
+    if (i >= count) {
+      // Parked off-screen with no radius: contributes nothing to the field.
+      out[i * 4] = 9;
+      out[i * 4 + 1] = 9;
+      out[i * 4 + 2] = 0;
+      out[i * 4 + 3] = 1;
+      continue;
+    }
+    const wy = TAU / b.py;
+    const phase = t * wy + b.ph;
+    const y = 0.6 * Math.sin(phase);
+    const vy = 0.6 * wy * Math.cos(phase);
+    const x = (b.x + b.ax * Math.sin(t * (TAU / (b.py * 0.8)) + b.ph)) * spread;
+    const r = b.r * shrink * (1 + 0.08 * Math.sin(t * 0.7 + b.ph));
+    out[i * 4] = x;
+    out[i * 4 + 1] = y;
+    out[i * 4 + 2] = r;
+    out[i * 4 + 3] = 1 + 3 * Math.abs(vy);
+  }
 }
 
 export function LiquidBackground() {
@@ -152,6 +240,16 @@ export function LiquidBackground() {
       powerPreference: "low-power",
     });
     if (!gl) {
+      setFailed(true);
+      return;
+    }
+    // The metaball maths overflows fp16: without fragment highp the GPU would
+    // paint NaN, so those devices get the CSS lamp instead.
+    const highp = gl.getShaderPrecisionFormat(
+      gl.FRAGMENT_SHADER,
+      gl.HIGH_FLOAT,
+    );
+    if (!highp || highp.precision === 0) {
       setFailed(true);
       return;
     }
@@ -205,21 +303,11 @@ export function LiquidBackground() {
 
     const u = (name: string) => gl.getUniformLocation(program, name);
     const loc = {
-      res: u("u_res"),
-      mouse: u("u_mouse"),
-      c1: u("u_c1"),
-      c2: u("u_c2"),
-      c3: u("u_c3"),
-      c4: u("u_c4"),
-      wa: u("u_wa"),
-      wb: u("u_wb"),
-      wd: u("u_wd"),
-      bg: u("u_bg"),
-      k1: u("u_k1"),
-      k2: u("u_k2"),
-      k3: u("u_k3"),
-      k4: u("u_k4"),
-      int: u("u_int"),
+      rm: u("u_rm"),
+      bgi: u("u_bgi"),
+      warp: u("u_warp"),
+      k: u("u_k"),
+      b: u("u_b"),
     };
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -231,15 +319,22 @@ export function LiquidBackground() {
 
     const applyPalette = () => {
       const pal = readPalette();
-      gl.uniform3fv(loc.bg, pal.bg);
-      gl.uniform3fv(loc.k1, pal.colors[0]);
-      gl.uniform3fv(loc.k2, pal.colors[1]);
-      gl.uniform3fv(loc.k3, pal.colors[2]);
-      gl.uniform3fv(loc.k4, pal.colors[3]);
-      // Quieter in the dark: light copy over a blob at full strength fell
-      // below 4.5:1. Both values are checked by the per-glyph contrast probe.
-      gl.uniform1f(loc.int, pal.dark ? 0.6 : 0.8);
+      gl.uniform4f(
+        loc.bgi,
+        pal.bg[0],
+        pal.bg[1],
+        pal.bg[2],
+        pal.dark ? 0.78 : 0.72,
+      );
+      gl.uniform3fv(loc.k, new Float32Array(pal.colors.flat()));
     };
+
+    let aspect = 1;
+    // Starts from the canvas's current buffer: in development React runs this
+    // effect twice on the same, already-sized canvas, and the second resize()
+    // takes the early return below without touching it.
+    const size = { w: canvas.width, h: canvas.height };
+    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
 
     /**
      * Sizes the drawing buffer from the canvas's own CSS box (100lvh, so the
@@ -254,40 +349,40 @@ export function LiquidBackground() {
       const cssH = canvas.clientHeight || window.innerHeight;
       const w = Math.max(1, Math.floor(cssW * scale));
       const h = Math.max(1, Math.floor(cssH * scale));
+      aspect = cssW / cssH;
+      size.w = w;
+      size.h = h;
       if (canvas.width === w && canvas.height === h) return false;
       canvas.width = w;
       canvas.height = h;
       gl.viewport(0, 0, w, h);
-      gl.uniform2f(loc.res, w, h);
       return true;
     };
 
-    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
     const onPointerMove = (e: PointerEvent) => {
       mouse.tx = e.clientX / window.innerWidth;
       mouse.ty = 1 - e.clientY / window.innerHeight;
     };
 
+    const blobs = new Float32Array(BLOB_COUNT * 4);
     const draw = (t: number) => {
-      const f = fieldAt(t);
-      gl.uniform2f(loc.c1, f.c1[0], f.c1[1]);
-      gl.uniform2f(loc.c2, f.c2[0], f.c2[1]);
-      gl.uniform2f(loc.c3, f.c3[0], f.c3[1]);
-      gl.uniform2f(loc.c4, f.c4[0], f.c4[1]);
-      gl.uniform2f(loc.wa, f.wa[0], f.wa[1]);
-      gl.uniform2f(loc.wb, f.wb[0], f.wb[1]);
-      gl.uniform2f(loc.wd, f.wd[0], f.wd[1]);
-      gl.uniform2f(loc.mouse, mouse.x, mouse.y);
+      fillBlobs(blobs, t, aspect);
+      gl.uniform4fv(loc.b, blobs);
+      gl.uniform4f(loc.rm, size.w, size.h, mouse.x, mouse.y);
+      gl.uniform4f(
+        loc.warp,
+        2 * Math.sin(t * 0.05),
+        2 * Math.cos(t * 0.05),
+        2 * Math.cos(t * 0.04 + 1) + 3.1,
+        2 * Math.sin(t * 0.04 + 2),
+      );
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
     let raf = 0;
     let last = 0;
     const start = performance.now();
-    // Field seconds per wall-clock second. At this rate a blob crosses about
-    // a fifth of the viewport every five seconds: slow enough to feel like a
-    // lava lamp, fast enough that the motion registers without staring.
-    const fieldTime = (now: number) => ((now - start) / 1000) * 0.11;
+    const seconds = (now: number) => (now - start) / 1000 + 11;
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
@@ -295,18 +390,18 @@ export function LiquidBackground() {
       // The 4ms tolerance keeps a steady every-2nd/3rd-frame cadence on 60Hz
       // displays instead of flapping on the exact vsync multiple.
       const minInterval = window.scrollY > window.innerHeight ? 50 : 33;
-      const elapsed = now - last;
-      if (elapsed < minInterval - 4) return;
-      last = now - (elapsed % minInterval);
+      if (now - last < minInterval - 4) return;
+      last = now;
       mouse.x += (mouse.tx - mouse.x) * 0.06;
       mouse.y += (mouse.ty - mouse.y) * 0.06;
-      draw(fieldTime(now));
+      draw(seconds(now));
     };
 
     const renderStatic = () => {
       mouse.x = mouse.tx = 0.5;
       mouse.y = mouse.ty = 0.5;
-      draw(7.3);
+      // A moment where all six blobs sit well inside the viewport.
+      draw(457.5);
     };
 
     const play = () => {
@@ -323,8 +418,21 @@ export function LiquidBackground() {
       raf = 0;
     };
 
+    // Dim the lamp once the hero scrolls away: content sections sit on glass
+    // and need the backdrop calmer. Compositor-only (opacity on the canvas).
+    let fadeRaf = 0;
+    const applyFade = () => {
+      fadeRaf = 0;
+      const t = Math.min(window.scrollY / Math.max(window.innerHeight, 1), 1);
+      canvas.style.opacity = String(1 - 0.62 * t);
+    };
+    const onScroll = () => {
+      if (!fadeRaf) fadeRaf = requestAnimationFrame(applyFade);
+    };
+
     applyPalette();
     resize();
+    applyFade();
     play();
 
     const onVisibility = () => (document.hidden ? stop() : play());
@@ -339,7 +447,7 @@ export function LiquidBackground() {
         if (!resize()) return;
         // Reallocating cleared the buffer: paint it again before the next vsync.
         if (isStatic()) renderStatic();
-        else draw(fieldTime(performance.now()));
+        else draw(seconds(performance.now()));
       }, 120);
     };
     const onContextLost = (e: Event) => {
@@ -358,6 +466,7 @@ export function LiquidBackground() {
 
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, { passive: true });
     reduceMotion.addEventListener("change", onMotionPref);
     canvas.addEventListener("webglcontextlost", onContextLost);
     if (!coarsePointer) {
@@ -369,6 +478,8 @@ export function LiquidBackground() {
       window.clearTimeout(resizeTimer);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScroll);
+      if (fadeRaf) cancelAnimationFrame(fadeRaf);
       window.removeEventListener("pointermove", onPointerMove);
       reduceMotion.removeEventListener("change", onMotionPref);
       canvas.removeEventListener("webglcontextlost", onContextLost);
@@ -381,7 +492,7 @@ export function LiquidBackground() {
     };
   }, [failed]);
 
-  if (failed) return <AuroraFallback />;
+  if (failed) return <LavaFallback />;
 
   return (
     <canvas
@@ -392,34 +503,58 @@ export function LiquidBackground() {
   );
 }
 
-/** CSS-only stand-in for browsers without WebGL. Transform-only animation. */
-function AuroraFallback() {
+/** CSS-only stand-in for browsers without WebGL: blurred blobs bobbing up and down. */
+function LavaFallback() {
+  const blobs = [
+    {
+      left: "8%",
+      size: "42vmax",
+      color: "var(--aurora-1)",
+      delay: "0s",
+      dur: "41s",
+    },
+    {
+      left: "38%",
+      size: "36vmax",
+      color: "var(--aurora-2)",
+      delay: "-14s",
+      dur: "33s",
+    },
+    {
+      left: "62%",
+      size: "46vmax",
+      color: "var(--aurora-3)",
+      delay: "-25s",
+      dur: "47s",
+    },
+    {
+      left: "80%",
+      size: "32vmax",
+      color: "var(--aurora-4)",
+      delay: "-7s",
+      dur: "29s",
+    },
+  ] as const;
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden print:hidden"
     >
-      <div
-        className="absolute -top-[10%] -left-[10%] h-[70vmax] w-[70vmax] animate-float rounded-full opacity-70 blur-3xl"
-        style={{
-          background:
-            "radial-gradient(closest-side, var(--aurora-1), transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute top-[5%] -right-[15%] h-[65vmax] w-[65vmax] animate-float rounded-full opacity-60 blur-3xl [animation-delay:-3s]"
-        style={{
-          background:
-            "radial-gradient(closest-side, var(--aurora-2), transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute -bottom-[25%] left-[20%] h-[70vmax] w-[70vmax] animate-float rounded-full opacity-60 blur-3xl [animation-delay:-6s]"
-        style={{
-          background:
-            "radial-gradient(closest-side, var(--aurora-3), transparent 70%)",
-        }}
-      />
+      {blobs.map((b) => (
+        <div
+          key={b.left}
+          className="absolute top-1/2 animate-lava rounded-full opacity-60 blur-3xl"
+          style={{
+            left: b.left,
+            width: b.size,
+            height: b.size,
+            marginTop: `calc(${b.size} / -2)`,
+            background: `radial-gradient(closest-side, ${b.color}, transparent 70%)`,
+            animationDelay: b.delay,
+            animationDuration: b.dur,
+          }}
+        />
+      ))}
     </div>
   );
 }

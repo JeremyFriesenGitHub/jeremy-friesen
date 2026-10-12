@@ -138,6 +138,16 @@ export const hackathonProjects: HackathonProject[] = [
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
   },
   {
+    title: "MapleVault",
+    tagline: "Signed attestation chains for Canadian defence procurement.",
+    hackathon: "Ottawa Defence Hackathon · Verified Canadian Supply Chains",
+    date: "May 2026",
+    url: "https://devpost.com/software/ctl-claude-del",
+    repo: "https://github.com/JowiAoun/MapleVault",
+    builtWith: ["TypeScript", "FastAPI", "Docker"],
+    accent: { dark: "#6ee7b7", light: "#047857" },
+  },
+  {
     title: "Agent²",
     tagline:
       "Your real estate agent's agent: text a number, take a short AI call, get matched listings by SMS.",
@@ -160,19 +170,11 @@ export const hackathonProjects: HackathonProject[] = [
     accent: { dark: "#b08cff", light: "#5b21b6" },
   },
   {
-    title: "MapleVault",
-    tagline: "Signed attestation chains for Canadian defence procurement.",
-    hackathon: "Verified Canadian Supply Chains",
-    url: "https://devpost.com/software/ctl-claude-del",
-    repo: "https://github.com/JowiAoun/MapleVault",
-    builtWith: ["TypeScript", "FastAPI", "Docker"],
-    accent: { dark: "#6ee7b7", light: "#047857" },
-  },
-  {
     title: "Shazam 4 Drones",
     tagline:
       "A drone classification and detection platform built with Blackbird UAV.",
     hackathon: "Shazam for Drones Hackathon",
+    date: "Nov 2025",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
     repo: "https://github.com/Blackbird-UAV/icebreaker-hackathon-2025",
     builtWith: ["Next.js", "FastAPI", "scikit-learn", "SciPy", "Twilio"],

@@ -33,6 +33,7 @@
   --animate-shimmer: shimmer 9s linear infinite;
   --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
   --animate-nudge: nudge 2.2s ease-in-out infinite;
+  --animate-lava: lava 40s ease-in-out infinite;
 
   @keyframes float {
     0%,
@@ -78,6 +79,16 @@
     100% {
       transform: scale(2.6);
       opacity: 0;
+    }
+  }
+  /* CSS lava-lamp fallback (no WebGL): a slow rise and sink. */
+  @keyframes lava {
+    0%,
+    100% {
+      transform: translate3d(0, 38vh, 0) scale(1, 1.05);
+    }
+    50% {
+      transform: translate3d(0, -38vh, 0) scale(1.05, 1);
     }
   }
   @keyframes nudge {
@@ -409,6 +420,14 @@
   .js .reveal[data-reveal="pending"] {
     opacity: 0;
     translate: 0 var(--reveal-y, 22px);
+  }
+
+  /* Collapsible grid (see components/ui/show-more.tsx): the first eight
+     children stay visible; without JS, and on paper, everything shows. */
+  @media screen {
+    .js .collapsed-grid > :nth-child(n + 9) {
+      display: none;
+    }
   }
 
   /* Hero rotating word (see components/sections/rotating-word.tsx). */
