@@ -68,7 +68,7 @@ export const viewport: Viewport = {
  * browser chrome matches a stored theme before React runs. Kept tiny and
  * dependency-free on purpose.
  */
-const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");addEventListener("error",function(){c.remove("js")},true);var s=null;try{s=localStorage.getItem("theme")}catch(e){}var d=s==="dark"||(s!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);c.toggle("dark",d);function m(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(e){e.content=d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}"})}m();addEventListener("DOMContentLoaded",m)})();`;
+const themeScript = `(function(){var c=document.documentElement.classList;c.add("js");addEventListener("error",function(e){if(e.target&&e.target.tagName==="SCRIPT")c.remove("js")},true);var s=null;try{s=localStorage.getItem("theme")}catch(e){}var d=s==="dark"||(s!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches);c.toggle("dark",d);function m(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(e){e.content=d?"${THEME_COLOR.dark}":"${THEME_COLOR.light}"})}m();addEventListener("DOMContentLoaded",m)})();`;
 
 export default function RootLayout({
   children,

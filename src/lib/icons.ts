@@ -20,16 +20,24 @@ import { LiaCanadianMapleLeaf } from "react-icons/lia";
 import {
   LuArrowUpRight,
   LuAward,
+  LuBot,
   LuBrainCircuit,
   LuBriefcase,
+  LuCalendar,
   LuChartLine,
   LuCode,
+  LuCpu,
   LuExternalLink,
   LuFileText,
   LuGavel,
+  LuGhost,
   LuGraduationCap,
   LuLaptop,
+  LuLayers,
+  LuLeaf,
+  LuLock,
   LuMapPin,
+  LuNetwork,
   LuPlane,
   LuRadar,
   LuRocket,
@@ -85,6 +93,7 @@ type UiIcon =
   | "arrow-up-right"
   | "award"
   | "briefcase"
+  | "calendar"
   | "devpost"
   | "external-link"
   | "file-text"
@@ -164,12 +173,21 @@ export const spriteIcons = {
   rocket: LuRocket,
   satellite: LuSatellite,
   workflow: LuWorkflow,
+  lock: LuLock,
+  layers: LuLayers,
+  bot: LuBot,
+  cpu: LuCpu,
+  leaf: LuLeaf,
+  radar: LuRadar,
+  network: LuNetwork,
+  ghost: LuGhost,
   keyboard: LuCode,
   users: LuUsersRound,
   // Links, facts and awards
   "arrow-up-right": LuArrowUpRight,
   award: LuAward,
   briefcase: LuBriefcase,
+  calendar: LuCalendar,
   devpost: SiDevpost,
   "external-link": LuExternalLink,
   "file-text": LuFileText,
