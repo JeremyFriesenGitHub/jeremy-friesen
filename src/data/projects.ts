@@ -1,3 +1,5 @@
+import { caseStudyBySlug } from "./case-studies";
+
 export type ProjectIcon =
   | "shield"
   | "plane"
@@ -16,8 +18,22 @@ export type ProjectIcon =
   | "network"
   | "ghost";
 
+/** The long-form story behind a project, shown at /projects/[slug]. */
+export interface CaseStudy {
+  /** One sentence under the title; also the page's description and link preview. */
+  summary: string;
+  problem: string[];
+  approach: string[];
+  result: string[];
+  /** What I built, when the project was a team effort. */
+  role?: string;
+  team?: string[];
+}
+
 export interface Project {
   title: string;
+  /** URL segment: /projects/[slug] when there is a case study. */
+  slug: string;
   description: string;
   /** Month the project shipped or was last worked on, as YYYY-MM. Cards sort by it. */
   date: string;
@@ -37,15 +53,19 @@ export interface Project {
   /** Short label under the description: a prize (award: true) or the event/role. */
   note?: string;
   award?: boolean;
+  caseStudy?: CaseStudy;
 }
+
+export type CaseStudyProject = Project & { caseStudy: CaseStudy };
 
 /**
  * Newest first. Hackathon builds link to Devpost, a demo video and source:
  * their backends are long gone, so there are no live-app links here.
  */
-export const projects: Project[] = [
+const entries: Project[] = [
   {
     title: "Trace",
+    slug: "trace",
     description:
       "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabelled Apache log lines and grouped related events into incidents for analysts.",
     date: "2026-09",
@@ -64,6 +84,7 @@ export const projects: Project[] = [
   },
   {
     title: "AEAC 2026 flight software",
+    slug: "aeac-2026-flight-software",
     description:
       "Autonomous flight control, gimbal control and payload systems for Blackbird UAV's competition drone: Python and C++ on Raspberry Pi and Arduino, linked over Tailscale.",
     date: "2026-05",
@@ -77,6 +98,7 @@ export const projects: Project[] = [
   },
   {
     title: "MapleVault",
+    slug: "maplevault",
     description:
       "Cryptographic provenance for Canadian defence supply chains: signed supplier attestations hash-linked across tiers, with a verifier that scored 98.3% on a 1,000-chain corpus.",
     date: "2026-05",
@@ -96,6 +118,7 @@ export const projects: Project[] = [
   },
   {
     title: "Land-cover segmentation",
+    slug: "land-cover-segmentation",
     description:
       "Auto-tuned U-Net, DeepLabV3+ and FPN models with ResNet and EfficientNet encoders on aerial imagery of BC communities, joined to ParcelMap BC parcels for West Kelowna, Logan Lake and Cumberland.",
     date: "2026-04",
@@ -108,6 +131,7 @@ export const projects: Project[] = [
   },
   {
     title: "Agent²",
+    slug: "agent2",
     description:
       "Your real estate agent's agent: text a number, take a short AI phone call about what you want, and get matched listings back by SMS.",
     date: "2026-03",
@@ -123,6 +147,7 @@ export const projects: Project[] = [
   },
   {
     title: "Carleton AI Society",
+    slug: "carleton-ai-society",
     description:
       "The club's website and documentation hub, which I now run as President.",
     date: "2026-06",
@@ -138,6 +163,7 @@ export const projects: Project[] = [
   },
   {
     title: "Plante",
+    slug: "plante",
     description:
       "A gamified, pixel-art smart plant monitor: Raspberry Pi sensors, an AI chat assistant and a museum you unlock by keeping plants alive.",
     date: "2026-01",
@@ -156,6 +182,7 @@ export const projects: Project[] = [
   },
   {
     title: "Startup Idea Validator",
+    slug: "startup-idea-validator",
     description:
       "Five AI personas stress-test a startup idea and remember earlier validations.",
     date: "2026-01",
@@ -171,6 +198,7 @@ export const projects: Project[] = [
   },
   {
     title: "Buildo",
+    slug: "buildo",
     description:
       "Describe a hardware idea in plain English and get a parts list, firmware and an assembly guide, grounded in real components.",
     date: "2026-01",
@@ -193,6 +221,7 @@ export const projects: Project[] = [
   },
   {
     title: "Shazam 4 Drones",
+    slug: "shazam-4-drones",
     description:
       "Drone detection and classification from audio signatures, built with Blackbird UAV.",
     date: "2025-11",
@@ -207,6 +236,7 @@ export const projects: Project[] = [
   },
   {
     title: "Network Threat Explorer",
+    slug: "network-threat-explorer",
     description:
       "Upload a capture and explore the traffic: Arkime and DuckDB under the hood, with Cohere summarising what looks suspicious.",
     date: "2025-09",
@@ -228,6 +258,7 @@ export const projects: Project[] = [
   },
   {
     title: "cuTunnel",
+    slug: "cutunnel",
     description:
       "Find the shortest route through Carleton's underground tunnel system with an interactive graph of the campus.",
     date: "2025-03",
@@ -244,6 +275,7 @@ export const projects: Project[] = [
   },
   {
     title: "Blackbird UAV website",
+    slug: "blackbird-uav-website",
     description:
       "Public site for Carleton's UAV design team. One of its two main contributors, with 160+ commits.",
     date: "2025-11",
@@ -259,6 +291,7 @@ export const projects: Project[] = [
   },
   {
     title: "cuHacking 2025 platform",
+    slug: "cuhacking-2025-platform",
     description:
       "Website, portal and docs for Carleton's official hackathon, in an Nx monorepo.",
     date: "2024-12",
@@ -272,6 +305,7 @@ export const projects: Project[] = [
   },
   {
     title: "Event forms automation",
+    slug: "event-forms-automation",
     description:
       "Playwright workflows that file cuHacking's event risk-management forms, saving the logistics team 10+ hours.",
     date: "2024-11",
@@ -284,6 +318,7 @@ export const projects: Project[] = [
   },
   {
     title: "Ghost hunter simulation",
+    slug: "ghost-hunter-simulation",
     description:
       "A multi-threaded ghost hunt in C: hunters and a ghost run as pthreads sharing rooms and evidence, with Valgrind-clean memory management.",
     date: "2023-11",
@@ -295,3 +330,14 @@ export const projects: Project[] = [
     tags: ["C", "pthreads", "Valgrind"],
   },
 ];
+
+/** The cards' data with each flagship project's case study attached. */
+export const projects: Project[] = entries.map((p) => ({
+  ...p,
+  caseStudy: caseStudyBySlug[p.slug],
+}));
+
+/** Projects with a case-study page, newest first. */
+export const caseStudies: CaseStudyProject[] = projects
+  .filter((p): p is CaseStudyProject => p.caseStudy !== undefined)
+  .sort((a, b) => b.date.localeCompare(a.date));

@@ -10,7 +10,7 @@ Live at [jeremy-friesen.com](https://jeremy-friesen.com).
 - No animation library: scroll reveals, the hero word rotation and magnetic hover are
   CSS transitions/keyframes driven by one `IntersectionObserver` and a few pointer handlers
 - A single-pass **WebGL** "liquid aurora" background with a CSS fallback
-- Hosted on **Vercel**; CI on GitHub Actions (`npm ci`, lint, typecheck, build, audit)
+- Hosted on **Vercel**; CI on GitHub Actions (`npm ci`, lint, typecheck, build, Playwright smoke tests, audit)
 
 ## Local development
 
@@ -25,8 +25,15 @@ Other scripts:
 npm run check      # eslint + tsc --noEmit (CI runs this and then `npm run build`)
 npm run build      # production build
 npm run preview    # build, then serve the production build
+npm run test:smoke # Playwright against the production build (run `npm run build` first)
 npm run format:write
 ```
+
+The smoke tests (`tests/`) start `next start` themselves and check that the
+pages render, the lava lamp draws, the projects grid expands, the résumé
+prints, case studies carry a link preview, and body text keeps 4.5:1 contrast
+over the moving background. They need Chromium: `npx playwright install chromium`
+once, or point `PLAYWRIGHT_CHROMIUM_PATH` at an existing one.
 
 ## Content
 

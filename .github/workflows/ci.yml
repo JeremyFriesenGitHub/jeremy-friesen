@@ -41,6 +41,15 @@ jobs:
 
       - run: npm run build
 
+      # The smoke tests (tests/) drive the production build in headless
+      # Chromium: pages render, the lamp draws, the grid expands, the résumé
+      # prints, case studies carry link previews, and text stays readable.
+      - name: Install Playwright's Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke-test the production build
+        run: npm run test:smoke
+
       # Advisory only. A new advisory can land against a production dep at any
       # time, through no fault of the PR in front of it — so this reports
       # without blocking the merge. Dependabot is what actually chases these.

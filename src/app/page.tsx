@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { LiquidBackgroundLoader } from "~/components/background/liquid-background-loader";
 import { Navbar } from "~/components/navbar";
+import { Backdrop } from "~/components/ui/backdrop";
 import { Hero } from "~/components/sections/hero";
 import { About } from "~/components/sections/about";
 import { Experience } from "~/components/sections/experience";
@@ -46,11 +46,7 @@ const personJsonLd = {
 export default function Home() {
   return (
     <>
-      <LiquidBackgroundLoader />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 noise opacity-[0.035] dark:opacity-[0.045] print:hidden"
-      />
+      <Backdrop />
       <Navbar />
       <main id="main" className="relative z-10">
         <Hero />

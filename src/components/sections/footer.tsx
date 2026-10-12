@@ -3,10 +3,25 @@ import { Year } from "~/components/ui/year";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 
 const elsewhere = [
-  { href: socialLinks.github, label: "GitHub", icon: "github" },
-  { href: socialLinks.linkedin, label: "LinkedIn", icon: "linkedin" },
-  { href: socialLinks.devpost, label: "Devpost", icon: "devpost" },
-  { href: socialLinks.resume, label: "Resume", icon: "file-text" },
+  { href: socialLinks.github, label: "GitHub", icon: "github", external: true },
+  {
+    href: socialLinks.linkedin,
+    label: "LinkedIn",
+    icon: "linkedin",
+    external: true,
+  },
+  {
+    href: socialLinks.devpost,
+    label: "Devpost",
+    icon: "devpost",
+    external: true,
+  },
+  {
+    href: socialLinks.resume,
+    label: "Resume",
+    icon: "file-text",
+    external: false,
+  },
 ] as const;
 
 const stack = [
@@ -80,12 +95,13 @@ export function Footer() {
                 Elsewhere
               </p>
               <ul className="mt-3 space-y-2">
-                {elsewhere.map(({ href, label, icon }) => (
+                {elsewhere.map(({ href, label, icon, external }) => (
                   <li key={label}>
                     <a
                       href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...(external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
                       className={linkClass}
                     >
                       <Icon name={icon} size={14} />
