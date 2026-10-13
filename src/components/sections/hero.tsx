@@ -157,7 +157,7 @@ export function Hero() {
             <SiDevpost size={18} aria-hidden="true" />
             Devpost
           </GlassButton>
-          <GlassButton href={socialLinks.resume} size="lg">
+          <GlassButton href={socialLinks.resume} external size="lg">
             <LuFileText size={18} aria-hidden="true" />
             Resume
           </GlassButton>

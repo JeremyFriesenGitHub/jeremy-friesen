@@ -494,8 +494,8 @@
   }
 }
 
-/* Paper is white whatever the theme: the résumé (app/resume) prints from
-   the same tokens the screen uses, so the dark set is overridden here. */
+/* Paper is white whatever the theme: a printed page uses the same tokens
+   the screen does, so the dark set is overridden here. */
 @media print {
   @page {
     margin: 12mm 14mm;

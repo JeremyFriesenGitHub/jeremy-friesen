@@ -118,28 +118,6 @@ test("the effects toggle pauses the lamp and the choice persists", async ({
   await expect(page.locator("canvas")).toHaveCount(1);
 });
 
-test("the résumé is built from the site's data and prints clean", async ({
-  page,
-}) => {
-  await page.goto("/resume", { waitUntil: "networkidle" });
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Jeremy Friesen",
-  );
-  await expect(
-    page.getByRole("heading", { name: "Experience", level: 2 }),
-  ).toBeVisible();
-  await expect(page.getByText("Government of Canada").first()).toBeVisible();
-  const print = page.getByRole("button", { name: "Download PDF" });
-  await expect(print).toBeVisible();
-
-  await page.emulateMedia({ media: "print" });
-  await expect(print).toBeHidden();
-  const bg = await page.evaluate(
-    () => getComputedStyle(document.body).backgroundColor,
-  );
-  expect(bg).toBe("rgb(255, 255, 255)");
-});
-
 test("case studies have their own page, link preview and sitemap entry", async ({
   page,
   request,

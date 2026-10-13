@@ -30,8 +30,8 @@ npm run format:write
 ```
 
 The smoke tests (`tests/`) start `next start` themselves and check that the
-pages render, the lava lamp draws, the projects grid expands, the résumé
-prints, case studies carry a link preview, and body text keeps 4.5:1 contrast
+pages render, the lava lamp draws, the projects grid expands, case studies
+carry a link preview, and body text keeps 4.5:1 contrast
 over the moving background. They need Chromium: `npx playwright install chromium`
 once, or point `PLAYWRIGHT_CHROMIUM_PATH` at an existing one.
 
