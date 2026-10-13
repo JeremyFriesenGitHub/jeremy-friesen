@@ -1,6 +1,6 @@
 export const socialLinks = {
-  /** Built from the data files (app/resume); "Download PDF" there prints it. */
-  resume: "/resume",
+  resume:
+    "https://drive.google.com/file/d/1DmrlFnYDeuEydZJNtONpJW-0bkdkTIu-/view?usp=sharing",
   github: "https://github.com/JeremyFriesenGitHub",
   linkedin: "https://www.linkedin.com/in/jeremyfriesen1",
   devpost: "https://devpost.com/JeremyFriesenGitHub",

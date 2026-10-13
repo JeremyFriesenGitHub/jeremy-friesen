@@ -141,6 +141,8 @@ export function Navbar() {
           <ThemeToggle />
           <a
             href={socialLinks.resume}
+            target="_blank"
+            rel="noopener noreferrer"
             className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 lg:inline-flex"
           >
             <LuFileText size={16} aria-hidden="true" />
@@ -207,6 +209,8 @@ export function Navbar() {
             </div>
             <a
               href={socialLinks.resume}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background"
             >
               <LuFileText size={16} aria-hidden="true" />
