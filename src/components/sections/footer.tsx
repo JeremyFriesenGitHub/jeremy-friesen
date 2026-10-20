@@ -41,9 +41,11 @@ export function Footer() {
               </span>
               {profile.name}
             </a>
-            <p className="mt-3 text-sm text-pretty text-muted-foreground">
-              {profile.tagline}
-            </p>
+            {profile.tagline && (
+              <p className="mt-3 text-sm text-pretty text-muted-foreground">
+                {profile.tagline}
+              </p>
+            )}
             <div className="mt-5 flex items-center gap-2">
               {elsewhere.slice(0, 3).map(({ href, label, icon }) => (
                 <a

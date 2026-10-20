@@ -47,7 +47,6 @@ export function Hackathons() {
       <SectionHeading
         eyebrow="Hackathons"
         title="Built in 24 to 36 hours."
-        description="Hack the North, ConUHacks, uOttaHack, cuHacking, AGI Ventures Canada and more. Devpost has the full record."
         action={
           <GlassButton href={socialLinks.devpost} external>
             <Icon name="devpost" size={16} />
@@ -107,9 +106,11 @@ export function Hackathons() {
                       {p.title}
                     </a>
                   </h3>
-                  <p className="mt-2 text-sm text-pretty text-muted-foreground">
-                    {p.tagline}
-                  </p>
+                  {p.tagline && (
+                    <p className="mt-2 text-sm text-pretty text-muted-foreground">
+                      {p.tagline}
+                    </p>
+                  )}
 
                   {p.award && (
                     <p className="mt-3 flex items-start gap-1.5 text-sm font-medium text-(--item-accent)">

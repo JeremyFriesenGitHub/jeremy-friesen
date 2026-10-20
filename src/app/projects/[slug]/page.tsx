@@ -12,7 +12,7 @@ import { ThemeToggle } from "~/components/ui/theme-toggle";
 import { caseStudies } from "~/data/projects";
 import { profile } from "~/data/social-links";
 import { formatMonth, linkHost } from "~/lib/dates";
-import { siteName, siteUrl } from "~/lib/site";
+import { siteDescription, siteName, siteUrl } from "~/lib/site";
 
 export const dynamicParams = false;
 
@@ -26,16 +26,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = caseStudies.find((p) => p.slug === slug);
   if (!project) return {};
+  const description = project.caseStudy.summary || siteDescription;
   return {
     title: project.title,
-    description: project.caseStudy.summary,
+    description,
     alternates: { canonical: `/projects/${slug}` },
     openGraph: {
       type: "article",
       url: `${siteUrl}/projects/${slug}`,
       siteName,
       title: `${project.title} · ${siteName}`,
-      description: project.caseStudy.summary,
+      description,
       locale: "en_CA",
     },
   };
@@ -72,7 +73,7 @@ export default async function ProjectPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     name: project.title,
-    description: caseStudy.summary,
+    description: caseStudy.summary || siteDescription,
     url: `${siteUrl}/projects/${slug}`,
     codeRepository: project.repo ?? project.url,
     programmingLanguage: project.tags,
@@ -120,9 +121,11 @@ export default async function ProjectPage({ params }: Props) {
         <h1 className="mt-3 text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
           {project.title}
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-pretty text-muted-foreground sm:text-xl">
-          {caseStudy.summary}
-        </p>
+        {caseStudy.summary && (
+          <p className="mt-4 max-w-2xl text-lg text-pretty text-muted-foreground sm:text-xl">
+            {caseStudy.summary}
+          </p>
+        )}
         {project.note && (
           <p
             className={
@@ -190,23 +193,29 @@ export default async function ProjectPage({ params }: Props) {
         )}
 
         <div className="glass mt-10 rounded-3xl p-6 sm:p-10">
-          <Block title="The problem">
-            {caseStudy.problem.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </Block>
-          <Block title="The approach">
-            <ul className="list-disc space-y-2 pl-5">
-              {caseStudy.approach.map((a) => (
-                <li key={a}>{a}</li>
+          {caseStudy.problem.length > 0 && (
+            <Block title="The problem">
+              {caseStudy.problem.map((p) => (
+                <p key={p}>{p}</p>
               ))}
-            </ul>
-          </Block>
-          <Block title="The result">
-            {caseStudy.result.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </Block>
+            </Block>
+          )}
+          {caseStudy.approach.length > 0 && (
+            <Block title="The approach">
+              <ul className="list-disc space-y-2 pl-5">
+                {caseStudy.approach.map((a) => (
+                  <li key={a}>{a}</li>
+                ))}
+              </ul>
+            </Block>
+          )}
+          {caseStudy.result.length > 0 && (
+            <Block title="The result">
+              {caseStudy.result.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
+            </Block>
+          )}
           {caseStudy.role && (
             <Block title="My role">
               <p>{caseStudy.role}</p>
@@ -246,9 +255,11 @@ export default async function ProjectPage({ params }: Props) {
                         className="shrink-0 text-muted-foreground"
                       />
                     </span>
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      {p.caseStudy.summary}
-                    </span>
+                    {p.caseStudy.summary && (
+                      <span className="mt-1 block text-sm text-muted-foreground">
+                        {p.caseStudy.summary}
+                      </span>
+                    )}
                   </Link>
                 </li>
               ))}

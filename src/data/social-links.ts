@@ -18,28 +18,14 @@ export const profile = {
   location: "Ottawa, ON",
   /** Rotates through the hero headline. */
   focus: ["Security", "Cloud & DevOps", "AI/ML", "Data Science"],
-  tagline:
-    "I build secure, data-driven software, from cloud infrastructure and DevSecOps to AI/ML.",
+  /** TODO: Jeremy to write. Hidden while empty. */
+  tagline: "",
 } as const;
 
 export const aboutText = {
-  intro:
-    "I'm a fourth-year Computer Science student at Carleton University, a Cyber Security Intern with the Government of Canada, and President of the Carleton AI Society.",
-  points: [
-    {
-      text: "Committed to",
-      highlight: "continuous learning & improvement",
-    },
-    {
-      text: "Passionate about and experienced in",
-      highlight:
-        "data science & analysis, software development, cloud & IT infrastructure, DevSecOps, and AI/ML",
-    },
-    {
-      text: "Happiest when",
-      highlight: "building with a team, on campus or at a hackathon",
-    },
-  ],
+  /** TODO: Jeremy to write. Hidden while empty. */
+  intro: "",
+  points: [] as { text: string; highlight: string }[],
   /** Devpost interests, surfaced as chips. */
   interests: [
     "DevOps",

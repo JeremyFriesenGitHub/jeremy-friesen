@@ -39,7 +39,6 @@ export function Projects() {
       <SectionHeading
         eyebrow="Projects"
         title="Selected work, newest first."
-        description="Hackathon builds, club platforms, research code and open-source tools. The flagship projects open a case study; the rest link to Devpost, a demo video, the live site or the source."
         action={
           <GlassButton href={socialLinks.github} external>
             <Icon name="github" size={16} />
@@ -148,9 +147,11 @@ export function Projects() {
                     size={18}
                   />
                 </div>
-                <p className="mt-3 text-sm text-pretty text-muted-foreground">
-                  {project.description}
-                </p>
+                {project.description && (
+                  <p className="mt-3 text-sm text-pretty text-muted-foreground">
+                    {project.description}
+                  </p>
+                )}
                 {project.note && (
                   <p
                     className={cn(

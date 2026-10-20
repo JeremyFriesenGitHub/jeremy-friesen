@@ -8,11 +8,7 @@ import { skillCategories } from "~/data/skills";
 export function Skills() {
   return (
     <Section id="skills">
-      <SectionHeading
-        eyebrow="Skills"
-        title="Tools I reach for."
-        description="Languages, frameworks and platforms from my resume and recent projects, grouped by where they fit in the stack."
-      />
+      <SectionHeading eyebrow="Skills" title="Tools I reach for." />
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {skillCategories.map((category, i) => (

@@ -13,7 +13,6 @@ export function Community() {
       <SectionHeading
         eyebrow="Community"
         title="Clubs, teams and the people behind them."
-        description="Leadership and volunteer work across Carleton's tech community: running a society, leading a drone software team, and building the tools behind a hackathon."
       />
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -78,17 +77,19 @@ export function Community() {
                     ))}
                   </ul>
 
-                  <ul className="mt-4 space-y-2 border-t border-border/70 pt-4 text-sm text-muted-foreground">
-                    {role.highlights.map((h) => (
-                      <li key={h} className="flex gap-2.5">
-                        <span
-                          aria-hidden="true"
-                          className="mt-2 size-1.5 shrink-0 rounded-full bg-(--item-accent)"
-                        />
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {role.highlights.length > 0 && (
+                    <ul className="mt-4 space-y-2 border-t border-border/70 pt-4 text-sm text-muted-foreground">
+                      {role.highlights.map((h) => (
+                        <li key={h} className="flex gap-2.5">
+                          <span
+                            aria-hidden="true"
+                            className="mt-2 size-1.5 shrink-0 rounded-full bg-(--item-accent)"
+                          />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </GlassCard>
               </Reveal>
             </li>

@@ -14,7 +14,6 @@ export function Experience() {
       <SectionHeading
         eyebrow="Experience"
         title="Internships across the public sector."
-        description="Security, cloud, IT and data science roles with the Government of Canada, the RCMP and the National Research Council."
       />
 
       <div className="relative mx-auto max-w-3xl">
