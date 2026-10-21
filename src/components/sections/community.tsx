@@ -5,6 +5,7 @@ import { OrgLogo } from "~/components/ui/org-logo";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { communityRoles } from "~/data/community";
 
 export function Community() {
@@ -12,7 +13,8 @@ export function Community() {
     <Section id="community">
       <SectionHeading
         eyebrow="Community"
-        title="Clubs, teams and the people behind them."
+        title={copy.community.title}
+        description={copy.community.description}
       />
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -49,9 +51,11 @@ export function Community() {
                           />
                         </a>
                       </h3>
-                      <p className="mt-0.5 text-sm text-muted-foreground">
-                        {role.blurb}
-                      </p>
+                      {role.blurb && (
+                        <p className="mt-0.5 text-sm text-muted-foreground">
+                          {role.blurb}
+                        </p>
+                      )}
                     </div>
                   </div>
 

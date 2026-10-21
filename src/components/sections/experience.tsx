@@ -6,6 +6,7 @@ import { OrgLogo } from "~/components/ui/org-logo";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { experiences } from "~/data/experience";
 
 export function Experience() {
@@ -13,7 +14,8 @@ export function Experience() {
     <Section id="experience">
       <SectionHeading
         eyebrow="Experience"
-        title="Internships across the public sector."
+        title={copy.experience.title}
+        description={copy.experience.description}
       />
 
       <div className="relative mx-auto max-w-3xl">

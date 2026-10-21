@@ -4,11 +4,12 @@ export interface CommunityRole {
   org: string;
   /** The organization's mark, square, under public/logos. */
   logo?: string;
-  /** What the organization is, in a few words. */
+  /** What the organization is, in a few words. TODO: Jeremy to write. Hidden while empty. */
   blurb: string;
   url: string;
   /** Most recent role first. */
   roles: { title: string; date: string }[];
+  /** TODO: Jeremy to write. Hidden while empty. */
   highlights: string[];
   icon: CommunityIcon;
   accent: { dark: string; light: string };
@@ -19,7 +20,7 @@ export const communityRoles: CommunityRole[] = [
   {
     org: "Carleton AI Society",
     logo: "/logos/carleton-ai-society.webp",
-    blurb: "Carleton's AI and machine learning club, 100+ members",
+    blurb: "",
     url: "https://carletonai.com",
     roles: [
       { title: "President", date: "May 2026 - Present" },
@@ -32,7 +33,7 @@ export const communityRoles: CommunityRole[] = [
   {
     org: "Blackbird UAV",
     logo: "/logos/blackbird-uav.webp",
-    blurb: "Carleton's UAV engineering and design team",
+    blurb: "",
     url: "https://blackbirduav.ca",
     roles: [{ title: "Software Lead", date: "Jul 2025 - Aug 2026" }],
     highlights: [],
@@ -42,7 +43,7 @@ export const communityRoles: CommunityRole[] = [
   {
     org: "cuHacking",
     logo: "/logos/cuhacking.webp",
-    blurb: "Carleton University's official hackathon",
+    blurb: "",
     url: "https://cuhacking.ca",
     roles: [
       { title: "Judge", date: "Jul 2026" },
@@ -55,7 +56,7 @@ export const communityRoles: CommunityRole[] = [
   {
     org: "Carleton Computer Science Society",
     logo: "/logos/carleton-computer-science-society.webp",
-    blurb: "The student society for Carleton's CS program",
+    blurb: "",
     url: "https://ccss.carleton.ca",
     roles: [
       { title: "Developer", date: "Summer 2025" },

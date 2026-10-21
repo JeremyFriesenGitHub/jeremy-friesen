@@ -34,6 +34,7 @@ export interface Project {
   title: string;
   /** URL segment: /projects/[slug] when there is a case study. */
   slug: string;
+  /** TODO: Jeremy to write. Hidden while empty. */
   description: string;
   /** Month the project shipped or was last worked on, as YYYY-MM. Cards sort by it. */
   date: string;

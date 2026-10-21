@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { copy } from "~/data/copy";
 import { LuArrowLeft } from "react-icons/lu";
 import { GlassButton } from "~/components/ui/glass-button";
 
@@ -25,9 +26,11 @@ export default function NotFound() {
         <h1 className="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
           Page not found
         </h1>
-        <p className="mt-3 text-pretty text-muted-foreground">
-          There is nothing at this address. Everything lives on the home page.
-        </p>
+        {copy.notFound.body && (
+          <p className="mt-3 text-pretty text-muted-foreground">
+            {copy.notFound.body}
+          </p>
+        )}
         <GlassButton href="/" variant="primary" className="mt-8">
           <LuArrowLeft size={16} aria-hidden="true" />
           Back home

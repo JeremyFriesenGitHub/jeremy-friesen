@@ -7,6 +7,7 @@
  */
 export interface HackathonProject {
   title: string;
+  /** TODO: Jeremy to write. Hidden while empty. */
   tagline: string;
   hackathon: string;
   /** Month the hackathon ran, when known. */
@@ -27,6 +28,7 @@ export interface HackathonProject {
 
 export interface JudgingRole {
   event: string;
+  /** Who ran it. TODO: Jeremy to write. Hidden while empty. */
   organizer: string;
   date: string;
   url: string;
@@ -39,7 +41,7 @@ export interface JudgingRole {
 export const judging: JudgingRole[] = [
   {
     event: "cuHacking 2026",
-    organizer: "Carleton University's official hackathon",
+    organizer: "",
     date: "Jul 2026",
     url: "https://cuhacking.ca",
   },

@@ -18,14 +18,9 @@ export const profile = {
   location: "Ottawa, ON",
   /** Rotates through the hero headline. */
   focus: ["Security", "Cloud & DevOps", "AI/ML", "Data Science"],
-  /** TODO: Jeremy to write. Hidden while empty. */
-  tagline: "",
 } as const;
 
 export const aboutText = {
-  /** TODO: Jeremy to write. Hidden while empty. */
-  intro: "",
-  points: [] as { text: string; highlight: string }[],
   /** Devpost interests, surfaced as chips. */
   interests: [
     "DevOps",

@@ -7,6 +7,7 @@ import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { ShowMore } from "~/components/ui/show-more";
 import { projects } from "~/data/projects";
 import { socialLinks } from "~/data/social-links";
@@ -38,7 +39,8 @@ export function Projects() {
     <Section id="projects">
       <SectionHeading
         eyebrow="Projects"
-        title="Selected work, newest first."
+        title={copy.projects.title}
+        description={copy.projects.description}
         action={
           <GlassButton href={socialLinks.github} external>
             <Icon name="github" size={16} />

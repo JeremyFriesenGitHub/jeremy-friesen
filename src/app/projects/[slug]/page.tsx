@@ -73,7 +73,9 @@ export default async function ProjectPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     name: project.title,
-    description: caseStudy.summary || siteDescription,
+    ...(caseStudy.summary || siteDescription
+      ? { description: caseStudy.summary || siteDescription }
+      : {}),
     url: `${siteUrl}/projects/${slug}`,
     codeRepository: project.repo ?? project.url,
     programmingLanguage: project.tags,

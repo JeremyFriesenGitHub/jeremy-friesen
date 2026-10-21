@@ -6,7 +6,7 @@ export interface Experience {
   location: string;
   country: string;
   date: string;
-  /** One or two lines from the resume, when the role has them. */
+  /** TODO: Jeremy to write. Hidden while empty. */
   highlights: string[];
   color: string;
   colorLight: string;

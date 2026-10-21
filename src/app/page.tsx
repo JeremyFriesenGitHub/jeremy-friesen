@@ -9,9 +9,8 @@ import { Projects } from "~/components/sections/projects";
 import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
 import { Footer } from "~/components/sections/footer";
-import { hackathonStats } from "~/data/hackathons";
 import { profile, socialLinks } from "~/data/social-links";
-import { siteName, siteUrl } from "~/lib/site";
+import { siteDescription, siteName, siteUrl } from "~/lib/site";
 
 /** The canonical URL and Open Graph card are the home page's, not every route's. */
 export const metadata: Metadata = {
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName,
     title: siteName,
-    description: `CS student at Carleton University: security, cloud infrastructure, data science and AI/ML. ${hackathonStats.wins}× hackathon winner.`,
+    description: siteDescription,
     locale: "en_CA",
   },
 };

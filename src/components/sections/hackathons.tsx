@@ -5,6 +5,7 @@ import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import {
   hackathonProjects,
   hackathonStats,
@@ -46,7 +47,8 @@ export function Hackathons() {
     <Section id="hackathons">
       <SectionHeading
         eyebrow="Hackathons"
-        title="Built in 24 to 36 hours."
+        title={copy.hackathons.title}
+        description={copy.hackathons.description}
         action={
           <GlassButton href={socialLinks.devpost} external>
             <Icon name="devpost" size={16} />
@@ -201,9 +203,11 @@ export function Hackathons() {
             </span>
             <div>
               <h3 className="font-semibold tracking-tight">Judging</h3>
-              <p className="text-xs text-muted-foreground">
-                On the panel, not the podium.
-              </p>
+              {copy.hackathons.judgingNote && (
+                <p className="text-xs text-muted-foreground">
+                  {copy.hackathons.judgingNote}
+                </p>
+              )}
             </div>
           </div>
           <ul className="grid flex-1 gap-3 md:grid-cols-2">
@@ -219,9 +223,11 @@ export function Hackathons() {
                     <span className="block text-sm font-medium">
                       Judge · {j.event}
                     </span>
-                    <span className="block text-xs text-pretty text-muted-foreground">
-                      {j.organizer}
-                    </span>
+                    {j.organizer && (
+                      <span className="block text-xs text-pretty text-muted-foreground">
+                        {j.organizer}
+                      </span>
+                    )}
                   </span>
                   <span className="shrink-0 font-mono text-xs font-medium text-muted-foreground">
                     {j.date}
