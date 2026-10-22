@@ -7,6 +7,7 @@ import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { ShowMore } from "~/components/ui/show-more";
 import { projects } from "~/data/projects";
 import { socialLinks } from "~/data/social-links";
@@ -38,8 +39,8 @@ export function Projects() {
     <Section id="projects">
       <SectionHeading
         eyebrow="Projects"
-        title="Selected work, newest first."
-        description="Hackathon builds, club platforms, research code and open-source tools. The flagship projects open a case study; the rest link to Devpost, a demo video, the live site or the source."
+        title={copy.projects.title}
+        description={copy.projects.description}
         action={
           <GlassButton href={socialLinks.github} external>
             <Icon name="github" size={16} />
@@ -148,9 +149,11 @@ export function Projects() {
                     size={18}
                   />
                 </div>
-                <p className="mt-3 text-sm text-pretty text-muted-foreground">
-                  {project.description}
-                </p>
+                {project.description && (
+                  <p className="mt-3 text-sm text-pretty text-muted-foreground">
+                    {project.description}
+                  </p>
+                )}
                 {project.note && (
                   <p
                     className={cn(

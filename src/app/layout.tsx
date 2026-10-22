@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, IBM_Plex_Mono } from "next/font/google";
-import { siteDescription, siteName, siteUrl } from "~/lib/site";
+import { siteDescription, siteName, siteTitle, siteUrl } from "~/lib/site";
 import { THEME_COLOR } from "~/lib/theme";
 import "~/app/globals.css";
 
@@ -20,7 +20,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${siteName} | CS @ Carleton · Security, Cloud & AI/ML`,
+    default: siteTitle,
     template: `%s · ${siteName}`,
   },
   description: siteDescription,
@@ -41,8 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteName,
-    description:
-      "CS student at Carleton University: security, cloud infrastructure, data science and AI/ML.",
+    description: siteDescription,
   },
 };
 

@@ -5,6 +5,7 @@ import { OrgLogo } from "~/components/ui/org-logo";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { communityRoles } from "~/data/community";
 
 export function Community() {
@@ -12,8 +13,8 @@ export function Community() {
     <Section id="community">
       <SectionHeading
         eyebrow="Community"
-        title="Clubs, teams and the people behind them."
-        description="Leadership and volunteer work across Carleton's tech community: running a society, leading a drone software team, and building the tools behind a hackathon."
+        title={copy.community.title}
+        description={copy.community.description}
       />
 
       <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -50,9 +51,11 @@ export function Community() {
                           />
                         </a>
                       </h3>
-                      <p className="mt-0.5 text-sm text-muted-foreground">
-                        {role.blurb}
-                      </p>
+                      {role.blurb && (
+                        <p className="mt-0.5 text-sm text-muted-foreground">
+                          {role.blurb}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -78,17 +81,19 @@ export function Community() {
                     ))}
                   </ul>
 
-                  <ul className="mt-4 space-y-2 border-t border-border/70 pt-4 text-sm text-muted-foreground">
-                    {role.highlights.map((h) => (
-                      <li key={h} className="flex gap-2.5">
-                        <span
-                          aria-hidden="true"
-                          className="mt-2 size-1.5 shrink-0 rounded-full bg-(--item-accent)"
-                        />
-                        <span>{h}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {role.highlights.length > 0 && (
+                    <ul className="mt-4 space-y-2 border-t border-border/70 pt-4 text-sm text-muted-foreground">
+                      {role.highlights.map((h) => (
+                        <li key={h} className="flex gap-2.5">
+                          <span
+                            aria-hidden="true"
+                            className="mt-2 size-1.5 shrink-0 rounded-full bg-(--item-accent)"
+                          />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </GlassCard>
               </Reveal>
             </li>

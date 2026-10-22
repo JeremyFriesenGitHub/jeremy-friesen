@@ -5,6 +5,7 @@ import { Icon } from "~/components/ui/icon";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { aboutText, profile, socialLinks } from "~/data/social-links";
 
 const facts = [
@@ -24,8 +25,8 @@ export function About() {
     <Section id="about">
       <SectionHeading
         eyebrow="About"
-        title="Security-minded builder, data-driven by habit."
-        description={profile.tagline}
+        title={copy.about.title}
+        description={copy.about.description}
       />
 
       <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
@@ -83,28 +84,32 @@ export function About() {
         <Reveal delay={0.08}>
           <GlassCard className="flex h-full flex-col justify-between gap-8 p-6 sm:p-8">
             <div>
-              <p className="text-lg leading-relaxed text-pretty sm:text-xl">
-                {aboutText.intro}
-              </p>
-              <ul className="mt-6 space-y-3">
-                {aboutText.points.map((point) => (
-                  <li
-                    key={point.highlight}
-                    className="flex gap-3 text-base text-muted-foreground"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-2.5 size-1.5 shrink-0 rounded-full bg-linear-to-r from-primary to-accent"
-                    />
-                    <span>
-                      {point.text}{" "}
-                      <strong className="font-semibold text-foreground">
-                        {point.highlight}
-                      </strong>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {copy.about.intro && (
+                <p className="text-lg leading-relaxed text-pretty sm:text-xl">
+                  {copy.about.intro}
+                </p>
+              )}
+              {copy.about.points.length > 0 && (
+                <ul className="mt-6 space-y-3 first:mt-0">
+                  {copy.about.points.map((point) => (
+                    <li
+                      key={point.highlight}
+                      className="flex gap-3 text-base text-muted-foreground"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-2.5 size-1.5 shrink-0 rounded-full bg-linear-to-r from-primary to-accent"
+                      />
+                      <span>
+                        {point.text}{" "}
+                        <strong className="font-semibold text-foreground">
+                          {point.highlight}
+                        </strong>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div>
               <p className="font-mono text-[11px] font-semibold tracking-[0.2em] text-muted-foreground uppercase">

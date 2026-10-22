@@ -76,9 +76,11 @@ export default async function OpenGraphImage({
         >
           {project.title}
         </div>
-        <div style={{ fontSize: 32, color: "#c4c7d9", lineHeight: 1.3 }}>
-          {project.caseStudy.summary}
-        </div>
+        {project.caseStudy.summary && (
+          <div style={{ fontSize: 32, color: "#c4c7d9", lineHeight: 1.3 }}>
+            {project.caseStudy.summary}
+          </div>
+        )}
       </div>
       <div style={{ display: "flex", gap: 14, fontSize: 24, color: "#c4c7d9" }}>
         <span>{formatMonth(project.date)}</span>

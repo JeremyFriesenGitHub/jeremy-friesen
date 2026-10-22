@@ -132,10 +132,7 @@ test("case studies have their own page, link preview and sitemap entry", async (
   await page.goto(`/projects/${slug}`, { waitUntil: "networkidle" });
   const title = await page.getByRole("heading", { level: 1 }).textContent();
   expect(title?.trim().length).toBeGreaterThan(0);
-  await expect(
-    page.getByRole("heading", { name: "The problem" }),
-  ).toBeVisible();
-  await expect(page.getByRole("heading", { name: "The result" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Built with" })).toBeVisible();
 
   const ogImage = await page
     .locator('meta[property="og:image"]')
@@ -160,9 +157,9 @@ for (const theme of ["light", "dark"] as const) {
     const probes = [
       "#top > div.relative > p",
       'nav[aria-label="Primary"] ul',
-      "#about .reveal.mb-10 p.text-muted-foreground",
-      "#projects .reveal.mb-10 p.text-muted-foreground",
-      "#skills .reveal.mb-10 p.text-muted-foreground",
+      "#experience p.text-muted-foreground",
+      "#community li span.text-sm",
+      "#hackathons p.text-muted-foreground",
     ];
     for (const selector of probes) {
       const result = await worstContrast(page, selector);

@@ -13,6 +13,7 @@ import { RotatingWord } from "~/components/sections/rotating-word";
 import { GlassButton } from "~/components/ui/glass-button";
 import { hackathonStats } from "~/data/hackathons";
 import { experiences } from "~/data/experience";
+import { copy } from "~/data/copy";
 import { profile, socialLinks } from "~/data/social-links";
 import { cn } from "~/lib/utils";
 
@@ -129,21 +130,24 @@ export function Hero() {
           </span>
         </h1>
 
-        <p
-          className="mt-7 max-w-2xl animate-fade-up text-lg text-pretty text-muted-foreground sm:text-xl md:text-2xl"
-          style={delay(160)}
-        >
-          {profile.program} student at {profile.school}, building secure,
-          data-driven software.
-          {/* Own line: the word's width can change without reflowing the sentence above. */}
-          <span className="mt-2 block">
-            Currently focused on{" "}
-            <RotatingWord
-              words={profile.focus}
-              className="font-semibold text-foreground"
-            />
-          </span>
-        </p>
+        {(copy.hero.tagline || copy.hero.focusLead) && (
+          <p
+            className="mt-7 max-w-2xl animate-fade-up text-lg text-pretty text-muted-foreground sm:text-xl md:text-2xl"
+            style={delay(160)}
+          >
+            {copy.hero.tagline}
+            {copy.hero.focusLead && (
+              /* Own line: the word's width can change without reflowing the sentence above. */
+              <span className={copy.hero.tagline ? "mt-2 block" : "block"}>
+                {copy.hero.focusLead}{" "}
+                <RotatingWord
+                  words={profile.focus}
+                  className="font-semibold text-foreground"
+                />
+              </span>
+            )}
+          </p>
+        )}
 
         <div
           className="mt-9 flex animate-fade-up flex-wrap items-center justify-center gap-3"

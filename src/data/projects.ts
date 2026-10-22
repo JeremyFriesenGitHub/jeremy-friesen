@@ -34,6 +34,7 @@ export interface Project {
   title: string;
   /** URL segment: /projects/[slug] when there is a case study. */
   slug: string;
+  /** TODO: Jeremy to write. Hidden while empty. */
   description: string;
   /** Month the project shipped or was last worked on, as YYYY-MM. Cards sort by it. */
   date: string;
@@ -66,8 +67,7 @@ const entries: Project[] = [
   {
     title: "Trace",
     slug: "trace",
-    description:
-      "AI-assisted security investigation. Unsupervised anomaly detection that found a hidden 22-event attack in 180,800 unlabelled Apache log lines and grouped related events into incidents for analysts.",
+    description: "",
     date: "2026-09",
     url: "https://devpost.com/software/loggr",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
@@ -85,8 +85,7 @@ const entries: Project[] = [
   {
     title: "AEAC 2026 flight software",
     slug: "aeac-2026-flight-software",
-    description:
-      "Autonomous flight control, gimbal control and payload systems for Blackbird UAV's competition drone: Python and C++ on Raspberry Pi and Arduino, linked over Tailscale.",
+    description: "",
     date: "2026-05",
     url: "https://github.com/Blackbird-UAV",
     images: [],
@@ -99,8 +98,7 @@ const entries: Project[] = [
   {
     title: "MapleVault",
     slug: "maplevault",
-    description:
-      "Cryptographic provenance for Canadian defence supply chains: signed supplier attestations hash-linked across tiers, with a verifier that scored 98.3% on a 1,000-chain corpus.",
+    description: "",
     date: "2026-05",
     url: "https://devpost.com/software/ctl-claude-del",
     repo: "https://github.com/JowiAoun/MapleVault",
@@ -119,8 +117,7 @@ const entries: Project[] = [
   {
     title: "Land-cover segmentation",
     slug: "land-cover-segmentation",
-    description:
-      "Auto-tuned U-Net, DeepLabV3+ and FPN models with ResNet and EfficientNet encoders on aerial imagery of BC communities, joined to ParcelMap BC parcels for West Kelowna, Logan Lake and Cumberland.",
+    description: "",
     date: "2026-04",
     url: "https://github.com/JeremyFriesenGitHub/DATA5000_Project",
     images: [],
@@ -132,8 +129,7 @@ const entries: Project[] = [
   {
     title: "Agent²",
     slug: "agent2",
-    description:
-      "Your real estate agent's agent: text a number, take a short AI phone call about what you want, and get matched listings back by SMS.",
+    description: "",
     date: "2026-03",
     url: "https://devpost.com/software/agent-o3l6si",
     repo: "https://github.com/chantalzhang/genaigenesis2026",
@@ -148,8 +144,7 @@ const entries: Project[] = [
   {
     title: "Carleton AI Society",
     slug: "carleton-ai-society",
-    description:
-      "The club's website and documentation hub, which I now run as President.",
+    description: "",
     date: "2026-06",
     url: "https://carletonai.com",
     repo: "https://github.com/carletonai/cais-website",
@@ -164,8 +159,7 @@ const entries: Project[] = [
   {
     title: "Plante",
     slug: "plante",
-    description:
-      "A gamified, pixel-art smart plant monitor: Raspberry Pi sensors, an AI chat assistant and a museum you unlock by keeping plants alive.",
+    description: "",
     date: "2026-01",
     url: "https://devpost.com/software/plante",
     repo: "https://github.com/JowiAoun/Plante",
@@ -183,8 +177,7 @@ const entries: Project[] = [
   {
     title: "Startup Idea Validator",
     slug: "startup-idea-validator",
-    description:
-      "Five AI personas stress-test a startup idea and remember earlier validations.",
+    description: "",
     date: "2026-01",
     url: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
     images: [
@@ -199,8 +192,7 @@ const entries: Project[] = [
   {
     title: "Buildo",
     slug: "buildo",
-    description:
-      "Describe a hardware idea in plain English and get a parts list, firmware and an assembly guide, grounded in real components.",
+    description: "",
     date: "2026-01",
     url: "https://devpost.com/software/product-creator-temp-name-conu-x",
     repo: "https://github.com/chantalzhang/conuhacks26",
@@ -222,8 +214,7 @@ const entries: Project[] = [
   {
     title: "Shazam 4 Drones",
     slug: "shazam-4-drones",
-    description:
-      "Drone detection and classification from audio signatures, built with Blackbird UAV.",
+    description: "",
     date: "2025-11",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
     repo: "https://github.com/Blackbird-UAV/icebreaker-hackathon-2025",
@@ -237,8 +228,7 @@ const entries: Project[] = [
   {
     title: "Network Threat Explorer",
     slug: "network-threat-explorer",
-    description:
-      "Upload a capture and explore the traffic: Arkime and DuckDB under the hood, with Cohere summarising what looks suspicious.",
+    description: "",
     date: "2025-09",
     url: "https://devpost.com/software/network-threat-explorer",
     repo: "https://github.com/JeremyFriesenGitHub/nte",
@@ -259,8 +249,7 @@ const entries: Project[] = [
   {
     title: "cuTunnel",
     slug: "cutunnel",
-    description:
-      "Find the shortest route through Carleton's underground tunnel system with an interactive graph of the campus.",
+    description: "",
     date: "2025-03",
     url: "https://devpost.com/software/cu-tunnels",
     repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
@@ -276,8 +265,7 @@ const entries: Project[] = [
   {
     title: "Blackbird UAV website",
     slug: "blackbird-uav-website",
-    description:
-      "Public site for Carleton's UAV design team. One of its two main contributors, with 160+ commits.",
+    description: "",
     date: "2025-11",
     url: "https://blackbirduav.ca",
     repo: "https://github.com/Blackbird-UAV/BlackbirdUAV-Website",
@@ -292,8 +280,7 @@ const entries: Project[] = [
   {
     title: "cuHacking 2025 platform",
     slug: "cuhacking-2025-platform",
-    description:
-      "Website, portal and docs for Carleton's official hackathon, in an Nx monorepo.",
+    description: "",
     date: "2024-12",
     url: "https://cuhacking.ca",
     repo: "https://github.com/cuhacking/2025",
@@ -306,8 +293,7 @@ const entries: Project[] = [
   {
     title: "Event forms automation",
     slug: "event-forms-automation",
-    description:
-      "Playwright workflows that file cuHacking's event risk-management forms, saving the logistics team 10+ hours.",
+    description: "",
     date: "2024-11",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",
     images: [],
@@ -319,8 +305,7 @@ const entries: Project[] = [
   {
     title: "Ghost hunter simulation",
     slug: "ghost-hunter-simulation",
-    description:
-      "A multi-threaded ghost hunt in C: hunters and a ghost run as pthreads sharing rooms and evidence, with Valgrind-clean memory management.",
+    description: "",
     date: "2023-11",
     url: "https://github.com/JeremyFriesenGitHub/Multi-threaded-Ghost-Hunter-Simulation",
     images: [],

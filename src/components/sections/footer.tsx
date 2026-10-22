@@ -1,5 +1,6 @@
 import { Icon } from "~/components/ui/icon";
 import { Year } from "~/components/ui/year";
+import { copy } from "~/data/copy";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 
 const elsewhere = [
@@ -41,9 +42,11 @@ export function Footer() {
               </span>
               {profile.name}
             </a>
-            <p className="mt-3 text-sm text-pretty text-muted-foreground">
-              {profile.tagline}
-            </p>
+            {copy.footer.tagline && (
+              <p className="mt-3 text-sm text-pretty text-muted-foreground">
+                {copy.footer.tagline}
+              </p>
+            )}
             <div className="mt-5 flex items-center gap-2">
               {elsewhere.slice(0, 3).map(({ href, label, icon }) => (
                 <a

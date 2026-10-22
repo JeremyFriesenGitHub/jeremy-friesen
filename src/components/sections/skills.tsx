@@ -3,6 +3,7 @@ import { GlassCard } from "~/components/ui/glass-card";
 import { Reveal } from "~/components/ui/reveal";
 import { Section } from "~/components/ui/section";
 import { SectionHeading } from "~/components/ui/section-heading";
+import { copy } from "~/data/copy";
 import { skillCategories } from "~/data/skills";
 
 export function Skills() {
@@ -10,8 +11,8 @@ export function Skills() {
     <Section id="skills">
       <SectionHeading
         eyebrow="Skills"
-        title="Tools I reach for."
-        description="Languages, frameworks and platforms from my resume and recent projects, grouped by where they fit in the stack."
+        title={copy.skills.title}
+        description={copy.skills.description}
       />
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

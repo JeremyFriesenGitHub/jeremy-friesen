@@ -7,6 +7,7 @@
  */
 export interface HackathonProject {
   title: string;
+  /** TODO: Jeremy to write. Hidden while empty. */
   tagline: string;
   hackathon: string;
   /** Month the hackathon ran, when known. */
@@ -27,6 +28,7 @@ export interface HackathonProject {
 
 export interface JudgingRole {
   event: string;
+  /** Who ran it. TODO: Jeremy to write. Hidden while empty. */
   organizer: string;
   date: string;
   url: string;
@@ -39,7 +41,7 @@ export interface JudgingRole {
 export const judging: JudgingRole[] = [
   {
     event: "cuHacking 2026",
-    organizer: "Carleton University's official hackathon",
+    organizer: "",
     date: "Jul 2026",
     url: "https://cuhacking.ca",
   },
@@ -54,8 +56,7 @@ export const judging: JudgingRole[] = [
 export const hackathonProjects: HackathonProject[] = [
   {
     title: "Trace",
-    tagline:
-      "Unsupervised log anomaly detection that surfaced a hidden 22-event attack in 180,800 Apache log lines.",
+    tagline: "",
     hackathon: "Hack the North 2026",
     date: "Sep 2026",
     award: "1st place · CSE: Log & Order",
@@ -66,8 +67,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Buildo",
-    tagline:
-      "Describe a hardware idea in plain English and get a parts list, firmware and assembly guide.",
+    tagline: "",
     hackathon: "ConUHacks X",
     date: "Jan 2026",
     award: "MLH · Best Use of Gemini API",
@@ -79,8 +79,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Plante",
-    tagline:
-      "A gamified, pixel-art smart plant monitor with Raspberry Pi sensors and an AI chat assistant.",
+    tagline: "",
     hackathon: "uOttaHack 8",
     date: "Jan 2026",
     award: "Best Designed Hack",
@@ -92,7 +91,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Network Threat Explorer",
-    tagline: "Insightful network traffic visualization and analysis.",
+    tagline: "",
     hackathon: "Hack the North 2025",
     date: "Sep 2025",
     award: "CSE: Network Traffic Exploration",
@@ -104,8 +103,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Prodly",
-    tagline:
-      "An AI productivity platform with a Pomodoro timer, planner and assistant, judged the cleanest interface of the event.",
+    tagline: "",
     hackathon: "AGI Ventures Canada · Hackathon 3.0: Build to Convert",
     date: "Sep 2025",
     award: "Best UI",
@@ -115,8 +113,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "cuTunnel",
-    tagline:
-      "Shortest routes through Carleton's underground tunnel system, powered by Dijkstra's algorithm.",
+    tagline: "",
     hackathon: "cuHacking 6",
     date: "Mar 2025",
     award: "Wolfram Award (Top 5) · People's Choice",
@@ -128,8 +125,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Telehealth for remote regions",
-    tagline:
-      "A free telemedicine concept for communities without nearby care: symptom surveys, live chat and video consults.",
+    tagline: "",
     hackathon: "InnovateNow! 2",
     date: "Oct 2023",
     award: "3rd place",
@@ -139,7 +135,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "MapleVault",
-    tagline: "Signed attestation chains for Canadian defence procurement.",
+    tagline: "",
     hackathon: "Ottawa Defence Hackathon · Verified Canadian Supply Chains",
     date: "May 2026",
     url: "https://devpost.com/software/ctl-claude-del",
@@ -149,8 +145,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Agent²",
-    tagline:
-      "Your real estate agent's agent: text a number, take a short AI call, get matched listings by SMS.",
+    tagline: "",
     hackathon: "GenAI Genesis 2026",
     date: "Mar 2026",
     url: "https://devpost.com/software/agent-o3l6si",
@@ -161,8 +156,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Startup Idea Validator",
-    tagline:
-      "Five AI personas (VC, engineer, ethicist, user, analyst) stress-test a startup idea with persistent memory.",
+    tagline: "",
     hackathon: "AGI Ventures Canada · Hacker House Challenge",
     date: "Jan 2026",
     repo: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
@@ -171,8 +165,7 @@ export const hackathonProjects: HackathonProject[] = [
   },
   {
     title: "Shazam 4 Drones",
-    tagline:
-      "A drone classification and detection platform built with Blackbird UAV.",
+    tagline: "",
     hackathon: "Shazam for Drones Hackathon",
     date: "Nov 2025",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
