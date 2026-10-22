@@ -16,7 +16,10 @@ concurrency:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04, which Playwright 1.56 cannot install
+    # Chromium's dependencies on (1.64 can). Back to ubuntu-latest once
+    # @playwright/test is bumped past that.
+    runs-on: ubuntu-24.04
     steps:
       # Pinned to commit SHAs; Dependabot (github-actions ecosystem) keeps them current.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
