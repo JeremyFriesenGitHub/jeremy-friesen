@@ -35,7 +35,10 @@ export const communityRoles: CommunityRole[] = [
     logo: "/logos/blackbird-uav.webp",
     blurb: "",
     url: "https://blackbirduav.ca",
-    roles: [{ title: "Software Lead", date: "Jul 2025 - Aug 2026" }],
+    roles: [
+      { title: "External Collaborator", date: "Sep 2026 - Present" },
+      { title: "Software Lead", date: "Jul 2025 - Aug 2026" },
+    ],
     highlights: [],
     icon: "plane",
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
