@@ -171,4 +171,62 @@ for (const theme of ["light", "dark"] as const) {
       ).toBeGreaterThanOrEqual(need);
     }
   });
+
+  test(`nav links stay readable over the project screenshots (${theme})`, async ({
+    page,
+  }) => {
+    await openHome(page, theme);
+    await page.addStyleTag({
+      content:
+        "html { scroll-behavior: auto !important } * { animation: none !important; transition: none !important }",
+    });
+    // The bar loads clear and frosts over once screenshots are underneath.
+    const frost = page.locator(
+      'nav[aria-label="Primary"] > span[aria-hidden="true"]',
+    );
+    await expect(frost).toHaveCSS("opacity", "0");
+
+    await page.getByRole("button", { name: /Show \d+ more projects/ }).click();
+    await page.evaluate(() => (document.activeElement as HTMLElement)?.blur());
+
+    // One scroll position per row of cards: its screenshots centred behind the bar.
+    const stops = await page.evaluate(() => {
+      const bar = document
+        .querySelector('nav[aria-label="Primary"]')!
+        .getBoundingClientRect();
+      const tops = new Set<number>();
+      for (const img of document.querySelectorAll("#projects .grid img")) {
+        const r = img.getBoundingClientRect();
+        if (r.height === 0) continue;
+        tops.add(
+          Math.round(
+            scrollY + r.top + r.height / 2 - (bar.top + bar.height / 2),
+          ),
+        );
+      }
+      return [...tops];
+    });
+    expect(stops.length).toBeGreaterThan(2);
+
+    for (const top of stops) {
+      await page.evaluate((y) => scrollTo(0, y), top);
+      // Lazy screenshots: measure once the ones in view have arrived.
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll("#projects .grid img")].every((img) => {
+          const r = img.getBoundingClientRect();
+          const inView = r.height > 0 && r.bottom > 0 && r.top < innerHeight;
+          return !inView || (img as HTMLImageElement).complete;
+        }),
+      );
+      await expect(frost).toHaveCSS("opacity", "1");
+      const result = await worstContrast(page, 'nav[aria-label="Primary"] ul');
+      expect(result, "the nav links were measured").not.toBeNull();
+      expect(
+        result!.p5,
+        `nav links at scrollY ${top} (${theme}) hold 4.5:1`,
+      ).toBeGreaterThanOrEqual(requiredRatio(result!.size, result!.weight));
+      // The probe must not have moved the page off the row being measured.
+      expect(await page.evaluate(() => Math.round(scrollY))).toBe(top);
+    }
+  });
 }

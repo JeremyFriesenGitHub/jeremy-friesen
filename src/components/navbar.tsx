@@ -31,10 +31,20 @@ const socials = [
 const iconLinkClass =
   "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color] duration-200 hover:bg-foreground/8 hover:text-foreground";
 
+/**
+ * How far ahead of the bar a `data-nav-frost` region starts to count, in px:
+ * the backdrop blur reaches past the bar's edges, and the frost takes a moment
+ * to fade in. Small enough that the hero's top padding keeps its headline out
+ * of range at the top of the page, so the bar loads clear.
+ */
+const FROST_LEAD = 24;
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [frosted, setFrosted] = useState(false);
   const active = useActiveSection(sectionIds);
+  const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLButtonElement>(null);
@@ -49,12 +59,33 @@ export function Navbar() {
     if (inside) toggleRef.current?.focus();
   }, []);
 
-  // Slightly stronger shadow once the page has scrolled.
+  // Slightly stronger shadow once the page has scrolled, and frosted glass
+  // while a `data-nav-frost` region (the hero's headline and button, the grid
+  // of screenshots) is under the bar: clear glass holds the links' contrast
+  // over the lamp and the glass cards, but not with display type, a solid
+  // fill or an arbitrary image on top of that.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const regions = Array.from(document.querySelectorAll("[data-nav-frost]"));
+    const update = () => {
+      setScrolled(window.scrollY > 24);
+      const bar = navRef.current?.getBoundingClientRect();
+      setFrosted(
+        bar !== undefined &&
+          regions.some((region) => {
+            const r = region.getBoundingClientRect();
+            return (
+              r.top < bar.bottom + FROST_LEAD && r.bottom > bar.top - FROST_LEAD
+            );
+          }),
+      );
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   // While open: Escape closes, body scroll is locked, and growing past the
@@ -95,6 +126,7 @@ export function Navbar() {
       )}
 
       <nav
+        ref={navRef}
         aria-label="Primary"
         className={cn(
           // Phones: a full-width bar, brand left and menu right. From md the
@@ -106,6 +138,16 @@ export function Navbar() {
             "shadow-[inset_0_1px_0_0_var(--glass-hi),inset_0_-1px_0_0_var(--glass-lo),0_18px_50px_-20px_var(--glass-shadow)]",
         )}
       >
+        {/* Extra tint over the clear fill, faded in while frosted. It stays on
+            when scripts never ran, since nothing can then tell what is under
+            the bar. */}
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-0 -z-1 rounded-full bg-(--glass-clear-frost) opacity-0 transition-opacity duration-300 [html:not(.js)_&]:opacity-100",
+            frosted && "opacity-100",
+          )}
+        />
         <a
           href="#top"
           onClick={close}

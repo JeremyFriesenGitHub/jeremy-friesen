@@ -121,9 +121,12 @@
   --glass-from: rgba(255, 255, 255, 0.56);
   --glass-to: rgba(255, 255, 255, 0.28);
   /* A thin frost: the lamp shows through, and the links (full-strength
-     foreground) stay well past 4.5:1 over its darkest wax. */
+     foreground) stay well past 4.5:1 over its darkest wax. A dark screenshot
+     is more than it can lift, so the navbar lays -frost on top while one
+     passes under the bar (see navbar.tsx), which holds 4.5:1 over black. */
   --glass-clear-from: rgba(255, 255, 255, 0.34);
   --glass-clear-to: rgba(255, 255, 255, 0.24);
+  --glass-clear-frost: rgba(255, 255, 255, 0.38);
   --glass-clear-sheen: rgba(255, 255, 255, 0.35);
   --glass-clear-edge: rgba(255, 255, 255, 0.6);
   --glass-clear-hi: rgba(255, 255, 255, 0.95);
@@ -169,9 +172,12 @@
   --glass-to: rgba(8, 8, 13, 0.38);
   /* The navbar's clear glass is page-tinted too, and no thinner than this:
      its links sit directly over the brightest blobs, and this is the least
-     darkening that holds 4.5:1 over a specular highlight on the sky wax. */
+     darkening that holds 4.5:1 over a specular highlight on the sky wax.
+     A white screenshot needs more: -frost is added while one is under the
+     bar, which holds 4.5:1 over white. */
   --glass-clear-from: rgba(8, 8, 13, 0.44);
   --glass-clear-to: rgba(8, 8, 13, 0.34);
+  --glass-clear-frost: rgba(8, 8, 13, 0.46);
   --glass-clear-sheen: rgba(255, 255, 255, 0.07);
   --glass-clear-edge: rgba(255, 255, 255, 0.14);
   --glass-clear-hi: rgba(255, 255, 255, 0.22);
@@ -264,7 +270,8 @@
  *  .glass-strong more opaque variant for the mobile menu.
  *  .glass-clear  see-through variant for the floating navbar: a thin tint, a
  *                brighter edge and a sheen across the top, with a stronger
- *                blur keeping text legible.
+ *                blur keeping text legible. The navbar thickens the tint
+ *                with --glass-clear-frost while screenshots pass under it.
  *  .glass-pill   lightweight pill with NO backdrop blur, for chips nested inside
  *                a .glass card (nested backdrop filters are slow and buggy).
  * ------------------------------------------------------------------------ */

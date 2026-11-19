@@ -61,6 +61,9 @@ export type CaseStudyProject = Project & { caseStudy: CaseStudy };
 /**
  * Newest first. Hackathon builds link to Devpost, a demo video and source:
  * their backends are long gone, so there are no live-app links here.
+ * Cards from the same month keep this order, which also decides how the
+ * two-column cards pack into the three-column grid: check for gaps on desktop
+ * after adding or removing one.
  */
 const entries: Project[] = [
   {
@@ -148,6 +151,28 @@ const entries: Project[] = [
     tags: ["React", "Vite", "Tailwind CSS"],
   },
   {
+    title: "Buildo",
+    slug: "buildo",
+    description: "",
+    date: "2026-01",
+    url: "https://devpost.com/software/product-creator-temp-name-conu-x",
+    repo: "https://github.com/chantalzhang/conuhacks26",
+    video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
+    images: [
+      { src: "/images/buildo-1.webp", alt: "Buildo terminal-style interface" },
+      {
+        src: "/images/buildo-2.webp",
+        alt: "Hardware prototype built from a Buildo guide",
+      },
+    ],
+    accent: { dark: "#5eead4", light: "#0f766e" },
+    icon: "cpu",
+    colSpan: 2,
+    tags: ["Next.js", "Flask", "Gemini API", "Snowflake Cortex"],
+    note: "MLH Best Use of Gemini API, ConUHacks X",
+    award: true,
+  },
+  {
     title: "Plante",
     slug: "plante",
     description: "",
@@ -179,28 +204,6 @@ const entries: Project[] = [
     colSpan: 1,
     tags: ["FastAPI", "Backboard.io", "JavaScript"],
     note: "AGI Ventures Canada challenge",
-  },
-  {
-    title: "Buildo",
-    slug: "buildo",
-    description: "",
-    date: "2026-01",
-    url: "https://devpost.com/software/product-creator-temp-name-conu-x",
-    repo: "https://github.com/chantalzhang/conuhacks26",
-    video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
-    images: [
-      { src: "/images/buildo-1.webp", alt: "Buildo terminal-style interface" },
-      {
-        src: "/images/buildo-2.webp",
-        alt: "Hardware prototype built from a Buildo guide",
-      },
-    ],
-    accent: { dark: "#5eead4", light: "#0f766e" },
-    icon: "cpu",
-    colSpan: 2,
-    tags: ["Next.js", "Flask", "Gemini API", "Snowflake Cortex"],
-    note: "MLH Best Use of Gemini API, ConUHacks X",
-    award: true,
   },
   {
     title: "Shazam 4 Drones",

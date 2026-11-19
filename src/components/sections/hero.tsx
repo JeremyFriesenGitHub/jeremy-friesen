@@ -94,7 +94,12 @@ export function Hero() {
         ))}
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+      {/* Display type and a solid button: the navbar frosts over while they
+          pass underneath (see navbar.tsx). */}
+      <div
+        data-nav-frost=""
+        className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center"
+      >
         <h1
           className="animate-fade-up text-[clamp(3.2rem,11vw,7.5rem)] leading-[0.92] font-bold tracking-[-0.045em] text-balance"
           style={delay(0)}
