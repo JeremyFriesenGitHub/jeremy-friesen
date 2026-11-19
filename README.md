@@ -41,7 +41,7 @@ All copy and links live in `src/data/`:
 
 | File              | What it drives                                             |
 | ----------------- | ---------------------------------------------------------- |
-| `social-links.ts` | Profile, hero copy, about text, nav items, socials         |
+| `social-links.ts` | Profile, hero copy, nav items, socials                     |
 | `experience.ts`   | Timeline entries                                           |
 | `projects.ts`     | "Selected work" bento grid (images in `public/images`)     |
 | `hackathons.ts`   | Hackathon submissions, awards, judging and stats           |
@@ -78,7 +78,7 @@ All copy and links live in `src/data/`:
 │   ├── components/
 │   │   ├── background/          # WebGL aurora + loader
 │   │   ├── effects/             # magnetic hover
-│   │   ├── sections/            # hero, about, experience, community, projects, hackathons, skills, footer, rotating-word
+│   │   ├── sections/            # hero, experience, community, projects, hackathons, skills, footer, rotating-word
 │   │   ├── ui/                  # glass-card, glass-button, chip, icon, reveal, section, section-heading, theme-toggle, year
 │   │   └── navbar.tsx
 │   ├── data/                    # all site content

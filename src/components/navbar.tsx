@@ -100,7 +100,10 @@ export function Navbar() {
           // Phones: a full-width bar, brand left and menu right. From md the
           // pill hugs its content and sits centred, so the links are centred too.
           "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 glass-clear transition-shadow duration-300 md:w-auto md:max-w-[calc(100vw-1.5rem)] md:justify-center md:gap-1 md:pl-1.5",
-          scrolled && "shadow-[0_18px_50px_-20px_var(--glass-shadow)]",
+          // The inset pair is the glass's own top highlight and bottom edge,
+          // repeated here because this replaces the whole box-shadow.
+          scrolled &&
+            "shadow-[inset_0_1px_0_0_var(--glass-hi),inset_0_-1px_0_0_var(--glass-lo),0_18px_50px_-20px_var(--glass-shadow)]",
         )}
       >
         <a
@@ -258,7 +261,7 @@ function DesktopLinks({ active }: { active: string | null }) {
   return (
     <ul
       ref={listRef}
-      className="relative mx-1 hidden items-center border-x border-foreground/10 px-1.5 md:flex lg:mx-2 lg:px-2.5"
+      className="relative mx-1 hidden items-center border-l border-foreground/10 px-1.5 md:flex lg:mx-2 lg:px-2.5"
     >
       <li
         aria-hidden="true"
@@ -278,12 +281,9 @@ function DesktopLinks({ active }: { active: string | null }) {
             <a
               href={link.href}
               aria-current={isActive ? "location" : undefined}
-              className={cn(
-                "inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium transition-colors duration-200 lg:px-3.5",
-                isActive
-                  ? "text-foreground"
-                  : "text-foreground/85 hover:text-foreground",
-              )}
+              // Full-strength text: the bar is clear glass, so the links
+              // carry the contrast themselves; the pill marks the active one.
+              className="inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-foreground/6 lg:px-3.5"
             >
               {link.label}
             </a>

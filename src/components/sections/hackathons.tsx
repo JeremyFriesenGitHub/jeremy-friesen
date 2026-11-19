@@ -8,8 +8,8 @@ import { SectionHeading } from "~/components/ui/section-heading";
 import { copy } from "~/data/copy";
 import {
   hackathonProjects,
+  hackathonRoles,
   hackathonStats,
-  judging,
   type HackathonProject,
 } from "~/data/hackathons";
 import { socialLinks } from "~/data/social-links";
@@ -144,11 +144,9 @@ export function Hackathons() {
                       className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     />
                     <span className="ml-auto flex items-center gap-0.5">
-                      {p.date && (
-                        <span className="mr-1.5 font-mono font-medium">
-                          {p.date}
-                        </span>
-                      )}
+                      <span className="mr-1.5 font-mono font-medium">
+                        {p.date}
+                      </span>
                       {p.video && (
                         <a
                           href={p.video}
@@ -202,7 +200,9 @@ export function Hackathons() {
               <Icon name="gavel" size={20} />
             </span>
             <div>
-              <h3 className="font-semibold tracking-tight">Judging</h3>
+              <h3 className="font-semibold tracking-tight">
+                Judging & mentoring
+              </h3>
               {copy.hackathons.judgingNote && (
                 <p className="text-xs text-muted-foreground">
                   {copy.hackathons.judgingNote}
@@ -211,7 +211,7 @@ export function Hackathons() {
             </div>
           </div>
           <ul className="grid flex-1 gap-3 md:grid-cols-2">
-            {judging.map((j) => (
+            {hackathonRoles.map((j) => (
               <li key={j.event} className="min-w-0">
                 <a
                   href={j.url}
@@ -221,7 +221,7 @@ export function Hackathons() {
                 >
                   <span className="min-w-0">
                     <span className="block text-sm font-medium">
-                      Judge · {j.event}
+                      {j.role} · {j.event}
                     </span>
                     {j.organizer && (
                       <span className="block text-xs text-pretty text-muted-foreground">

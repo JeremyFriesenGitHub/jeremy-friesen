@@ -7,7 +7,6 @@ export type ProjectIcon =
   | "brain"
   | "laptop"
   | "rocket"
-  | "satellite"
   | "workflow"
   | "lock"
   | "layers"
@@ -83,19 +82,6 @@ const entries: Project[] = [
     award: true,
   },
   {
-    title: "AEAC 2026 flight software",
-    slug: "aeac-2026-flight-software",
-    description: "",
-    date: "2026-05",
-    url: "https://github.com/Blackbird-UAV",
-    images: [],
-    accent: { dark: "#5eead4", light: "#0f766e" },
-    icon: "satellite",
-    colSpan: 1,
-    tags: ["Python", "C++", "Raspberry Pi", "Arduino"],
-    note: "Blackbird UAV, Software Lead",
-  },
-  {
     title: "MapleVault",
     slug: "maplevault",
     description: "",
@@ -120,7 +106,12 @@ const entries: Project[] = [
     description: "",
     date: "2026-04",
     url: "https://github.com/JeremyFriesenGitHub/DATA5000_Project",
-    images: [],
+    images: [
+      {
+        src: "/images/landcover-1.webp",
+        alt: "Risk map generated from the model output for Logan Lake",
+      },
+    ],
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
     icon: "layers",
     colSpan: 1,
@@ -291,8 +282,8 @@ const entries: Project[] = [
     tags: ["TypeScript", "Next.js", "Nx"],
   },
   {
-    title: "Event forms automation",
-    slug: "event-forms-automation",
+    title: "Risk management forms automation",
+    slug: "risk-management-forms-automation",
     description: "",
     date: "2024-11",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",
