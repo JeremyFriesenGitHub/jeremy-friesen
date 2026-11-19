@@ -98,6 +98,34 @@ test("the projects grid shows eight cards, then all of them", async ({
   await expect(focused).toBeInViewport();
 });
 
+test("the navbar frosts when the grid grows under it without a scroll", async ({
+  page,
+}) => {
+  // Two columns: the first revealed card lands in view, so nothing scrolls.
+  await page.setViewportSize({ width: 800, height: 900 });
+  await openHome(page, "dark");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
+  const frost = page.locator(
+    'nav[aria-label="Primary"] > span[aria-hidden="true"]',
+  );
+  const button = page.getByRole("button", { name: /Show \d+ more projects/ });
+  // Park the grid's end just above the bar, which puts the button behind it.
+  await page.evaluate(() => {
+    const grid = document.querySelector("#projects .grid")!;
+    scrollTo(0, scrollY + grid.getBoundingClientRect().bottom + 20);
+  });
+  await expect(frost).toHaveCSS("opacity", "0");
+  const before = await page.evaluate(() => scrollY);
+
+  await button.focus();
+  await page.keyboard.press("Enter");
+  await expect(button).toHaveCount(0);
+  expect(await page.evaluate(() => scrollY)).toBe(before);
+  await expect(frost).toHaveCSS("opacity", "1");
+});
+
 test("the effects toggle pauses the lamp and the choice persists", async ({
   page,
 }) => {
@@ -178,7 +206,7 @@ for (const theme of ["light", "dark"] as const) {
     await openHome(page, theme);
     await page.addStyleTag({
       content:
-        "html { scroll-behavior: auto !important } * { animation: none !important; transition: none !important }",
+        "html { scroll-behavior: auto !important } *, *::before, *::after { animation: none !important; transition: none !important }",
     });
     // The bar loads clear and frosts over once screenshots are underneath.
     const frost = page.locator(
@@ -227,6 +255,18 @@ for (const theme of ["light", "dark"] as const) {
       ).toBeGreaterThanOrEqual(requiredRatio(result!.size, result!.weight));
       // The probe must not have moved the page off the row being measured.
       expect(await page.evaluate(() => Math.round(scrollY))).toBe(top);
+
+      // Hovered, the section's own link is the hardest case: its pill, its
+      // hover fill and the bar's glow all sit between the text and the glass.
+      const link = 'nav[aria-label="Primary"] ul a[href="#projects"]';
+      await page.hover(link);
+      const hovered = await worstContrast(page, link);
+      expect(hovered, "the hovered link was measured").not.toBeNull();
+      expect(
+        hovered!.p5,
+        `hovered Projects link at scrollY ${top} (${theme}) holds 4.5:1`,
+      ).toBeGreaterThanOrEqual(requiredRatio(hovered!.size, hovered!.weight));
+      await page.mouse.move(0, 700);
     }
   });
 }

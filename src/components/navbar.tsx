@@ -80,9 +80,13 @@ export function Navbar() {
       );
     };
     update();
+    // A region can also grow under the bar with no scroll at all ("Show more").
+    const sizes = new ResizeObserver(update);
+    for (const region of regions) sizes.observe(region);
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     return () => {
+      sizes.disconnect();
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
@@ -111,7 +115,9 @@ export function Navbar() {
   }, [open, close]);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4 print:hidden">
+    // Glass takes on whatever is under it, so a focus ring in here gets a band
+    // of the page colour to stand against (the ring sits just outside it).
+    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4 print:hidden [&_:focus-visible]:shadow-[0_0_0_3px_var(--background)]">
       {/* Tap-outside backdrop. A sibling of the nav on purpose: the nav's
           backdrop-filter would otherwise become this element's containing block. */}
       {open && (
