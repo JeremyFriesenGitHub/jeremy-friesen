@@ -13,7 +13,7 @@ import { LuFileText, LuMenu, LuX } from "react-icons/lu";
 import { MagneticElement } from "~/components/effects/magnetic-element";
 import { EffectsToggle } from "~/components/ui/effects-toggle";
 import { ThemeToggle } from "~/components/ui/theme-toggle";
-import { navLinks, socialLinks } from "~/data/social-links";
+import { navLinks, profile, socialLinks } from "~/data/social-links";
 import { useActiveSection } from "~/hooks/use-active-section";
 import { cn } from "~/lib/utils";
 
@@ -154,10 +154,14 @@ export function Navbar() {
             frosted && "opacity-100",
           )}
         />
+        {/* Not labelled "Back to top": content blockers' annoyance lists hide
+            anything with that exact label (EasyList's has
+            `##[aria-label="Back to top"]`), which took the logo and the name
+            out of the bar for everyone running one. */}
         <a
           href="#top"
           onClick={close}
-          aria-label="Back to top"
+          aria-label={`${profile.name}, top of page`}
           className="flex items-center gap-2.5 rounded-full py-1 pr-3 pl-1 font-semibold tracking-tight transition-colors hover:bg-foreground/5"
         >
           <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-primary via-accent to-tertiary font-mono text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.45)]">
@@ -242,8 +246,7 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="mx-2 my-2 h-px bg-border" />
-          <div className="flex items-center justify-between px-2 pb-1">
+          <div className="mt-3 flex items-center justify-between px-2 pb-1">
             <div className="flex items-center gap-1">
               {socials.map(({ href, label, Icon }) => (
                 <a
@@ -289,8 +292,8 @@ function DesktopLinks({ active }: { active: string | null }) {
       setPill(null);
       return;
     }
-    // The pill is positioned from the list's padding edge; the list has a
-    // border, so measure from there rather than from the border-box left.
+    // The pill is positioned from the list's padding edge, so measure from
+    // there (clientLeft is the list's left border, should it ever have one).
     const listRect = list.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     setPill({ x: rect.left - listRect.left - list.clientLeft, w: rect.width });
@@ -311,7 +314,7 @@ function DesktopLinks({ active }: { active: string | null }) {
     // tablet's tighter spacing; the roomier spacing starts at xl.
     <ul
       ref={listRef}
-      className="relative mx-1 hidden items-center border-l border-foreground/10 px-1.5 md:flex xl:mx-2 xl:px-2.5"
+      className="relative mx-1 hidden items-center px-1.5 md:flex xl:mx-2 xl:px-2.5"
     >
       <li
         aria-hidden="true"

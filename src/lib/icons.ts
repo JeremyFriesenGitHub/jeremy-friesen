@@ -32,7 +32,6 @@ import {
   LuExternalLink,
   LuFileText,
   LuGavel,
-  LuGhost,
   LuLaptop,
   LuLayers,
   LuLeaf,
@@ -179,7 +178,6 @@ export const spriteIcons = {
   leaf: LuLeaf,
   radar: LuRadar,
   network: LuNetwork,
-  ghost: LuGhost,
   keyboard: LuCode,
   users: LuUsersRound,
   // Certifications (GitHub's mark is with the skills)

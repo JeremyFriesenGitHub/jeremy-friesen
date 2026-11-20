@@ -14,8 +14,7 @@ export type ProjectIcon =
   | "cpu"
   | "leaf"
   | "radar"
-  | "network"
-  | "ghost";
+  | "network";
 
 /** The long-form story behind a project, shown at /projects/[slug]. */
 export interface CaseStudy {
@@ -212,7 +211,7 @@ const entries: Project[] = [
     date: "2025-11",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
     repo: "https://github.com/Blackbird-UAV/icebreaker-hackathon-2025",
-    images: [],
+    images: [{ src: "/images/shazam-1.webp", alt: "Blackbird UAV logo" }],
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
     icon: "radar",
     colSpan: 1,
@@ -290,23 +289,16 @@ const entries: Project[] = [
     description: "",
     date: "2024-11",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",
-    images: [],
+    images: [
+      {
+        src: "/images/riskforms-1.webp",
+        alt: "Event Risk Management page",
+      },
+    ],
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
     icon: "workflow",
     colSpan: 1,
     tags: ["Playwright", "Node.js"],
-  },
-  {
-    title: "Ghost hunter simulation",
-    slug: "ghost-hunter-simulation",
-    description: "",
-    date: "2023-11",
-    url: "https://github.com/JeremyFriesenGitHub/Multi-threaded-Ghost-Hunter-Simulation",
-    images: [],
-    accent: { dark: "#b08cff", light: "#5b21b6" },
-    icon: "ghost",
-    colSpan: 1,
-    tags: ["C", "pthreads", "Valgrind"],
   },
 ];
 

@@ -180,13 +180,42 @@ test("each certification links to its credential and the navbar reaches the sect
     await expect(link).toHaveAttribute("rel", /noopener/);
   }
 
-  await page
+  const navLink = page
     .getByRole("navigation", { name: "Primary" })
-    .getByRole("link", { name: "Certifications" })
-    .click();
+    .getByRole("link", { name: "Certifications" });
+  await navLink.click();
   await expect(
     page.getByRole("heading", { level: 2, name: "Certifications" }),
   ).toBeInViewport();
+  await expect(navLink).toHaveAttribute("aria-current", "location");
+
+  // On a tall screen the page ends before this short last section reaches the
+  // middle of the viewport; at the bottom it is still the current one.
+  await page.setViewportSize({ width: 1280, height: 1700 });
+  await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+  await expect(navLink).toHaveAttribute("aria-current", "location");
+});
+
+test("the navbar keeps its logo under a content blocker and has no divider", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  // Generic rules from EasyList's annoyance list: they hide "back to top"
+  // widgets, and once hid this logo because of its label.
+  await page.addStyleTag({
+    content:
+      '[aria-label="Back to top"], [title="Back to Top"], a[title="Back to top"], a[title="Back To Top"] { display: none !important }',
+  });
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  const logo = nav.locator('a[href="#top"]');
+  await expect(logo).toBeVisible();
+  await expect(logo).toHaveAccessibleName(/Jeremy Friesen/);
+
+  const borders = await nav.locator("ul").evaluate((list) => {
+    const cs = getComputedStyle(list);
+    return [cs.borderLeftWidth, cs.borderRightWidth];
+  });
+  expect(borders).toEqual(["0px", "0px"]);
 });
 
 test("the effects toggle pauses the lamp and the choice persists", async ({
