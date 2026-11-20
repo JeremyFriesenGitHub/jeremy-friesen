@@ -16,13 +16,16 @@ type OrgLogoProps = {
   className?: string;
 };
 
+/** "Carleton AI Society" -> "CAS"; a name that is already initials ("IBM") stays whole. */
 const initials = (name: string) =>
-  name
-    .split(/\s+/)
-    .filter((word) => /^[A-Z]/.test(word))
-    .map((word) => word[0])
-    .join("")
-    .slice(0, 4);
+  /^[A-Z]{2,4}$/.test(name)
+    ? name
+    : name
+        .split(/\s+/)
+        .filter((word) => /^[A-Z]/.test(word))
+        .map((word) => word[0])
+        .join("")
+        .slice(0, 4);
 
 /**
  * An organization's mark beside its name: the logo when the site has one,

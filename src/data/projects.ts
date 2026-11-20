@@ -1,5 +1,3 @@
-import { caseStudyBySlug } from "./case-studies";
-
 export type ProjectIcon =
   | "shield"
   | "plane"
@@ -16,22 +14,8 @@ export type ProjectIcon =
   | "radar"
   | "network";
 
-/** The long-form story behind a project, shown at /projects/[slug]. */
-export interface CaseStudy {
-  /** One sentence under the title; also the page's description and link preview. */
-  summary: string;
-  problem: string[];
-  approach: string[];
-  result: string[];
-  /** What I built, when the project was a team effort. */
-  role?: string;
-  team?: string[];
-}
-
 export interface Project {
   title: string;
-  /** URL segment: /projects/[slug] when there is a case study. */
-  slug: string;
   /** TODO: Jeremy to write. Hidden while empty. */
   description: string;
   /** Month the project shipped or was last worked on, as YYYY-MM. Cards sort by it. */
@@ -52,10 +36,7 @@ export interface Project {
   /** Short label under the description: a prize (award: true) or the event/role. */
   note?: string;
   award?: boolean;
-  caseStudy?: CaseStudy;
 }
-
-export type CaseStudyProject = Project & { caseStudy: CaseStudy };
 
 /**
  * Newest first. Hackathon builds link to Devpost, a demo video and source:
@@ -64,10 +45,9 @@ export type CaseStudyProject = Project & { caseStudy: CaseStudy };
  * two-column cards pack into the three-column grid: check for gaps on desktop
  * after adding or removing one.
  */
-const entries: Project[] = [
+export const projects: Project[] = [
   {
     title: "Trace",
-    slug: "trace",
     description: "",
     date: "2026-09",
     url: "https://devpost.com/software/loggr",
@@ -85,7 +65,6 @@ const entries: Project[] = [
   },
   {
     title: "MapleVault",
-    slug: "maplevault",
     description: "",
     date: "2026-05",
     url: "https://devpost.com/software/ctl-claude-del",
@@ -104,7 +83,6 @@ const entries: Project[] = [
   },
   {
     title: "Land-cover segmentation",
-    slug: "land-cover-segmentation",
     description: "",
     date: "2026-04",
     url: "https://github.com/JeremyFriesenGitHub/DATA5000_Project",
@@ -121,7 +99,6 @@ const entries: Project[] = [
   },
   {
     title: "Agent²",
-    slug: "agent2",
     description: "",
     date: "2026-03",
     url: "https://devpost.com/software/agent-o3l6si",
@@ -136,7 +113,6 @@ const entries: Project[] = [
   },
   {
     title: "Carleton AI Society",
-    slug: "carleton-ai-society",
     description: "",
     date: "2026-06",
     url: "https://carletonai.com",
@@ -151,7 +127,6 @@ const entries: Project[] = [
   },
   {
     title: "Buildo",
-    slug: "buildo",
     description: "",
     date: "2026-01",
     url: "https://devpost.com/software/product-creator-temp-name-conu-x",
@@ -173,7 +148,6 @@ const entries: Project[] = [
   },
   {
     title: "Plante",
-    slug: "plante",
     description: "",
     date: "2026-01",
     url: "https://devpost.com/software/plante",
@@ -191,7 +165,6 @@ const entries: Project[] = [
   },
   {
     title: "Startup Idea Validator",
-    slug: "startup-idea-validator",
     description: "",
     date: "2026-01",
     url: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
@@ -206,7 +179,6 @@ const entries: Project[] = [
   },
   {
     title: "Shazam 4 Drones",
-    slug: "shazam-4-drones",
     description: "",
     date: "2025-11",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
@@ -220,7 +192,6 @@ const entries: Project[] = [
   },
   {
     title: "Network Threat Explorer",
-    slug: "network-threat-explorer",
     description: "",
     date: "2025-09",
     url: "https://devpost.com/software/network-threat-explorer",
@@ -241,7 +212,6 @@ const entries: Project[] = [
   },
   {
     title: "cuTunnel",
-    slug: "cutunnel",
     description: "",
     date: "2025-03",
     url: "https://devpost.com/software/cu-tunnels",
@@ -257,7 +227,6 @@ const entries: Project[] = [
   },
   {
     title: "Blackbird UAV website",
-    slug: "blackbird-uav-website",
     description: "",
     date: "2025-11",
     url: "https://blackbirduav.ca",
@@ -272,7 +241,6 @@ const entries: Project[] = [
   },
   {
     title: "cuHacking 2025 platform",
-    slug: "cuhacking-2025-platform",
     description: "",
     date: "2024-12",
     url: "https://cuhacking.ca",
@@ -285,7 +253,6 @@ const entries: Project[] = [
   },
   {
     title: "Risk management forms automation",
-    slug: "risk-management-forms-automation",
     description: "",
     date: "2024-11",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",
@@ -301,14 +268,3 @@ const entries: Project[] = [
     tags: ["Playwright", "Node.js"],
   },
 ];
-
-/** The cards' data with each flagship project's case study attached. */
-export const projects: Project[] = entries.map((p) => ({
-  ...p,
-  caseStudy: caseStudyBySlug[p.slug],
-}));
-
-/** Projects with a case-study page, newest first. */
-export const caseStudies: CaseStudyProject[] = projects
-  .filter((p): p is CaseStudyProject => p.caseStudy !== undefined)
-  .sort((a, b) => b.date.localeCompare(a.date));

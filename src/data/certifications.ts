@@ -10,12 +10,12 @@ export interface Certification {
   expires?: string;
   /** The issuer's public page for this credential. */
   url: string;
-  /** The issuer's mark. */
-  icon: CertificationIcon;
+  /** The issuer's mark; without one the card shows the issuer's initials. */
+  icon?: CertificationIcon;
   accent: { dark: string; light: string };
 }
 
-/** Licenses & certifications, in the order LinkedIn lists them. */
+/** Licenses & certifications, newest first; the undated one is last. */
 export const certifications: Certification[] = [
   {
     name: "GitHub Foundations",
@@ -33,6 +33,13 @@ export const certifications: Certification[] = [
     url: "https://learn.microsoft.com/en-us/users/jeremyfriesen-3056/credentials/7578b454e676563e",
     icon: "microsoft",
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
+  },
+  {
+    name: "Data Science Foundations - Level 1",
+    issuer: "IBM",
+    issued: "Mar 2024",
+    url: "https://www.credly.com/badges/aabc2e09-71ba-41b9-a406-59227c3efa32/public_url",
+    accent: { dark: "#6b93ff", light: "#1536b8" },
   },
   {
     name: "Intro to Machine Learning",

@@ -238,31 +238,37 @@ test("the effects toggle pauses the lamp and the choice persists", async ({
   await expect(page.locator("canvas")).toHaveCount(1);
 });
 
-test("case studies have their own page, link preview and sitemap entry", async ({
+test("the old project pages are gone and their addresses lead to the projects section", async ({
   page,
   request,
 }) => {
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.ok()).toBeTruthy();
-  const xml = await sitemap.text();
-  const match = /<loc>[^<]*\/projects\/([a-z0-9-]+)<\/loc>/.exec(xml);
-  expect(match, "the sitemap lists at least one case study").not.toBeNull();
-  const slug = match![1]!;
+  const locs = [...(await sitemap.text()).matchAll(/<loc>([^<]*)<\/loc>/g)];
+  expect(locs).toHaveLength(1);
+  expect(new URL(locs[0]![1]!).pathname).toBe("/");
 
-  await page.goto(`/projects/${slug}`, { waitUntil: "networkidle" });
-  const title = await page.getByRole("heading", { level: 1 }).textContent();
-  expect(title?.trim().length).toBeGreaterThan(0);
-  await expect(page.getByRole("heading", { name: "Built with" })).toBeVisible();
+  const old = await request.get("/projects/agent2", { maxRedirects: 0 });
+  expect(old.status()).toBe(308);
+  expect(old.headers().location).toBe("/#projects");
 
-  const ogImage = await page
-    .locator('meta[property="og:image"]')
-    .first()
-    .getAttribute("content");
-  expect(ogImage).toContain(`/projects/${slug}/opengraph-image`);
-  // The tag carries the canonical origin; fetch the same path from the server under test.
-  const image = await request.get(new URL(ogImage!).pathname);
-  expect(image.ok()).toBeTruthy();
-  expect(image.headers()["content-type"]).toContain("image/png");
+  await openHome(page, "dark");
+  await expect(page.locator('a[href^="/projects"]')).toHaveCount(0);
+});
+
+test("the footer links the email address and the phone number", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  const footer = page.locator("footer");
+  const email = footer.locator('a[href^="mailto:"]');
+  await expect(email).toHaveCount(1);
+  expect(await email.getAttribute("href")).toBe(
+    `mailto:${(await email.textContent())!.trim()}`,
+  );
+  const phone = footer.locator('a[href^="tel:"]');
+  await expect(phone).toHaveCount(1);
+  expect(await phone.getAttribute("href")).toMatch(/^tel:\+\d{11}$/);
 });
 
 for (const theme of ["light", "dark"] as const) {

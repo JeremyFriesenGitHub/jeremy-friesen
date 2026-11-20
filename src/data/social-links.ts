@@ -7,6 +7,15 @@ export const socialLinks = {
   repo: "https://github.com/JeremyFriesenGitHub/jeremy-friesen",
 } as const;
 
+/** Shown in the footer, as Jeremy wrote them. */
+export const contact = {
+  email: "jeremyfriesen@cmail.carleton.ca",
+  phone: "+1 (343) 575-8441",
+} as const;
+
+/** "+1 (343) 575-8441" -> "tel:+13435758441". */
+export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
+
 export const profile = {
   name: "Jeremy Friesen",
   firstName: "Jeremy",

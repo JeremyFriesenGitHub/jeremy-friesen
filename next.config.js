@@ -73,6 +73,20 @@ const config = {
     contentDispositionType: "attachment",
   },
 
+  /**
+   * Projects used to have their own pages. Links to them, and search results
+   * that still list them, land on the projects section instead of a 404.
+   */
+  async redirects() {
+    return [
+      {
+        source: "/projects/:path*",
+        destination: "/#projects",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {

@@ -1,7 +1,13 @@
 import { Icon } from "~/components/ui/icon";
 import { Year } from "~/components/ui/year";
 import { copy } from "~/data/copy";
-import { navLinks, profile, socialLinks } from "~/data/social-links";
+import {
+  contact,
+  navLinks,
+  profile,
+  socialLinks,
+  telHref,
+} from "~/data/social-links";
 
 const elsewhere = [
   { href: socialLinks.github, label: "GitHub", icon: "github" },
@@ -47,6 +53,20 @@ export function Footer() {
                 {copy.footer.tagline}
               </p>
             )}
+            <ul className="mt-4 space-y-2">
+              <li>
+                <a href={`mailto:${contact.email}`} className={linkClass}>
+                  <Icon name="mail" size={14} />
+                  {contact.email}
+                </a>
+              </li>
+              <li>
+                <a href={telHref(contact.phone)} className={linkClass}>
+                  <Icon name="phone" size={14} />
+                  {contact.phone}
+                </a>
+              </li>
+            </ul>
             <div className="mt-5 flex items-center gap-2">
               {elsewhere.slice(0, 3).map(({ href, label, icon }) => (
                 <a

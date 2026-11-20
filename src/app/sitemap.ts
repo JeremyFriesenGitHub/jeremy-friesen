@@ -1,18 +1,14 @@
 import type { MetadataRoute } from "next";
-import { caseStudies } from "~/data/projects";
 import { siteUrl } from "~/lib/site";
 
+/** The site is one page; `lastModified` is the build, which is when it last changed. */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl,
+      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
-    ...caseStudies.map((project) => ({
-      url: `${siteUrl}/projects/${project.slug}`,
-      changeFrequency: "yearly" as const,
-      priority: 0.7,
-    })),
   ];
 }

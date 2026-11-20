@@ -30,9 +30,9 @@ npm run format:write
 ```
 
 The smoke tests (`tests/`) start `next start` themselves and check that the
-pages render, the lava lamp draws, the projects grid expands, case studies
-carry a link preview, and body text keeps 4.5:1 contrast
-over the moving background. They need Chromium: `npx playwright install chromium`
+pages render, the lava lamp draws, the projects grid expands, the old project
+page addresses redirect to the projects section, and body text keeps 4.5:1
+contrast over the moving background. They need Chromium: `npx playwright install chromium`
 once, or point `PLAYWRIGHT_CHROMIUM_PATH` at an existing one.
 
 ## Content
@@ -41,7 +41,7 @@ All copy and links live in `src/data/`:
 
 | File                | What it drives                                             |
 | ------------------- | ---------------------------------------------------------- |
-| `social-links.ts`   | Profile, hero copy, nav items, socials                     |
+| `social-links.ts`   | Profile, contact details, nav items, socials               |
 | `experience.ts`     | Timeline entries                                           |
 | `projects.ts`       | "Selected work" bento grid (images in `public/images`)     |
 | `hackathons.ts`     | Hackathon submissions, awards, judging, mentoring, stats   |
@@ -68,6 +68,10 @@ All copy and links live in `src/data/`:
   inline theirs, so nothing above the fold waits for the sprite.
 - **Security headers** (CSP, HSTS, COOP/CORP, Permissions-Policy) are set in
   `next.config.js`.
+- **Search:** the title and description come from `meta` in `src/data/copy.ts`.
+  `src/app/sitemap.ts` and `src/app/robots.ts` serve `/sitemap.xml` and
+  `/robots.txt`, `src/app/page.tsx` carries the structured data (site, profile
+  page, person), and `opengraph-image.png` in `src/app` is the link preview.
 
 ## Project structure
 

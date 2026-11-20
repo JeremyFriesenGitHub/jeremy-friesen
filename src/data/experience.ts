@@ -38,7 +38,7 @@ export const experiences: Experience[] = [
   {
     title: "Data Science Intern",
     company: "National Research Council of Canada",
-    logo: "/logos/government-of-canada.webp",
+    logo: "/logos/national-research-council-canada.webp",
     location: "Ottawa, ON",
     country: "Canada",
     date: "May 2024 - Aug 2024",
