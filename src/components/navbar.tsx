@@ -318,8 +318,9 @@ function DesktopLinks({ active }: { active: string | null }) {
   }, [measure]);
 
   return (
-    // Six links, the socials and the resume only fit the bar at lg with the
-    // tablet's tighter spacing; the roomier spacing starts at xl.
+    // Six links, four profile icons and the resume only fit the bar at lg with
+    // spacing tighter still than the tablet's; the roomier spacing starts at
+    // xl. Hinted text (Linux, and CI) runs about 22px wider than unhinted.
     <ul
       ref={listRef}
       className="relative mx-1 hidden items-center px-1.5 md:flex xl:mx-2 xl:px-2.5"
@@ -344,7 +345,7 @@ function DesktopLinks({ active }: { active: string | null }) {
               aria-current={isActive ? "location" : undefined}
               // Full-strength text: the bar is clear glass, so the links
               // carry the contrast themselves; the pill marks the active one.
-              className="inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-foreground/6 xl:px-3.5"
+              className="inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-foreground/6 lg:px-2 xl:px-3.5"
             >
               {link.label}
             </a>
