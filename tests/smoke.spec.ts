@@ -126,6 +126,60 @@ test("the navbar frosts when the grid grows under it without a scroll", async ({
   await expect(frost).toHaveCSS("opacity", "1");
 });
 
+test("the navbar fits its links from tablet width up", async ({ page }) => {
+  // The narrowest width of each layout: links alone (md), with the socials
+  // and the resume (lg), and with the name as well (xl).
+  for (const width of [768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    const fit = await page
+      .locator('nav[aria-label="Primary"]')
+      .evaluate((nav) => {
+        const links = [...nav.querySelectorAll("ul a")];
+        return {
+          links: links.length,
+          tallest: Math.max(
+            ...links.map((a) => a.getBoundingClientRect().height),
+          ),
+          // The pill hugs its content up to the viewport less its margins.
+          spare: innerWidth - 24 - nav.getBoundingClientRect().width,
+          clipped: nav.scrollWidth - nav.clientWidth,
+        };
+      });
+    expect(fit.links, `links shown at ${width}px`).toBeGreaterThan(0);
+    expect(fit.tallest, `no link wraps at ${width}px`).toBeLessThan(40);
+    expect(fit.clipped, `nothing is clipped at ${width}px`).toBeLessThanOrEqual(
+      0,
+    );
+    // Room to spare, so a slightly wider font rendering still fits.
+    expect(fit.spare, `spare room at ${width}px`).toBeGreaterThanOrEqual(24);
+  }
+});
+
+test("each certification links to its credential and the navbar reaches the section", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
+  const links = page.locator("#certifications h3 a");
+  expect(await links.count()).toBeGreaterThan(0);
+  for (const link of await links.all()) {
+    await expect(link).toHaveAttribute("href", /^https:\/\//);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /noopener/);
+  }
+
+  await page
+    .getByRole("navigation", { name: "Primary" })
+    .getByRole("link", { name: "Certifications" })
+    .click();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Certifications" }),
+  ).toBeInViewport();
+});
+
 test("the effects toggle pauses the lamp and the choice persists", async ({
   page,
 }) => {
@@ -188,6 +242,7 @@ for (const theme of ["light", "dark"] as const) {
       "#experience p.text-muted-foreground",
       "#community li span.text-sm",
       "#hackathons p.text-muted-foreground",
+      "#certifications p.text-muted-foreground",
     ];
     for (const selector of probes) {
       const result = await worstContrast(page, selector);

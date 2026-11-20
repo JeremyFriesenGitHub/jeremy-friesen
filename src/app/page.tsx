@@ -7,6 +7,7 @@ import { Community } from "~/components/sections/community";
 import { Projects } from "~/components/sections/projects";
 import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
+import { Certifications } from "~/components/sections/certifications";
 import { Footer } from "~/components/sections/footer";
 import { profile, socialLinks } from "~/data/social-links";
 import { siteDescription, siteName, siteUrl } from "~/lib/site";
@@ -53,6 +54,7 @@ export default function Home() {
         <Projects />
         <Hackathons />
         <Skills />
+        <Certifications />
       </main>
       <Footer />
       <script

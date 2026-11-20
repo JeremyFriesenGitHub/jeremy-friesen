@@ -7,9 +7,11 @@ import {
   FaGitAlt,
   FaGithub,
   FaJava,
+  FaKaggle,
   FaLinkedinIn,
   FaLinux,
   FaMasksTheater,
+  FaMicrosoft,
   FaNode,
   FaPython,
   FaReact,
@@ -82,6 +84,7 @@ import {
   SiWireshark,
 } from "react-icons/si";
 import { VscAzure, VscTerminalPowershell, VscVscode } from "react-icons/vsc";
+import type { CertificationIcon } from "~/data/certifications";
 import type { CommunityIcon } from "~/data/community";
 import type { ProjectIcon } from "~/data/projects";
 import type { SkillIcon } from "~/data/skills";
@@ -179,6 +182,9 @@ export const spriteIcons = {
   ghost: LuGhost,
   keyboard: LuCode,
   users: LuUsersRound,
+  // Certifications (GitHub's mark is with the skills)
+  microsoft: FaMicrosoft,
+  kaggle: FaKaggle,
   // Links, facts and awards
   "arrow-right": LuArrowRight,
   "arrow-up-right": LuArrowUpRight,
@@ -194,7 +200,7 @@ export const spriteIcons = {
   trophy: LuTrophy,
   youtube: FaYoutube,
 } as const satisfies Record<
-  SkillIcon | ProjectIcon | CommunityIcon | UiIcon,
+  SkillIcon | ProjectIcon | CommunityIcon | CertificationIcon | UiIcon,
   IconType
 >;
 

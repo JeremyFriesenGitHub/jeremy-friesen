@@ -24,6 +24,7 @@ export const copy = {
     judgingNote: "",
   },
   skills: { title: "", description: "" },
+  certifications: { title: "", description: "" },
   footer: {
     /** Line under the name in the footer. */
     tagline: "",
