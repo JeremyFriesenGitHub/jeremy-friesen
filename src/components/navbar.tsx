@@ -139,10 +139,9 @@ export function Navbar() {
           // Phones: a full-width bar, brand left and menu right. From md the
           // pill hugs its content and sits centred, so the links are centred too.
           "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 glass-clear transition-shadow duration-300 md:w-auto md:max-w-[calc(100vw-1.5rem)] md:justify-center md:gap-1 md:pl-1.5",
-          // The inset pair is the glass's own top highlight and bottom edge,
-          // repeated here because this replaces the whole box-shadow.
-          scrolled &&
-            "shadow-[inset_0_1px_0_0_var(--glass-hi),inset_0_-1px_0_0_var(--glass-lo),0_18px_50px_-20px_var(--glass-shadow)]",
+          // Only the drop shadow tightens once scrolled; the glass keeps its
+          // inset lights.
+          scrolled && "[--glass-drop:0_18px_50px_-20px_var(--glass-shadow)]",
         )}
       >
         {/* Extra tint over the clear fill, faded in while frosted. It stays on

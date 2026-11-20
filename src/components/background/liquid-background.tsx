@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
  *    or data-saver users; falls back to CSS blobs without WebGL
  *  - blob motion is computed in JS (doubles) every frame; the shader needs
  *    fragment highp, so GPUs without it get the CSS fallback instead
- *  - fades to 38% once the hero scrolls away so card text stays readable
+ *  - dims by LAMP_DIM once the hero scrolls away so card text stays readable
  *  - uniforms are packed into 13 vec4 slots, under the 16 that WebGL 1
  *    guarantees for fragment shaders
  */

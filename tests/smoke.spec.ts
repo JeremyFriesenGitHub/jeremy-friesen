@@ -189,11 +189,30 @@ test("each certification links to its credential and the navbar reaches the sect
   ).toBeInViewport();
   await expect(navLink).toHaveAttribute("aria-current", "location");
 
-  // On a tall screen the page ends before this short last section reaches the
-  // middle of the viewport; at the bottom it is still the current one.
-  await page.setViewportSize({ width: 1280, height: 1700 });
+  // On a very tall screen the page ends before this short last section
+  // reaches the middle of the viewport; at the bottom it is still the current
+  // one. Back to the top first, so the click's "location" cannot stand in.
+  await page.setViewportSize({ width: 1280, height: 2400 });
+  await page.evaluate(() => scrollTo(0, 0));
+  await expect(navLink).not.toHaveAttribute("aria-current", "location");
   await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
   await expect(navLink).toHaveAttribute("aria-current", "location");
+  const sectionTop = await page
+    .locator("#certifications")
+    .evaluate((el) => el.getBoundingClientRect().top / innerHeight);
+  expect(sectionTop, "the section sits below the band").toBeGreaterThan(0.45);
+
+  // On a short screen the footer fills the view at the bottom of the page and
+  // the section is behind the bar, so nothing is current.
+  await page.setViewportSize({ width: 932, height: 430 });
+  await page.evaluate(() => scrollTo(0, document.body.scrollHeight - 650));
+  await expect(navLink).toHaveAttribute("aria-current", "location");
+  await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+  await expect(
+    page
+      .getByRole("navigation", { name: "Primary" })
+      .locator('[aria-current="location"]'),
+  ).toHaveCount(0);
 });
 
 test("the navbar keeps its logo under a content blocker and has no divider", async ({
@@ -269,6 +288,22 @@ test("the footer links the email address and the phone number", async ({
   const phone = footer.locator('a[href^="tel:"]');
   await expect(phone).toHaveCount(1);
   expect(await phone.getAttribute("href")).toMatch(/^tel:\+\d{11}$/);
+
+  // The narrowest width at which the contact block sits beside the link
+  // columns: every link stays on one line with its icon at full size.
+  await page.setViewportSize({ width: 768, height: 800 });
+  const squeezed = await footer.locator("ul a").evaluateAll((links) =>
+    links
+      .filter((a) => {
+        const icon = a.querySelector("svg");
+        return (
+          a.getBoundingClientRect().height > 30 ||
+          (icon !== null && icon.getBoundingClientRect().width < 13.9)
+        );
+      })
+      .map((a) => a.textContent),
+  );
+  expect(squeezed, "footer links that wrap or shrink at 768px").toEqual([]);
 });
 
 test("every profile is linked from the bar, the phone menu and the footer", async ({

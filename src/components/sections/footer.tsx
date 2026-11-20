@@ -87,7 +87,9 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:gap-12">
+          {/* Beside the contact block at md the columns hug their content:
+              three equal ones leave "Tailwind CSS" no room at 768px. */}
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-[repeat(3,auto)] lg:grid-cols-3 lg:gap-12">
             <div>
               <p className="font-mono text-[11px] font-semibold tracking-[0.2em] text-muted-foreground uppercase">
                 Sections

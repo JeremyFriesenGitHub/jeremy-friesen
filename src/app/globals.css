@@ -117,7 +117,7 @@
   --ring: #1e4fe6;
 
   /* Glass surfaces. --glass-from/-to is the default panel; the -clear set is
-     the see-through navbar variant (see .glass-clear). The panel is a thin
+     the navbar's own (see .glass-clear). The panel is a thin
      white film: the lamp shows through it, and the copy inside holds 4.5:1
      over the lamp's darkest wax (accent-coloured copy through --item-ink). */
   --glass-from: rgba(255, 255, 255, 0.4);
@@ -281,9 +281,9 @@
  *                The drop shadow is --glass-drop, so a hover can deepen it
  *                without replacing the inset lights.
  *  .glass-strong more opaque variant for the mobile menu.
- *  .glass-clear  see-through variant for the floating navbar: a thin tint, a
- *                brighter edge and a sheen across the top, with a stronger
- *                blur keeping text legible. The navbar thickens the tint
+ *  .glass-clear  the floating navbar's glass: its own tint, edge and top
+ *                sheen (the -clear tokens), tuned to the nav links' contrast
+ *                rather than a card's copy. The navbar thickens the tint
  *                with --glass-clear-frost while screenshots pass under it.
  *  .glass-pill   lightweight pill with NO backdrop blur, for chips nested inside
  *                a .glass card (nested backdrop filters are slow and buggy).
