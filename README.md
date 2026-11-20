@@ -79,7 +79,7 @@ All copy and links live in `src/data/`:
 │   ├── components/
 │   │   ├── background/          # WebGL aurora + loader
 │   │   ├── effects/             # magnetic hover
-│   │   ├── sections/            # hero, experience, community, projects, hackathons, skills, footer, rotating-word
+│   │   ├── sections/            # hero, experience, community, projects, hackathons, skills, certifications, footer, rotating-word
 │   │   ├── ui/                  # glass-card, glass-button, chip, icon, reveal, section, section-heading, theme-toggle, year
 │   │   └── navbar.tsx
 │   ├── data/                    # all site content

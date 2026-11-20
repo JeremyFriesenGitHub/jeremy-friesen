@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 
 /**
  * Returns the id of the section currently occupying the middle band of the
- * viewport, or null when none does (e.g. while the hero is on screen).
+ * viewport, or null when none does (e.g. while the hero is on screen). At the
+ * very bottom of the page it is the last section, if that is on screen: on a
+ * tall display the page runs out of scroll before a short last section can
+ * reach the band.
  */
 export function useActiveSection(ids: readonly string[]) {
   const [active, setActive] = useState<string | null>(null);
@@ -13,9 +16,29 @@ export function useActiveSection(ids: readonly string[]) {
     const elements = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
-    if (elements.length === 0) return;
+    const last = elements.at(-1);
+    if (!last) return;
 
     const visible = new Map<string, number>();
+    const update = () => {
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 2;
+      if (atBottom && last.getBoundingClientRect().bottom > 0) {
+        setActive(last.id);
+        return;
+      }
+      let best: string | null = null;
+      let bestRatio = -1;
+      for (const [id, ratio] of visible) {
+        if (ratio > bestRatio) {
+          best = id;
+          bestRatio = ratio;
+        }
+      }
+      setActive(best);
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -25,15 +48,7 @@ export function useActiveSection(ids: readonly string[]) {
             visible.delete(entry.target.id);
           }
         }
-        let best: string | null = null;
-        let bestRatio = -1;
-        for (const [id, ratio] of visible) {
-          if (ratio > bestRatio) {
-            best = id;
-            bestRatio = ratio;
-          }
-        }
-        setActive(best);
+        update();
       },
       {
         rootMargin: "-35% 0px -55% 0px",
@@ -42,7 +57,13 @@ export function useActiveSection(ids: readonly string[]) {
     );
 
     elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, [ids]);
 
   return active;
