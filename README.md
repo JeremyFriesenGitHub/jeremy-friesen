@@ -57,6 +57,10 @@ All copy and links live in `src/data/`:
 - **Glass:** `.glass`, `.glass-strong` and `.glass-pill` utilities in `globals.css`.
   Cards pass pointer position to `--mx`/`--my` for the specular highlight. Nested
   elements use `.glass-pill` (no backdrop blur) to keep compositing cheap.
+  The panels are thin on purpose, so the lamp shows through them: the tint
+  (`--glass-from`/`--glass-to`), the lamp's strength below the hero (`LAMP_DIM`
+  in `liquid-background.tsx`) and the accent text colour (`--item-ink`) are
+  tuned together so text on glass keeps 4.5:1. Change one and re-measure.
 - **Background:** `src/components/background/liquid-background.tsx` renders at
   roughly half resolution, caps itself at 30 fps (20 fps below the hero), pauses
   when the tab is hidden, and draws a single static frame for reduced-motion or

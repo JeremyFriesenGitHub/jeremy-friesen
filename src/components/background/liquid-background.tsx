@@ -21,6 +21,13 @@ import { useEffect, useRef, useState } from "react";
 
 const BLOB_COUNT = 6;
 
+/**
+ * How much of the lamp fades out once the hero has scrolled away, per theme.
+ * The glass tokens in globals.css are tuned against the lamp at this
+ * strength: raising the lamp here needs a thicker tint there.
+ */
+const LAMP_DIM = { dark: 0.48, light: 0.4 } as const;
+
 const VERT = `attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0.0,1.0);}`;
 
 const FRAG = `
@@ -424,12 +431,17 @@ export function LiquidBackground() {
     };
 
     // Dim the lamp once the hero scrolls away: content sections sit on glass
-    // and need the backdrop calmer. Compositor-only (opacity on the canvas).
+    // and need the backdrop calmer, but not gone, or the glass has nothing to
+    // show through it. Dark glass carries light text, so its lamp dims more.
+    // Compositor-only (opacity on the canvas).
     let fadeRaf = 0;
     const applyFade = () => {
       fadeRaf = 0;
       const t = Math.min(window.scrollY / Math.max(window.innerHeight, 1), 1);
-      canvas.style.opacity = String(1 - 0.62 * t);
+      const dim = document.documentElement.classList.contains("dark")
+        ? LAMP_DIM.dark
+        : LAMP_DIM.light;
+      canvas.style.opacity = String(1 - dim * t);
     };
     const onScroll = () => {
       if (!fadeRaf) fadeRaf = requestAnimationFrame(applyFade);
@@ -464,6 +476,7 @@ export function LiquidBackground() {
     // with the new palette, then either resume or settle on a still frame.
     const themeObserver = new MutationObserver(() => {
       applyPalette();
+      applyFade();
       stop();
       play();
     });

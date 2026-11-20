@@ -99,7 +99,7 @@ export function Projects() {
                   }}
                 >
                   <span className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:28px_28px] opacity-60" />
-                  <span className="relative flex size-20 items-center justify-center rounded-3xl bg-(--item-accent)/15 text-(--item-accent) transition-transform duration-500 ease-out group-hover:scale-110">
+                  <span className="relative flex size-20 items-center justify-center rounded-3xl bg-(--item-accent)/15 text-(--item-ink) transition-transform duration-500 ease-out group-hover:scale-110">
                     <Icon name={project.icon} size={40} />
                   </span>
                 </div>
@@ -108,7 +108,7 @@ export function Projects() {
               <div className="flex flex-1 flex-col px-2 pt-4 pb-2">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/12 text-(--item-accent)">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/12 text-(--item-ink)">
                       <Icon name={project.icon} size={18} />
                     </span>
                     <div className="min-w-0">
@@ -146,7 +146,7 @@ export function Projects() {
                     className={cn(
                       "mt-3 flex items-center gap-1.5 text-sm",
                       project.award
-                        ? "font-medium text-(--item-accent)"
+                        ? "font-medium text-(--item-ink)"
                         : "text-muted-foreground",
                     )}
                   >

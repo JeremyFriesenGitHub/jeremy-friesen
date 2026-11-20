@@ -38,7 +38,7 @@ export function GlassCard({
       className={cn(
         "accent-scope glass rounded-3xl",
         interactive &&
-          "transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_32px_70px_-30px_var(--glass-shadow)]",
+          "transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:[--glass-drop:0_36px_76px_-30px_var(--glass-shadow)]",
         className,
       )}
     >

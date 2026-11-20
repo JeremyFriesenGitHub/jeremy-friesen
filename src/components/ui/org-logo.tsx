@@ -66,7 +66,7 @@ export function OrgLogo({
     <span
       aria-hidden="true"
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/14 font-mono text-xs font-semibold tracking-tight text-(--item-accent)",
+        "flex shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/14 font-mono text-xs font-semibold tracking-tight text-(--item-ink)",
         className,
       )}
       style={style}
