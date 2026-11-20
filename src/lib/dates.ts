@@ -20,6 +20,14 @@ export function formatMonth(ym: string): string {
   return y && month ? `${month} ${y}` : ym;
 }
 
+/** "Sep 2026" -> months since year 0, for sorting; 0 for anything else. */
+export function monthOrder(label?: string): number {
+  const [name, year] = (label ?? "").split(" ");
+  const month = MONTHS.findIndex((m) => m === name);
+  const y = Number(year);
+  return month >= 0 && y > 0 ? y * 12 + month : 0;
+}
+
 /** "https://devpost.com/software/x" -> "Devpost", for link labels. */
 export function linkHost(url: string): string {
   try {

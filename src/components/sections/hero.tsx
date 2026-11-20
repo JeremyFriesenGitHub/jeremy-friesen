@@ -1,20 +1,12 @@
 import type { CSSProperties } from "react";
-import {
-  FaAws,
-  FaDocker,
-  FaGithub,
-  FaLinkedinIn,
-  FaPython,
-} from "react-icons/fa6";
-import { SiDevpost, SiPytorch, SiTypescript } from "react-icons/si";
+import { FaAws, FaDocker, FaPython } from "react-icons/fa6";
+import { SiPytorch, SiTypescript } from "react-icons/si";
 import { VscAzure } from "react-icons/vsc";
-import { LuArrowDown, LuChevronDown, LuFileText } from "react-icons/lu";
+import { LuArrowDown, LuChevronDown } from "react-icons/lu";
 import { RotatingWord } from "~/components/sections/rotating-word";
 import { GlassButton } from "~/components/ui/glass-button";
-import { hackathonStats } from "~/data/hackathons";
-import { experiences } from "~/data/experience";
 import { copy } from "~/data/copy";
-import { profile, socialLinks } from "~/data/social-links";
+import { profile } from "~/data/social-links";
 import { cn } from "~/lib/utils";
 
 const tiles = [
@@ -62,12 +54,6 @@ const tiles = [
   },
 ] as const;
 
-const stats = [
-  { value: `${hackathonStats.wins}×`, label: "hackathon winner" },
-  { value: String(hackathonStats.entered), label: "hackathons" },
-  { value: String(experiences.length), label: "internships" },
-] as const;
-
 function delay(ms: number): CSSProperties {
   return { animationDelay: `${ms}ms` };
 }
@@ -89,7 +75,7 @@ export function Hero() {
       />
 
       {/* Floating glass tiles: decorative, hidden from assistive tech, and only
-          shown from xl, where they clear the headline, buttons and stats. */}
+          shown from xl, where they clear the headline and the button. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 hidden xl:block"
@@ -108,21 +94,15 @@ export function Hero() {
         ))}
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-        <span
-          className="glass inline-flex animate-fade-up items-center gap-2 rounded-full py-1.5 pr-4 pl-3 text-xs font-medium text-foreground/85 glass-strong sm:text-sm"
-          style={delay(0)}
-        >
-          <span className="relative flex size-2.5">
-            <span className="absolute inset-0 animate-pulse-dot rounded-full bg-success" />
-            <span className="relative inline-flex size-2.5 rounded-full bg-success" />
-          </span>
-          {profile.role} · {profile.organization}
-        </span>
-
+      {/* Display type and a solid button: the navbar frosts over while they
+          pass underneath (see navbar.tsx). */}
+      <div
+        data-nav-frost=""
+        className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center"
+      >
         <h1
-          className="mt-7 animate-fade-up text-[clamp(3.2rem,11vw,7.5rem)] leading-[0.92] font-bold tracking-[-0.045em] text-balance"
-          style={delay(80)}
+          className="animate-fade-up text-[clamp(3.2rem,11vw,7.5rem)] leading-[0.92] font-bold tracking-[-0.045em] text-balance"
+          style={delay(0)}
         >
           {profile.firstName}{" "}
           <span className="text-liquid-animate text-liquid">
@@ -133,7 +113,7 @@ export function Hero() {
         {(copy.hero.tagline || copy.hero.focusLead) && (
           <p
             className="mt-7 max-w-2xl animate-fade-up text-lg text-pretty text-muted-foreground sm:text-xl md:text-2xl"
-            style={delay(160)}
+            style={delay(80)}
           >
             {copy.hero.tagline}
             {copy.hero.focusLead && (
@@ -149,62 +129,17 @@ export function Hero() {
           </p>
         )}
 
-        <div
-          className="mt-9 flex animate-fade-up flex-wrap items-center justify-center gap-3"
-          style={delay(240)}
-        >
+        <div className="mt-9 animate-fade-up" style={delay(160)}>
           <GlassButton href="#projects" variant="primary" size="lg">
             View projects
             <LuArrowDown size={18} aria-hidden="true" />
           </GlassButton>
-          <GlassButton href={socialLinks.devpost} external size="lg">
-            <SiDevpost size={18} aria-hidden="true" />
-            Devpost
-          </GlassButton>
-          <GlassButton href={socialLinks.resume} external size="lg">
-            <LuFileText size={18} aria-hidden="true" />
-            Resume
-          </GlassButton>
-          <div className="flex items-center gap-2">
-            <GlassButton
-              href={socialLinks.github}
-              external
-              size="lg"
-              aria-label="GitHub"
-              className="w-12 px-0"
-            >
-              <FaGithub size={20} aria-hidden="true" />
-            </GlassButton>
-            <GlassButton
-              href={socialLinks.linkedin}
-              external
-              size="lg"
-              aria-label="LinkedIn"
-              className="w-12 px-0"
-            >
-              <FaLinkedinIn size={19} aria-hidden="true" />
-            </GlassButton>
-          </div>
         </div>
-
-        <ul
-          className="mt-12 flex animate-fade-up flex-wrap items-center justify-center gap-x-8 gap-y-4"
-          style={delay(320)}
-        >
-          {stats.map((s) => (
-            <li key={s.label} className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold tracking-tight sm:text-3xl">
-                {s.value}
-              </span>
-              <span className="text-sm text-muted-foreground">{s.label}</span>
-            </li>
-          ))}
-        </ul>
       </div>
 
       <a
-        href="#about"
-        aria-label="Scroll to About"
+        href="#experience"
+        aria-label="Scroll to Experience"
         className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-fade-up text-foreground/50 transition-colors hover:text-foreground"
         style={delay(600)}
       >

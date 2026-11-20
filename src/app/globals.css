@@ -31,7 +31,6 @@
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-menu-in: menu-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-shimmer: shimmer 9s linear infinite;
-  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
   --animate-nudge: nudge 2.2s ease-in-out infinite;
   --animate-lava: lava 40s ease-in-out infinite;
 
@@ -67,18 +66,6 @@
   @keyframes shimmer {
     to {
       background-position: 200% center;
-    }
-  }
-  /* Expanding ring behind the status dot: transform/opacity only. */
-  @keyframes pulse-dot {
-    0% {
-      transform: scale(1);
-      opacity: 0.6;
-    }
-    70%,
-    100% {
-      transform: scale(2.6);
-      opacity: 0;
     }
   }
   /* CSS lava-lamp fallback (no WebGL): a slow rise and sink. */
@@ -129,13 +116,21 @@
   --border: rgba(12, 12, 20, 0.1);
   --ring: #1e4fe6;
 
-  /* Glass surfaces. --glass-from/-to is the default panel; the -clear pair is
-     the near-transparent navbar variant (see .glass-clear). */
+  /* Glass surfaces. --glass-from/-to is the default panel; the -clear set is
+     the see-through navbar variant (see .glass-clear). */
   --glass-from: rgba(255, 255, 255, 0.56);
   --glass-to: rgba(255, 255, 255, 0.28);
-  /* Opaque enough that the links stay 4.5:1 as headings scroll under the bar. */
-  --glass-clear-from: rgba(255, 255, 255, 0.66);
-  --glass-clear-to: rgba(255, 255, 255, 0.44);
+  /* A thin frost: the lamp shows through, and the links (full-strength
+     foreground) stay well past 4.5:1 over its darkest wax. A dark screenshot
+     is more than it can lift, so the navbar lays -frost on top while one
+     passes under the bar (see navbar.tsx), which holds 4.5:1 over black. */
+  --glass-clear-from: rgba(255, 255, 255, 0.34);
+  --glass-clear-to: rgba(255, 255, 255, 0.24);
+  --glass-clear-frost: rgba(255, 255, 255, 0.38);
+  --glass-clear-sheen: rgba(255, 255, 255, 0.35);
+  --glass-clear-edge: rgba(255, 255, 255, 0.6);
+  --glass-clear-hi: rgba(255, 255, 255, 0.95);
+  --glass-clear-shadow: rgba(30, 40, 90, 0.26);
   --glass-rim: rgba(255, 255, 255, 0.95);
   --glass-edge: rgba(12, 12, 20, 0.1);
   --glass-hi: rgba(255, 255, 255, 0.95);
@@ -175,10 +170,19 @@
      card must not depend on which aurora blob is passing behind it. */
   --glass-from: rgba(8, 8, 13, 0.55);
   --glass-to: rgba(8, 8, 13, 0.38);
-  /* The navbar's clear glass is page-tinted too: its links sit directly over
-     the brightest blobs and need the darkening to hold 4.5:1. */
-  --glass-clear-from: rgba(8, 8, 13, 0.64);
-  --glass-clear-to: rgba(8, 8, 13, 0.46);
+  /* The navbar's clear glass is page-tinted too, and no thinner than this:
+     its links sit directly over the brightest blobs, and this is the least
+     darkening that holds 4.5:1 over a specular highlight on the sky wax.
+     A white screenshot needs more: -frost is added while one is under the
+     bar, which holds 4.5:1 over white, including on the active link while
+     it is hovered (its pill, hover fill and the bar's glow all lighten it). */
+  --glass-clear-from: rgba(8, 8, 13, 0.44);
+  --glass-clear-to: rgba(8, 8, 13, 0.34);
+  --glass-clear-frost: rgba(8, 8, 13, 0.58);
+  --glass-clear-sheen: rgba(255, 255, 255, 0.07);
+  --glass-clear-edge: rgba(255, 255, 255, 0.14);
+  --glass-clear-hi: rgba(255, 255, 255, 0.22);
+  --glass-clear-shadow: rgba(0, 0, 0, 0.5);
   --glass-rim: rgba(255, 255, 255, 0.28);
   --glass-edge: rgba(255, 255, 255, 0.08);
   --glass-hi: rgba(255, 255, 255, 0.16);
@@ -264,9 +268,11 @@
  *  .glass        translucent panel: gradient fill, backdrop blur, gradient rim,
  *                inner highlight, soft drop shadow, and a specular highlight that
  *                follows the pointer via --mx/--my (set by usePointerGlow).
- *  .glass-strong more opaque variant for the mobile menu and hero chips.
- *  .glass-clear  near-transparent variant for the floating navbar: the page
- *                shows through, with a stronger blur keeping text legible.
+ *  .glass-strong more opaque variant for the mobile menu.
+ *  .glass-clear  see-through variant for the floating navbar: a thin tint, a
+ *                brighter edge and a sheen across the top, with a stronger
+ *                blur keeping text legible. The navbar thickens the tint
+ *                with --glass-clear-frost while screenshots pass under it.
  *  .glass-pill   lightweight pill with NO backdrop blur, for chips nested inside
  *                a .glass card (nested backdrop filters are slow and buggy).
  * ------------------------------------------------------------------------ */
@@ -342,10 +348,15 @@
 @utility glass-clear {
   --glass-from: var(--glass-clear-from);
   --glass-to: var(--glass-clear-to);
-  --glass-blur: 24px;
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(190%)
-    brightness(1.04);
-  backdrop-filter: blur(var(--glass-blur)) saturate(190%) brightness(1.04);
+  --glass-edge: var(--glass-clear-edge);
+  --glass-hi: var(--glass-clear-hi);
+  --glass-shadow: var(--glass-clear-shadow);
+  --glass-blur: 28px;
+  background:
+    linear-gradient(180deg, var(--glass-clear-sheen), transparent 60%),
+    linear-gradient(135deg, var(--glass-from), var(--glass-to));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
 }
 
 @utility glass-pill {

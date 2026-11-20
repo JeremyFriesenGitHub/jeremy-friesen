@@ -7,9 +7,11 @@ import {
   FaGitAlt,
   FaGithub,
   FaJava,
+  FaKaggle,
   FaLinkedinIn,
   FaLinux,
   FaMasksTheater,
+  FaMicrosoft,
   FaNode,
   FaPython,
   FaReact,
@@ -23,7 +25,6 @@ import {
   LuAward,
   LuBot,
   LuBrainCircuit,
-  LuBriefcase,
   LuCalendar,
   LuChartLine,
   LuCode,
@@ -32,7 +33,6 @@ import {
   LuFileText,
   LuGavel,
   LuGhost,
-  LuGraduationCap,
   LuLaptop,
   LuLayers,
   LuLeaf,
@@ -42,7 +42,6 @@ import {
   LuPlane,
   LuRadar,
   LuRocket,
-  LuSatellite,
   LuShieldCheck,
   LuTrophy,
   LuUsersRound,
@@ -85,6 +84,7 @@ import {
   SiWireshark,
 } from "react-icons/si";
 import { VscAzure, VscTerminalPowershell, VscVscode } from "react-icons/vsc";
+import type { CertificationIcon } from "~/data/certifications";
 import type { CommunityIcon } from "~/data/community";
 import type { ProjectIcon } from "~/data/projects";
 import type { SkillIcon } from "~/data/skills";
@@ -94,13 +94,11 @@ type UiIcon =
   | "arrow-right"
   | "arrow-up-right"
   | "award"
-  | "briefcase"
   | "calendar"
   | "devpost"
   | "external-link"
   | "file-text"
   | "gavel"
-  | "graduation-cap"
   | "linkedin"
   | "map-pin"
   | "maple-leaf"
@@ -173,7 +171,6 @@ export const spriteIcons = {
   brain: LuBrainCircuit,
   laptop: LuLaptop,
   rocket: LuRocket,
-  satellite: LuSatellite,
   workflow: LuWorkflow,
   lock: LuLock,
   layers: LuLayers,
@@ -185,24 +182,25 @@ export const spriteIcons = {
   ghost: LuGhost,
   keyboard: LuCode,
   users: LuUsersRound,
+  // Certifications (GitHub's mark is with the skills)
+  microsoft: FaMicrosoft,
+  kaggle: FaKaggle,
   // Links, facts and awards
   "arrow-right": LuArrowRight,
   "arrow-up-right": LuArrowUpRight,
   award: LuAward,
-  briefcase: LuBriefcase,
   calendar: LuCalendar,
   devpost: SiDevpost,
   "external-link": LuExternalLink,
   "file-text": LuFileText,
   gavel: LuGavel,
-  "graduation-cap": LuGraduationCap,
   linkedin: FaLinkedinIn,
   "map-pin": LuMapPin,
   "maple-leaf": LiaCanadianMapleLeaf,
   trophy: LuTrophy,
   youtube: FaYoutube,
 } as const satisfies Record<
-  SkillIcon | ProjectIcon | CommunityIcon | UiIcon,
+  SkillIcon | ProjectIcon | CommunityIcon | CertificationIcon | UiIcon,
   IconType
 >;
 

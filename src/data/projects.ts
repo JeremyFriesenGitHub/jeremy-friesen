@@ -7,7 +7,6 @@ export type ProjectIcon =
   | "brain"
   | "laptop"
   | "rocket"
-  | "satellite"
   | "workflow"
   | "lock"
   | "layers"
@@ -62,6 +61,9 @@ export type CaseStudyProject = Project & { caseStudy: CaseStudy };
 /**
  * Newest first. Hackathon builds link to Devpost, a demo video and source:
  * their backends are long gone, so there are no live-app links here.
+ * Cards from the same month keep this order, which also decides how the
+ * two-column cards pack into the three-column grid: check for gaps on desktop
+ * after adding or removing one.
  */
 const entries: Project[] = [
   {
@@ -81,19 +83,6 @@ const entries: Project[] = [
     tags: ["Python", "PyTorch", "scikit-learn", "Flask"],
     note: "1st place, CSE challenge at Hack the North 2026",
     award: true,
-  },
-  {
-    title: "AEAC 2026 flight software",
-    slug: "aeac-2026-flight-software",
-    description: "",
-    date: "2026-05",
-    url: "https://github.com/Blackbird-UAV",
-    images: [],
-    accent: { dark: "#5eead4", light: "#0f766e" },
-    icon: "satellite",
-    colSpan: 1,
-    tags: ["Python", "C++", "Raspberry Pi", "Arduino"],
-    note: "Blackbird UAV, Software Lead",
   },
   {
     title: "MapleVault",
@@ -120,7 +109,12 @@ const entries: Project[] = [
     description: "",
     date: "2026-04",
     url: "https://github.com/JeremyFriesenGitHub/DATA5000_Project",
-    images: [],
+    images: [
+      {
+        src: "/images/landcover-1.webp",
+        alt: "Risk map generated from the model output for Logan Lake",
+      },
+    ],
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
     icon: "layers",
     colSpan: 1,
@@ -157,6 +151,28 @@ const entries: Project[] = [
     tags: ["React", "Vite", "Tailwind CSS"],
   },
   {
+    title: "Buildo",
+    slug: "buildo",
+    description: "",
+    date: "2026-01",
+    url: "https://devpost.com/software/product-creator-temp-name-conu-x",
+    repo: "https://github.com/chantalzhang/conuhacks26",
+    video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
+    images: [
+      { src: "/images/buildo-1.webp", alt: "Buildo terminal-style interface" },
+      {
+        src: "/images/buildo-2.webp",
+        alt: "Hardware prototype built from a Buildo guide",
+      },
+    ],
+    accent: { dark: "#5eead4", light: "#0f766e" },
+    icon: "cpu",
+    colSpan: 2,
+    tags: ["Next.js", "Flask", "Gemini API", "Snowflake Cortex"],
+    note: "MLH Best Use of Gemini API, ConUHacks X",
+    award: true,
+  },
+  {
     title: "Plante",
     slug: "plante",
     description: "",
@@ -188,28 +204,6 @@ const entries: Project[] = [
     colSpan: 1,
     tags: ["FastAPI", "Backboard.io", "JavaScript"],
     note: "AGI Ventures Canada challenge",
-  },
-  {
-    title: "Buildo",
-    slug: "buildo",
-    description: "",
-    date: "2026-01",
-    url: "https://devpost.com/software/product-creator-temp-name-conu-x",
-    repo: "https://github.com/chantalzhang/conuhacks26",
-    video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
-    images: [
-      { src: "/images/buildo-1.webp", alt: "Buildo terminal-style interface" },
-      {
-        src: "/images/buildo-2.webp",
-        alt: "Hardware prototype built from a Buildo guide",
-      },
-    ],
-    accent: { dark: "#5eead4", light: "#0f766e" },
-    icon: "cpu",
-    colSpan: 2,
-    tags: ["Next.js", "Flask", "Gemini API", "Snowflake Cortex"],
-    note: "MLH Best Use of Gemini API, ConUHacks X",
-    award: true,
   },
   {
     title: "Shazam 4 Drones",
@@ -291,8 +285,8 @@ const entries: Project[] = [
     tags: ["TypeScript", "Next.js", "Nx"],
   },
   {
-    title: "Event forms automation",
-    slug: "event-forms-automation",
+    title: "Risk management forms automation",
+    slug: "risk-management-forms-automation",
     description: "",
     date: "2024-11",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",

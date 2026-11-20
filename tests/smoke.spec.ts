@@ -3,14 +3,23 @@ import { requiredRatio, worstContrast } from "./contrast";
 
 type Theme = "light" | "dark";
 
-async function openHome(page: Page, theme: Theme) {
-  await page.addInitScript((t: Theme) => {
-    try {
-      localStorage.setItem("theme", t);
-    } catch {
-      /* storage blocked: the OS theme applies */
-    }
-  }, theme);
+async function openHome(
+  page: Page,
+  theme: Theme,
+  { lampPaused = false }: { lampPaused?: boolean } = {},
+) {
+  await page.addInitScript(
+    ({ theme, lampPaused }: { theme: Theme; lampPaused: boolean }) => {
+      try {
+        localStorage.setItem("theme", theme);
+        // What the navbar's effects toggle stores (hooks/use-effects.ts).
+        if (lampPaused) localStorage.setItem("effects", "reduced");
+      } catch {
+        /* storage blocked: the OS theme applies */
+      }
+    },
+    { theme, lampPaused },
+  );
   await page.goto("/", { waitUntil: "networkidle" });
   await page.waitForTimeout(600);
 }
@@ -98,6 +107,88 @@ test("the projects grid shows eight cards, then all of them", async ({
   await expect(focused).toBeInViewport();
 });
 
+test("the navbar frosts when the grid grows under it without a scroll", async ({
+  page,
+}) => {
+  // Two columns: the first revealed card lands in view, so nothing scrolls.
+  await page.setViewportSize({ width: 800, height: 900 });
+  await openHome(page, "dark");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
+  const frost = page.locator(
+    'nav[aria-label="Primary"] > span[aria-hidden="true"]',
+  );
+  const button = page.getByRole("button", { name: /Show \d+ more projects/ });
+  // Park the grid's end just above the bar, which puts the button behind it.
+  await page.evaluate(() => {
+    const grid = document.querySelector("#projects .grid")!;
+    scrollTo(0, scrollY + grid.getBoundingClientRect().bottom + 20);
+  });
+  await expect(frost).toHaveCSS("opacity", "0");
+  const before = await page.evaluate(() => scrollY);
+
+  await button.focus();
+  await page.keyboard.press("Enter");
+  await expect(button).toHaveCount(0);
+  expect(await page.evaluate(() => scrollY)).toBe(before);
+  await expect(frost).toHaveCSS("opacity", "1");
+});
+
+test("the navbar fits its links from tablet width up", async ({ page }) => {
+  // The narrowest width of each layout: links alone (md), with the socials
+  // and the resume (lg), and with the name as well (xl).
+  for (const width of [768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/", { waitUntil: "networkidle" });
+    const fit = await page
+      .locator('nav[aria-label="Primary"]')
+      .evaluate((nav) => {
+        const links = [...nav.querySelectorAll("ul a")];
+        return {
+          links: links.length,
+          tallest: Math.max(
+            ...links.map((a) => a.getBoundingClientRect().height),
+          ),
+          // The pill hugs its content up to the viewport less its margins.
+          spare: innerWidth - 24 - nav.getBoundingClientRect().width,
+          clipped: nav.scrollWidth - nav.clientWidth,
+        };
+      });
+    expect(fit.links, `links shown at ${width}px`).toBeGreaterThan(0);
+    expect(fit.tallest, `no link wraps at ${width}px`).toBeLessThan(40);
+    expect(fit.clipped, `nothing is clipped at ${width}px`).toBeLessThanOrEqual(
+      0,
+    );
+    // Room to spare, so a slightly wider font rendering still fits.
+    expect(fit.spare, `spare room at ${width}px`).toBeGreaterThanOrEqual(24);
+  }
+});
+
+test("each certification links to its credential and the navbar reaches the section", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
+  const links = page.locator("#certifications h3 a");
+  expect(await links.count()).toBeGreaterThan(0);
+  for (const link of await links.all()) {
+    await expect(link).toHaveAttribute("href", /^https:\/\//);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /noopener/);
+  }
+
+  await page
+    .getByRole("navigation", { name: "Primary" })
+    .getByRole("link", { name: "Certifications" })
+    .click();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Certifications" }),
+  ).toBeInViewport();
+});
+
 test("the effects toggle pauses the lamp and the choice persists", async ({
   page,
 }) => {
@@ -160,6 +251,7 @@ for (const theme of ["light", "dark"] as const) {
       "#experience p.text-muted-foreground",
       "#community li span.text-sm",
       "#hackathons p.text-muted-foreground",
+      "#certifications p.text-muted-foreground",
     ];
     for (const selector of probes) {
       const result = await worstContrast(page, selector);
@@ -169,6 +261,81 @@ for (const theme of ["light", "dark"] as const) {
         result!.p5,
         `${selector} (${theme}) holds ${need}:1`,
       ).toBeGreaterThanOrEqual(need);
+    }
+  });
+
+  test(`nav links stay readable over the project screenshots (${theme})`, async ({
+    page,
+  }) => {
+    // The lamp holds a still frame, as with the site's own toggle. This is
+    // about the bar over the screenshots, and drawing the moving lamp in
+    // software took the test past its minute on a busy CI runner. The links
+    // over the moving lamp are a probe in the test above.
+    await openHome(page, theme, { lampPaused: true });
+    await expect(page.locator("html")).toHaveClass(/reduce-effects/);
+    await page.addStyleTag({
+      content:
+        "html { scroll-behavior: auto !important } *, *::before, *::after { animation: none !important; transition: none !important }",
+    });
+    // The bar loads clear and frosts over once screenshots are underneath.
+    const frost = page.locator(
+      'nav[aria-label="Primary"] > span[aria-hidden="true"]',
+    );
+    await expect(frost).toHaveCSS("opacity", "0");
+
+    await page.getByRole("button", { name: /Show \d+ more projects/ }).click();
+    await page.evaluate(() => (document.activeElement as HTMLElement)?.blur());
+
+    // One scroll position per row of cards: its screenshots centred behind the bar.
+    const stops = await page.evaluate(() => {
+      const bar = document
+        .querySelector('nav[aria-label="Primary"]')!
+        .getBoundingClientRect();
+      const tops = new Set<number>();
+      for (const img of document.querySelectorAll("#projects .grid img")) {
+        const r = img.getBoundingClientRect();
+        if (r.height === 0) continue;
+        tops.add(
+          Math.round(
+            scrollY + r.top + r.height / 2 - (bar.top + bar.height / 2),
+          ),
+        );
+      }
+      return [...tops];
+    });
+    expect(stops.length).toBeGreaterThan(2);
+
+    for (const top of stops) {
+      await page.evaluate((y) => scrollTo(0, y), top);
+      // Lazy screenshots: measure once the ones in view have arrived.
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll("#projects .grid img")].every((img) => {
+          const r = img.getBoundingClientRect();
+          const inView = r.height > 0 && r.bottom > 0 && r.top < innerHeight;
+          return !inView || (img as HTMLImageElement).complete;
+        }),
+      );
+      await expect(frost).toHaveCSS("opacity", "1");
+      const result = await worstContrast(page, 'nav[aria-label="Primary"] ul');
+      expect(result, "the nav links were measured").not.toBeNull();
+      expect(
+        result!.p5,
+        `nav links at scrollY ${top} (${theme}) hold 4.5:1`,
+      ).toBeGreaterThanOrEqual(requiredRatio(result!.size, result!.weight));
+      // The probe must not have moved the page off the row being measured.
+      expect(await page.evaluate(() => Math.round(scrollY))).toBe(top);
+
+      // Hovered, the section's own link is the hardest case: its pill, its
+      // hover fill and the bar's glow all sit between the text and the glass.
+      const link = 'nav[aria-label="Primary"] ul a[href="#projects"]';
+      await page.hover(link);
+      const hovered = await worstContrast(page, link);
+      expect(hovered, "the hovered link was measured").not.toBeNull();
+      expect(
+        hovered!.p5,
+        `hovered Projects link at scrollY ${top} (${theme}) holds 4.5:1`,
+      ).toBeGreaterThanOrEqual(requiredRatio(hovered!.size, hovered!.weight));
+      await page.mouse.move(0, 700);
     }
   });
 }

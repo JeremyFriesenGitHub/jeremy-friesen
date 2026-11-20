@@ -31,10 +31,20 @@ const socials = [
 const iconLinkClass =
   "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color] duration-200 hover:bg-foreground/8 hover:text-foreground";
 
+/**
+ * How far ahead of the bar a `data-nav-frost` region starts to count, in px:
+ * the backdrop blur reaches past the bar's edges, and the frost takes a moment
+ * to fade in. Small enough that the hero's top padding keeps its headline out
+ * of range at the top of the page, so the bar loads clear.
+ */
+const FROST_LEAD = 24;
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [frosted, setFrosted] = useState(false);
   const active = useActiveSection(sectionIds);
+  const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLButtonElement>(null);
@@ -49,12 +59,37 @@ export function Navbar() {
     if (inside) toggleRef.current?.focus();
   }, []);
 
-  // Slightly stronger shadow once the page has scrolled.
+  // Slightly stronger shadow once the page has scrolled, and frosted glass
+  // while a `data-nav-frost` region (the hero's headline and button, the grid
+  // of screenshots) is under the bar: clear glass holds the links' contrast
+  // over the lamp and the glass cards, but not with display type, a solid
+  // fill or an arbitrary image on top of that.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const regions = Array.from(document.querySelectorAll("[data-nav-frost]"));
+    const update = () => {
+      setScrolled(window.scrollY > 24);
+      const bar = navRef.current?.getBoundingClientRect();
+      setFrosted(
+        bar !== undefined &&
+          regions.some((region) => {
+            const r = region.getBoundingClientRect();
+            return (
+              r.top < bar.bottom + FROST_LEAD && r.bottom > bar.top - FROST_LEAD
+            );
+          }),
+      );
+    };
+    update();
+    // A region can also grow under the bar with no scroll at all ("Show more").
+    const sizes = new ResizeObserver(update);
+    for (const region of regions) sizes.observe(region);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      sizes.disconnect();
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   // While open: Escape closes, body scroll is locked, and growing past the
@@ -80,7 +115,9 @@ export function Navbar() {
   }, [open, close]);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4 print:hidden">
+    // Glass takes on whatever is under it, so a focus ring in here gets a band
+    // of the page colour to stand against (the ring sits just outside it).
+    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-3 sm:top-4 print:hidden [&_:focus-visible]:shadow-[0_0_0_3px_var(--background)]">
       {/* Tap-outside backdrop. A sibling of the nav on purpose: the nav's
           backdrop-filter would otherwise become this element's containing block. */}
       {open && (
@@ -95,14 +132,28 @@ export function Navbar() {
       )}
 
       <nav
+        ref={navRef}
         aria-label="Primary"
         className={cn(
           // Phones: a full-width bar, brand left and menu right. From md the
           // pill hugs its content and sits centred, so the links are centred too.
           "glass pointer-events-auto relative flex w-full max-w-5xl items-center justify-between gap-2 rounded-full p-1.5 pl-2 glass-clear transition-shadow duration-300 md:w-auto md:max-w-[calc(100vw-1.5rem)] md:justify-center md:gap-1 md:pl-1.5",
-          scrolled && "shadow-[0_18px_50px_-20px_var(--glass-shadow)]",
+          // The inset pair is the glass's own top highlight and bottom edge,
+          // repeated here because this replaces the whole box-shadow.
+          scrolled &&
+            "shadow-[inset_0_1px_0_0_var(--glass-hi),inset_0_-1px_0_0_var(--glass-lo),0_18px_50px_-20px_var(--glass-shadow)]",
         )}
       >
+        {/* Extra tint over the clear fill, faded in while frosted. It stays on
+            when scripts never ran, since nothing can then tell what is under
+            the bar. */}
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-0 -z-1 rounded-full bg-(--glass-clear-frost) opacity-0 transition-opacity duration-300 [html:not(.js)_&]:opacity-100",
+            frosted && "opacity-100",
+          )}
+        />
         <a
           href="#top"
           onClick={close}
@@ -256,9 +307,11 @@ function DesktopLinks({ active }: { active: string | null }) {
   }, [measure]);
 
   return (
+    // Six links, the socials and the resume only fit the bar at lg with the
+    // tablet's tighter spacing; the roomier spacing starts at xl.
     <ul
       ref={listRef}
-      className="relative mx-1 hidden items-center border-x border-foreground/10 px-1.5 md:flex lg:mx-2 lg:px-2.5"
+      className="relative mx-1 hidden items-center border-l border-foreground/10 px-1.5 md:flex xl:mx-2 xl:px-2.5"
     >
       <li
         aria-hidden="true"
@@ -278,12 +331,9 @@ function DesktopLinks({ active }: { active: string | null }) {
             <a
               href={link.href}
               aria-current={isActive ? "location" : undefined}
-              className={cn(
-                "inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium transition-colors duration-200 lg:px-3.5",
-                isActive
-                  ? "text-foreground"
-                  : "text-foreground/85 hover:text-foreground",
-              )}
+              // Full-strength text: the bar is clear glass, so the links
+              // carry the contrast themselves; the pill marks the active one.
+              className="inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-foreground/6 xl:px-3.5"
             >
               {link.label}
             </a>

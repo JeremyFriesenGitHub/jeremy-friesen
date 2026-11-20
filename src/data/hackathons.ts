@@ -1,17 +1,19 @@
+import { monthOrder } from "~/lib/dates";
+
 /**
  * Hackathon submissions. Devpost entries are sourced from
  * https://devpost.com/JeremyFriesenGitHub; the rest ran off Devpost
  * (AGI Ventures Canada and the SSSC's InnovateNow!). Hackathon backends are
  * long gone, so cards link to Devpost, demo videos and source rather than live apps.
- * Winners are listed first (most recent hackathon first), then the rest.
+ * Newest first.
  */
 export interface HackathonProject {
   title: string;
   /** TODO: Jeremy to write. Hidden while empty. */
   tagline: string;
   hackathon: string;
-  /** Month the hackathon ran, when known. */
-  date?: string;
+  /** Month the hackathon ran, as "Sep 2026". Cards sort by it. */
+  date: string;
   /** Prize text as shown by the organizers. Present only for winning submissions. */
   award?: string;
   /** Devpost submission page, when the hackathon ran on Devpost. */
@@ -26,34 +28,50 @@ export interface HackathonProject {
   accent: { dark: string; light: string };
 }
 
-export interface JudgingRole {
+/** The other side of the table: hackathons judged or mentored at. */
+export interface HackathonRole {
+  role: "Judge" | "Mentor";
   event: string;
   /** Who ran it. TODO: Jeremy to write. Hidden while empty. */
   organizer: string;
+  /** Month the hackathon ran, as "Sep 2026". Rows sort by it. */
   date: string;
   url: string;
 }
 
-/**
- * Counts cover every hackathon entered, on and off Devpost. The Devpost
- * profile lists one more (Hack the Hill III) that was never entered.
- */
-export const judging: JudgingRole[] = [
+/** Newest first; a month's ties keep the order they are written in. */
+const newestFirst = <T extends { date: string }>(items: T[]): T[] =>
+  [...items].sort((a, b) => monthOrder(b.date) - monthOrder(a.date));
+
+export const hackathonRoles: HackathonRole[] = newestFirst([
   {
+    role: "Mentor",
+    event: "HackTrent 2026",
+    organizer: "",
+    date: "Nov 2026",
+    url: "https://www.hacktrent.ca",
+  },
+  {
+    role: "Judge",
     event: "cuHacking 2026",
     organizer: "",
     date: "Jul 2026",
     url: "https://cuhacking.ca",
   },
   {
+    role: "Judge",
     event: "InnovateNow! 3",
     organizer: "Science Student Success Centre, Carleton",
     date: "Oct 2024",
     url: "https://innovatenow.devpost.com",
   },
-];
+]);
 
-export const hackathonProjects: HackathonProject[] = [
+/**
+ * Counts cover every hackathon entered, on and off Devpost. The Devpost
+ * profile lists one more (Hack the Hill III) that was never entered.
+ */
+export const hackathonProjects: HackathonProject[] = newestFirst([
   {
     title: "Trace",
     tagline: "",
@@ -63,6 +81,27 @@ export const hackathonProjects: HackathonProject[] = [
     url: "https://devpost.com/software/loggr",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
     builtWith: ["Python", "PyTorch", "scikit-learn", "PyOD", "Flask"],
+    accent: { dark: "#9ba4ff", light: "#3730a3" },
+  },
+  {
+    title: "MapleVault",
+    tagline: "",
+    hackathon: "Ottawa Defence Hackathon · Verified Canadian Supply Chains",
+    date: "May 2026",
+    url: "https://devpost.com/software/ctl-claude-del",
+    repo: "https://github.com/JowiAoun/MapleVault",
+    builtWith: ["TypeScript", "FastAPI", "Docker"],
+    accent: { dark: "#6ee7b7", light: "#047857" },
+  },
+  {
+    title: "Agent²",
+    tagline: "",
+    hackathon: "GenAI Genesis 2026",
+    date: "Mar 2026",
+    url: "https://devpost.com/software/agent-o3l6si",
+    video: "https://www.youtube.com/watch?v=hvT3rvw54yo",
+    repo: "https://github.com/chantalzhang/genaigenesis2026",
+    builtWith: ["Python", "FastAPI", "AWS", "PersonaPlex", "Playwright"],
     accent: { dark: "#9ba4ff", light: "#3730a3" },
   },
   {
@@ -88,6 +127,25 @@ export const hackathonProjects: HackathonProject[] = [
     repo: "https://github.com/JowiAoun/Plante",
     builtWith: ["Next.js", "MongoDB", "Gemini", "Raspberry Pi", "Arduino"],
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
+  },
+  {
+    title: "Startup Idea Validator",
+    tagline: "",
+    hackathon: "AGI Ventures Canada · Hacker House Challenge",
+    date: "Jan 2026",
+    repo: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
+    builtWith: ["FastAPI", "Backboard.io", "JavaScript", "Python"],
+    accent: { dark: "#b08cff", light: "#5b21b6" },
+  },
+  {
+    title: "Shazam 4 Drones",
+    tagline: "",
+    hackathon: "Shazam for Drones Hackathon",
+    date: "Nov 2025",
+    url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
+    repo: "https://github.com/Blackbird-UAV/icebreaker-hackathon-2025",
+    builtWith: ["Next.js", "FastAPI", "scikit-learn", "SciPy", "Twilio"],
+    accent: { dark: "#67d2ff", light: "#0b5f8a" },
   },
   {
     title: "Network Threat Explorer",
@@ -133,49 +191,9 @@ export const hackathonProjects: HackathonProject[] = [
     builtWith: ["JavaScript", "Node.js", "HTML", "CSS"],
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
   },
-  {
-    title: "MapleVault",
-    tagline: "",
-    hackathon: "Ottawa Defence Hackathon · Verified Canadian Supply Chains",
-    date: "May 2026",
-    url: "https://devpost.com/software/ctl-claude-del",
-    repo: "https://github.com/JowiAoun/MapleVault",
-    builtWith: ["TypeScript", "FastAPI", "Docker"],
-    accent: { dark: "#6ee7b7", light: "#047857" },
-  },
-  {
-    title: "Agent²",
-    tagline: "",
-    hackathon: "GenAI Genesis 2026",
-    date: "Mar 2026",
-    url: "https://devpost.com/software/agent-o3l6si",
-    video: "https://www.youtube.com/watch?v=hvT3rvw54yo",
-    repo: "https://github.com/chantalzhang/genaigenesis2026",
-    builtWith: ["Python", "FastAPI", "AWS", "PersonaPlex", "Playwright"],
-    accent: { dark: "#9ba4ff", light: "#3730a3" },
-  },
-  {
-    title: "Startup Idea Validator",
-    tagline: "",
-    hackathon: "AGI Ventures Canada · Hacker House Challenge",
-    date: "Jan 2026",
-    repo: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
-    builtWith: ["FastAPI", "Backboard.io", "JavaScript", "Python"],
-    accent: { dark: "#b08cff", light: "#5b21b6" },
-  },
-  {
-    title: "Shazam 4 Drones",
-    tagline: "",
-    hackathon: "Shazam for Drones Hackathon",
-    date: "Nov 2025",
-    url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
-    repo: "https://github.com/Blackbird-UAV/icebreaker-hackathon-2025",
-    builtWith: ["Next.js", "FastAPI", "scikit-learn", "SciPy", "Twilio"],
-    accent: { dark: "#67d2ff", light: "#0b5f8a" },
-  },
-];
+]);
 
-/** Counted from the cards, so the hero and the stats row never drift from them. */
+/** Counted from the cards, so the stats row never drifts from them. */
 export const hackathonStats = {
   entered: hackathonProjects.length,
   wins: hackathonProjects.filter((p) => p.award).length,

@@ -11,6 +11,11 @@ interface ShowMoreProps {
   moreLabel: string;
   /** Class for the element that wraps the children (the grid). */
   className?: string;
+  /**
+   * Marks the grid as a region the navbar frosts over while it is underneath
+   * (see navbar.tsx): set it when the children carry screenshots.
+   */
+  navFrost?: boolean;
 }
 
 /**
@@ -19,7 +24,12 @@ interface ShowMoreProps {
  * SHOW_MORE_INITIAL behind a button. Expanding moves focus to the first newly
  * revealed card so keyboard users land on what just appeared.
  */
-export function ShowMore({ children, moreLabel, className }: ShowMoreProps) {
+export function ShowMore({
+  children,
+  moreLabel,
+  className,
+  navFrost,
+}: ShowMoreProps) {
   const [expanded, setExpanded] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
   // Nothing to hide: a plain grid, with no "Show 0 more" button.
@@ -39,6 +49,7 @@ export function ShowMore({ children, moreLabel, className }: ShowMoreProps) {
     <>
       <div
         ref={gridRef}
+        data-nav-frost={navFrost ? "" : undefined}
         className={cn(className, collapsed && "collapsed-grid")}
       >
         {children}

@@ -14,26 +14,17 @@ export const copy = {
     /** The words before the rotating word (Security, Cloud & DevOps, ...). Blank hides the rotating line. */
     focusLead: "Currently focused on",
   },
-  about: {
-    /** Big heading under the "About" label; the label is the heading while blank. */
-    title: "",
-    /** Line under the heading. */
-    description: "",
-    /** Lead paragraph in the right-hand card. */
-    intro: "",
-    /** Bullets under it: `text` renders plain, `highlight` renders bold after it. */
-    points: [] as { text: string; highlight: string }[],
-  },
   experience: { title: "", description: "" },
   community: { title: "", description: "" },
   projects: { title: "", description: "" },
   hackathons: {
     title: "",
     description: "",
-    /** Small line under the "Judging" heading. */
+    /** Small line under the "Judging & mentoring" heading. */
     judgingNote: "",
   },
   skills: { title: "", description: "" },
+  certifications: { title: "", description: "" },
   footer: {
     /** Line under the name in the footer. */
     tagline: "",

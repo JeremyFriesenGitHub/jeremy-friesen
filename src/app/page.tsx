@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Navbar } from "~/components/navbar";
 import { Backdrop } from "~/components/ui/backdrop";
 import { Hero } from "~/components/sections/hero";
-import { About } from "~/components/sections/about";
 import { Experience } from "~/components/sections/experience";
 import { Community } from "~/components/sections/community";
 import { Projects } from "~/components/sections/projects";
 import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
+import { Certifications } from "~/components/sections/certifications";
 import { Footer } from "~/components/sections/footer";
 import { profile, socialLinks } from "~/data/social-links";
 import { siteDescription, siteName, siteUrl } from "~/lib/site";
@@ -49,12 +49,12 @@ export default function Home() {
       <Navbar />
       <main id="main" className="relative z-10">
         <Hero />
-        <About />
         <Experience />
         <Community />
         <Projects />
         <Hackathons />
         <Skills />
+        <Certifications />
       </main>
       <Footer />
       <script
