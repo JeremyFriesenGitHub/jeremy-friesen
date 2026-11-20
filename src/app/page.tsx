@@ -70,7 +70,12 @@ const jsonLd = {
         addressCountry: "CA",
       },
       knowsAbout: profile.focus,
-      sameAs: [socialLinks.github, socialLinks.linkedin, socialLinks.devpost],
+      sameAs: [
+        socialLinks.github,
+        socialLinks.linkedin,
+        socialLinks.x,
+        socialLinks.devpost,
+      ],
     },
   ],
 };

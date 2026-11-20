@@ -12,9 +12,13 @@ import {
 const elsewhere = [
   { href: socialLinks.github, label: "GitHub", icon: "github" },
   { href: socialLinks.linkedin, label: "LinkedIn", icon: "linkedin" },
+  { href: socialLinks.x, label: "X", icon: "x" },
   { href: socialLinks.devpost, label: "Devpost", icon: "devpost" },
   { href: socialLinks.resume, label: "Resume", icon: "file-text" },
 ] as const;
+
+/** The icon row under the name: every profile, without the résumé. */
+const profiles = elsewhere.filter((link) => link.label !== "Resume");
 
 const stack = [
   { href: "https://nextjs.org", label: "Next.js", icon: "nextjs" },
@@ -68,7 +72,7 @@ export function Footer() {
               </li>
             </ul>
             <div className="mt-5 flex items-center gap-2">
-              {elsewhere.slice(0, 3).map(({ href, label, icon }) => (
+              {profiles.map(({ href, label, icon }) => (
                 <a
                   key={label}
                   href={href}

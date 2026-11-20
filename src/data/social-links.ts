@@ -3,6 +3,7 @@ export const socialLinks = {
     "https://drive.google.com/file/d/1DmrlFnYDeuEydZJNtONpJW-0bkdkTIu-/view?usp=sharing",
   github: "https://github.com/JeremyFriesenGitHub",
   linkedin: "https://www.linkedin.com/in/jeremyfriesen1",
+  x: "https://x.com/JeremyFriesen22",
   devpost: "https://devpost.com/JeremyFriesenGitHub",
   repo: "https://github.com/JeremyFriesenGitHub/jeremy-friesen",
 } as const;
