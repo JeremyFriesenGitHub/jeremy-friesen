@@ -4,8 +4,8 @@
  * so fill in what you want and leave the rest.
  *
  * The per-item blanks (project descriptions, hackathon taglines, community
- * and experience bullets, case studies) sit next to their items in the other
- * files under src/data.
+ * and experience bullets) sit next to their items in the other files under
+ * src/data.
  */
 export const copy = {
   hero: {
