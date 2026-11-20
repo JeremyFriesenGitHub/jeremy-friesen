@@ -284,6 +284,9 @@ for (const theme of ["light", "dark"] as const) {
       "#top > div.relative > p",
       'nav[aria-label="Primary"] ul',
       "#experience p.text-muted-foreground",
+      // Accent-coloured copy on glass (--item-ink): an employer, an award.
+      "#experience h3 + p",
+      "#hackathons h3 ~ p.font-medium",
       "#community li span.text-sm",
       "#hackathons p.text-muted-foreground",
       "#certifications p.text-muted-foreground",

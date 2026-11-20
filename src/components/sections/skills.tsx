@@ -45,7 +45,7 @@ export function Skills() {
                         <Icon
                           name={skill.icon}
                           size={16}
-                          className="shrink-0 text-(--item-accent)"
+                          className="shrink-0 text-(--item-ink)"
                         />
                         {skill.name}
                       </a>

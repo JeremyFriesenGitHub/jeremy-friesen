@@ -68,7 +68,7 @@ export function Community() {
                         <span
                           className={
                             r === current
-                              ? "font-medium text-(--item-accent)"
+                              ? "font-medium text-(--item-ink)"
                               : "text-sm text-foreground/80"
                           }
                         >
