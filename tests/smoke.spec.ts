@@ -271,6 +271,47 @@ test("the footer links the email address and the phone number", async ({
   expect(await phone.getAttribute("href")).toMatch(/^tel:\+\d{11}$/);
 });
 
+test("every profile is linked from the bar, the phone menu and the footer", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await openHome(page, "dark");
+  // The profiles search engines are told about (Person.sameAs in the JSON-LD).
+  const profiles = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluate((script) => {
+      const data = JSON.parse(script.textContent ?? "{}") as {
+        "@graph": { "@type": string; sameAs?: string[] }[];
+      };
+      return data["@graph"].find((n) => n["@type"] === "Person")?.sameAs ?? [];
+    });
+  expect(profiles.some((url) => url.startsWith("https://x.com/"))).toBe(true);
+
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  for (const url of profiles) {
+    await expect(nav.locator(`a[href="${url}"]`)).toBeVisible();
+    // Twice in the footer: the icon row and the "Elsewhere" column.
+    await expect(page.locator(`footer a[href="${url}"]`).first()).toBeVisible();
+  }
+
+  // The narrowest phone: the menu's last row may wrap but must not spill.
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.getByRole("button", { name: "Open menu" }).click();
+  const menu = page.locator("#mobile-menu");
+  for (const url of profiles) {
+    await expect(menu.locator(`a[href="${url}"]`)).toBeVisible();
+  }
+  const spill = await menu.evaluate((el) => {
+    const box = el.getBoundingClientRect();
+    return Math.max(
+      ...[...el.querySelectorAll("a")].map(
+        (a) => a.getBoundingClientRect().right - box.right,
+      ),
+    );
+  });
+  expect(spill, "menu links stay inside the menu").toBeLessThanOrEqual(0);
+});
+
 for (const theme of ["light", "dark"] as const) {
   test(`body text stays readable over the lamp (${theme})`, async ({
     page,

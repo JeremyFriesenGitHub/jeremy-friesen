@@ -15,6 +15,7 @@ import {
   FaNode,
   FaPython,
   FaReact,
+  FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
 import { IoLogoCss3, IoLogoHtml5, IoLogoJavascript } from "react-icons/io5";
@@ -106,6 +107,7 @@ type UiIcon =
   | "maple-leaf"
   | "phone"
   | "trophy"
+  | "x"
   | "youtube";
 
 /**
@@ -202,6 +204,7 @@ export const spriteIcons = {
   "maple-leaf": LiaCanadianMapleLeaf,
   phone: LuPhone,
   trophy: LuTrophy,
+  x: FaXTwitter,
   youtube: FaYoutube,
 } as const satisfies Record<
   SkillIcon | ProjectIcon | CommunityIcon | CertificationIcon | UiIcon,

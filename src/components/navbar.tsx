@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { SiDevpost } from "react-icons/si";
 import { LuFileText, LuMenu, LuX } from "react-icons/lu";
 import { MagneticElement } from "~/components/effects/magnetic-element";
@@ -25,6 +25,7 @@ const DESKTOP_QUERY = "(min-width: 48rem)";
 const socials = [
   { href: socialLinks.github, label: "GitHub", Icon: FaGithub },
   { href: socialLinks.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
+  { href: socialLinks.x, label: "X", Icon: FaXTwitter },
   { href: socialLinks.devpost, label: "Devpost", Icon: SiDevpost },
 ] as const;
 
@@ -200,7 +201,12 @@ export function Navbar() {
             rel="noopener noreferrer"
             className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 lg:inline-flex"
           >
-            <LuFileText size={16} aria-hidden="true" />
+            {/* Four profile icons leave no room for this one at lg. */}
+            <LuFileText
+              size={16}
+              aria-hidden="true"
+              className="hidden xl:block"
+            />
             Resume
           </a>
           <button
@@ -246,8 +252,10 @@ export function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="mt-3 flex items-center justify-between px-2 pb-1">
-            <div className="flex items-center gap-1">
+          {/* Wraps on the narrowest phones, where four icons and the resume
+              do not fit on one line. */}
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-y-2 px-2 pb-1">
+            <div className="flex items-center gap-0.5">
               {socials.map(({ href, label, Icon }) => (
                 <a
                   key={label}
