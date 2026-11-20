@@ -3,14 +3,23 @@ import { requiredRatio, worstContrast } from "./contrast";
 
 type Theme = "light" | "dark";
 
-async function openHome(page: Page, theme: Theme) {
-  await page.addInitScript((t: Theme) => {
-    try {
-      localStorage.setItem("theme", t);
-    } catch {
-      /* storage blocked: the OS theme applies */
-    }
-  }, theme);
+async function openHome(
+  page: Page,
+  theme: Theme,
+  { lampPaused = false }: { lampPaused?: boolean } = {},
+) {
+  await page.addInitScript(
+    ({ theme, lampPaused }: { theme: Theme; lampPaused: boolean }) => {
+      try {
+        localStorage.setItem("theme", theme);
+        // What the navbar's effects toggle stores (hooks/use-effects.ts).
+        if (lampPaused) localStorage.setItem("effects", "reduced");
+      } catch {
+        /* storage blocked: the OS theme applies */
+      }
+    },
+    { theme, lampPaused },
+  );
   await page.goto("/", { waitUntil: "networkidle" });
   await page.waitForTimeout(600);
 }
@@ -258,7 +267,12 @@ for (const theme of ["light", "dark"] as const) {
   test(`nav links stay readable over the project screenshots (${theme})`, async ({
     page,
   }) => {
-    await openHome(page, theme);
+    // The lamp holds a still frame, as with the site's own toggle. This is
+    // about the bar over the screenshots, and drawing the moving lamp in
+    // software took the test past its minute on a busy CI runner. The links
+    // over the moving lamp are a probe in the test above.
+    await openHome(page, theme, { lampPaused: true });
+    await expect(page.locator("html")).toHaveClass(/reduce-effects/);
     await page.addStyleTag({
       content:
         "html { scroll-behavior: auto !important } *, *::before, *::after { animation: none !important; transition: none !important }",
