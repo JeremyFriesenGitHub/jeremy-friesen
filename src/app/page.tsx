@@ -9,7 +9,7 @@ import { Hackathons } from "~/components/sections/hackathons";
 import { Skills } from "~/components/sections/skills";
 import { Certifications } from "~/components/sections/certifications";
 import { Footer } from "~/components/sections/footer";
-import { profile, socialLinks } from "~/data/social-links";
+import { contact, profile, socialLinks } from "~/data/social-links";
 import { siteDescription, siteName, siteUrl } from "~/lib/site";
 
 /** The canonical URL and Open Graph card are the home page's, not every route's. */
@@ -25,21 +25,54 @@ export const metadata: Metadata = {
   },
 };
 
-const personJsonLd = {
+const websiteId = `${siteUrl}/#website`;
+const personId = `${siteUrl}/#person`;
+
+/**
+ * Structured data for search engines: the site (its name in results), the
+ * page as a profile of one person, and the person. Facts only, from the same
+ * data the page shows.
+ */
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: profile.name,
-  url: siteUrl,
-  jobTitle: profile.role,
-  worksFor: { "@type": "Organization", name: profile.organization },
-  affiliation: { "@type": "CollegeOrUniversity", name: profile.school },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ottawa",
-    addressRegion: "ON",
-    addressCountry: "CA",
-  },
-  sameAs: [socialLinks.github, socialLinks.linkedin, socialLinks.devpost],
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: siteUrl,
+      name: siteName,
+      inLanguage: "en-CA",
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}/#profile`,
+      url: siteUrl,
+      name: siteName,
+      isPartOf: { "@id": websiteId },
+      mainEntity: { "@id": personId },
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: profile.name,
+      givenName: profile.firstName,
+      familyName: profile.lastName,
+      url: siteUrl,
+      email: contact.email,
+      telephone: contact.phone,
+      jobTitle: profile.role,
+      worksFor: { "@type": "Organization", name: profile.organization },
+      affiliation: { "@type": "CollegeOrUniversity", name: profile.school },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ottawa",
+        addressRegion: "ON",
+        addressCountry: "CA",
+      },
+      knowsAbout: profile.focus,
+      sameAs: [socialLinks.github, socialLinks.linkedin, socialLinks.devpost],
+    },
+  ],
 };
 
 export default function Home() {
@@ -60,7 +93,7 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
     </>

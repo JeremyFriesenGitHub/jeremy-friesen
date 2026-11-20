@@ -36,8 +36,10 @@ import {
   LuLayers,
   LuLeaf,
   LuLock,
+  LuMail,
   LuMapPin,
   LuNetwork,
+  LuPhone,
   LuPlane,
   LuRadar,
   LuRocket,
@@ -99,8 +101,10 @@ type UiIcon =
   | "file-text"
   | "gavel"
   | "linkedin"
+  | "mail"
   | "map-pin"
   | "maple-leaf"
+  | "phone"
   | "trophy"
   | "youtube";
 
@@ -193,8 +197,10 @@ export const spriteIcons = {
   "file-text": LuFileText,
   gavel: LuGavel,
   linkedin: FaLinkedinIn,
+  mail: LuMail,
   "map-pin": LuMapPin,
   "maple-leaf": LiaCanadianMapleLeaf,
+  phone: LuPhone,
   trophy: LuTrophy,
   youtube: FaYoutube,
 } as const satisfies Record<

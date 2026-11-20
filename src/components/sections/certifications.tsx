@@ -17,14 +17,14 @@ export function Certifications() {
         description={copy.certifications.description}
       />
 
-      <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {certifications.map((cert, i) => {
           const dates: string[] = [];
           if (cert.issued) dates.push(`Issued ${cert.issued}`);
           if (cert.expires) dates.push(`Expires ${cert.expires}`);
           return (
             <li key={cert.name} className="h-full">
-              <Reveal delay={Math.min((i % 3) * 0.07, 0.2)} className="h-full">
+              <Reveal delay={(i % 2) * 0.07} className="h-full">
                 <GlassCard
                   accent={cert.accent}
                   className="group flex h-full flex-col p-5 sm:p-6"

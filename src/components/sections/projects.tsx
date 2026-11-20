@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Chip } from "~/components/ui/chip";
 import { GlassButton } from "~/components/ui/glass-button";
 import { GlassCard } from "~/components/ui/glass-card";
@@ -11,7 +10,7 @@ import { copy } from "~/data/copy";
 import { ShowMore } from "~/components/ui/show-more";
 import { projects } from "~/data/projects";
 import { socialLinks } from "~/data/social-links";
-import { formatMonth, linkHost } from "~/lib/dates";
+import { formatMonth } from "~/lib/dates";
 import { SHOW_MORE_INITIAL } from "~/lib/show-more";
 import { cn } from "~/lib/utils";
 
@@ -114,23 +113,14 @@ export function Projects() {
                     </span>
                     <div className="min-w-0">
                       <h3 className="text-lg leading-tight font-semibold tracking-tight">
-                        {project.caseStudy ? (
-                          <Link
-                            href={`/projects/${project.slug}`}
-                            className={coverLinkClass}
-                          >
-                            {project.title}
-                          </Link>
-                        ) : (
-                          <a
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={coverLinkClass}
-                          >
-                            {project.title}
-                          </a>
-                        )}
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={coverLinkClass}
+                        >
+                          {project.title}
+                        </a>
                       </h3>
                       <time
                         dateTime={project.date}
@@ -141,13 +131,8 @@ export function Projects() {
                     </div>
                   </div>
                   <Icon
-                    name={project.caseStudy ? "arrow-right" : "arrow-up-right"}
-                    className={cn(
-                      "mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:text-foreground",
-                      project.caseStudy
-                        ? "group-hover:translate-x-0.5"
-                        : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5",
-                    )}
+                    name="arrow-up-right"
+                    className="mt-1 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
                     size={18}
                   />
                 </div>
@@ -177,18 +162,6 @@ export function Projects() {
                     <Chip key={tag}>{tag}</Chip>
                   ))}
                   <span className="ml-auto flex items-center gap-0.5">
-                    {/* With a case study the title opens it, so the outside link moves here. */}
-                    {project.caseStudy && (
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${project.title} on ${linkHost(project.url)}`}
-                        className={iconLinkClass}
-                      >
-                        <Icon name="external-link" size={15} />
-                      </a>
-                    )}
                     {project.video && (
                       <a
                         href={project.video}

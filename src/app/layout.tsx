@@ -38,6 +38,18 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: siteName, url: siteUrl }],
   creator: siteName,
+  /** Lets search results use the full-size preview image and a snippet of any length. */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   twitter: {
     card: "summary_large_image",
     title: siteName,

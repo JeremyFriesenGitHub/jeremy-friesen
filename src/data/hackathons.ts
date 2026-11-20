@@ -182,7 +182,7 @@ export const hackathonProjects: HackathonProject[] = newestFirst([
     accent: { dark: "#6ee7b7", light: "#047857" },
   },
   {
-    title: "Telehealth for remote regions",
+    title: "Telemed",
     tagline: "",
     hackathon: "InnovateNow! 2",
     date: "Oct 2023",
