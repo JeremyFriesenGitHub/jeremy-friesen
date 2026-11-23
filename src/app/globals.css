@@ -448,7 +448,7 @@
 /* Drifts toward the pointer (--tx/--ty, set by usePointerGlow) and springs
    back when it leaves. */
 @utility glass-follow {
-  transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0);
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
   transition:
     transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
     translate 0.3s ease-out,
