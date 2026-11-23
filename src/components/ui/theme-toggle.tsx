@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import { LuMoon, LuSun } from "react-icons/lu";
 import { useTheme } from "~/hooks/use-theme";
+import { useMagnetic } from "~/hooks/use-magnetic";
 import { cn } from "~/lib/utils";
 
 interface ThemeToggleProps {
@@ -16,9 +18,12 @@ interface ThemeToggleProps {
  */
 export function ThemeToggle({ className, size = 20 }: ThemeToggleProps) {
   const { toggleTheme } = useTheme();
+  const ref = useRef<HTMLButtonElement>(null);
+  useMagnetic(ref, 0.3);
 
   return (
     <button
+      ref={ref}
       type="button"
       onClick={(e) => {
         // Measure the button rather than the pointer so keyboard activation
@@ -30,7 +35,7 @@ export function ThemeToggle({ className, size = 20 }: ThemeToggleProps) {
         });
       }}
       className={cn(
-        "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color,scale] duration-200 hover:bg-foreground/8 hover:text-foreground active:scale-95",
+        "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color,scale,transform] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-foreground/8 hover:text-foreground active:scale-90 data-magnet:duration-150 data-magnet:ease-out",
         className,
       )}
     >

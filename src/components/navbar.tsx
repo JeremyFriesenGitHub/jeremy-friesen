@@ -16,6 +16,8 @@ import { Monogram } from "~/components/ui/monogram";
 import { ThemeToggle } from "~/components/ui/theme-toggle";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 import { useActiveSection } from "~/hooks/use-active-section";
+import { useLiquidLens } from "~/hooks/use-liquid-lens";
+import { useMagnetic } from "~/hooks/use-magnetic";
 import { cn } from "~/lib/utils";
 
 const sectionIds = navLinks.map((l) => l.href.slice(1));
@@ -48,6 +50,11 @@ export function Navbar() {
   const active = useActiveSection(sectionIds);
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const resumeRef = useRef<HTMLAnchorElement>(null);
+  // The bar's rim bends what passes under it. Twelve pixels stays clear of
+  // the links' text, which sits in the middle of the bar.
+  useLiquidLens(navRef, { bezel: 12 });
+  useMagnetic(resumeRef, 0.25);
   const menuRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLButtonElement>(null);
 
@@ -194,10 +201,11 @@ export function Navbar() {
           <EffectsToggle />
           <ThemeToggle />
           <a
+            ref={resumeRef}
             href={socialLinks.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-200 hover:-translate-y-0.5 active:scale-95 lg:inline-flex"
+            className="ml-1 hidden h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-background transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-0.5 active:scale-95 data-magnet:duration-150 data-magnet:ease-out lg:inline-flex"
           >
             {/* Four profile icons leave no room for this one at lg. */}
             <LuFileText
@@ -287,12 +295,16 @@ export function Navbar() {
 function DesktopLinks({ active }: { active: string | null }) {
   const listRef = useRef<HTMLUListElement>(null);
   const [pill, setPill] = useState<{ x: number; w: number } | null>(null);
+  // The pill slides under the link being pointed at (or focused) and flows
+  // back to the current section's link when the pointer leaves the list.
+  const [hovered, setHovered] = useState<string | null>(null);
+  const target = hovered ?? active;
 
   const measure = useCallback(() => {
     const list = listRef.current;
     if (!list) return;
-    const el = active
-      ? list.querySelector<HTMLAnchorElement>(`a[href="#${active}"]`)
+    const el = target
+      ? list.querySelector<HTMLAnchorElement>(`a[href="#${target}"]`)
       : null;
     if (!el) {
       setPill(null);
@@ -303,7 +315,7 @@ function DesktopLinks({ active }: { active: string | null }) {
     const listRect = list.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     setPill({ x: rect.left - listRect.left - list.clientLeft, w: rect.width });
-  }, [active]);
+  }, [target]);
 
   useLayoutEffect(measure, [measure]);
 
@@ -321,12 +333,17 @@ function DesktopLinks({ active }: { active: string | null }) {
     // xl. Hinted text (Linux, and CI) runs about 22px wider than unhinted.
     <ul
       ref={listRef}
+      onPointerLeave={() => setHovered(null)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) setHovered(null);
+      }}
       className="relative mx-1 hidden items-center px-1.5 md:flex xl:mx-2 xl:px-2.5"
     >
       <li
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute top-0 left-0 h-9 rounded-full bg-foreground/8 transition-[transform,width,opacity] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          // A little overshoot, so the pill stretches into place like a drop.
+          "pointer-events-none absolute top-0 left-0 h-9 rounded-full bg-foreground/8 shadow-[inset_0_1px_0_rgba(255,255,255,.18),inset_0_-1px_0_rgba(255,255,255,.05)] transition-[transform,width,opacity] duration-500 ease-[cubic-bezier(0.34,1.4,0.64,1)]",
           pill ? "opacity-100" : "opacity-0",
         )}
         style={{
@@ -341,6 +358,10 @@ function DesktopLinks({ active }: { active: string | null }) {
             <a
               href={link.href}
               aria-current={isActive ? "location" : undefined}
+              onPointerEnter={(e) => {
+                if (e.pointerType === "mouse") setHovered(link.href.slice(1));
+              }}
+              onFocus={() => setHovered(link.href.slice(1))}
               // Full-strength text: the bar is clear glass, so the links
               // carry the contrast themselves; the pill marks the active one.
               className="inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-foreground/6 lg:px-2 xl:px-3.5"

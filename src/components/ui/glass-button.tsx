@@ -1,3 +1,8 @@
+"use client";
+
+import { useRef } from "react";
+import { useLiquidLens } from "~/hooks/use-liquid-lens";
+import { useMagnetic } from "~/hooks/use-magnetic";
 import { cn } from "~/lib/utils";
 
 interface GlassButtonProps {
@@ -31,13 +36,19 @@ export function GlassButton({
   external = false,
   "aria-label": ariaLabel,
 }: GlassButtonProps) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  useMagnetic(ref, 0.22);
+  useLiquidLens(ref, { bezel: 10, enabled: variant === "glass" });
+
   return (
     <a
+      ref={ref}
       href={href}
       aria-label={ariaLabel}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-[translate,scale,box-shadow,background-color,border-color] duration-300 ease-out active:scale-[0.97]",
+        // The pull follows quickly, then springs home (see useMagnetic).
+        "inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-[translate,scale,box-shadow,background-color,border-color,transform] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] active:scale-[0.96] data-magnet:duration-150 data-magnet:ease-out",
         variants[variant],
         sizes[size],
         className,

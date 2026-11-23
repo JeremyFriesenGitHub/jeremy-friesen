@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import { LuPause, LuPlay } from "react-icons/lu";
 import { useEffects } from "~/hooks/use-effects";
+import { useMagnetic } from "~/hooks/use-magnetic";
 import { cn } from "~/lib/utils";
 
 interface EffectsToggleProps {
@@ -17,13 +19,16 @@ interface EffectsToggleProps {
  */
 export function EffectsToggle({ className, size = 18 }: EffectsToggleProps) {
   const { toggleEffects } = useEffects();
+  const ref = useRef<HTMLButtonElement>(null);
+  useMagnetic(ref, 0.3);
 
   return (
     <button
+      ref={ref}
       type="button"
       onClick={toggleEffects}
       className={cn(
-        "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color,scale] duration-200 hover:bg-foreground/8 hover:text-foreground active:scale-95",
+        "inline-flex size-10 items-center justify-center rounded-full text-foreground/80 transition-[background-color,color,scale,transform] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-foreground/8 hover:text-foreground active:scale-90 data-magnet:duration-150 data-magnet:ease-out",
         className,
       )}
     >
