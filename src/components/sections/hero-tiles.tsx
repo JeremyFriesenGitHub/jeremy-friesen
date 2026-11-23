@@ -83,6 +83,8 @@ export function HeroTiles() {
       el.style.setProperty("--py", y.toFixed(3));
     };
     const onMove = (e: PointerEvent) => {
+      // A finger has no hover to follow, even on a laptop with a trackpad.
+      if (e.pointerType !== "mouse") return;
       if (!fine.matches || reduceMotion.matches) return;
       if (document.documentElement.classList.contains("reduce-effects")) return;
       if (window.scrollY > window.innerHeight) return;

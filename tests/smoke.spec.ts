@@ -305,6 +305,74 @@ test("the glass bends the page at its rim, and drops the lens when effects pause
   await expect.poll(filter).toMatch(/^blur\(/);
 });
 
+test("a card's lens takes the new theme's blur and keeps an empty backdrop clear", async ({
+  page,
+}) => {
+  await openHome(page, "light");
+  const card = page.locator("#experience .glass").first();
+  await card.scrollIntoViewIfNeeded();
+  const filter = () => card.evaluate((e) => getComputedStyle(e).backdropFilter);
+  // Light glass is frosted at 26px (--glass-blur), dark at 28px.
+  await expect.poll(filter).toMatch(/^url\("#lens-[^"]*f26"\)/);
+  const id = /#(lens-[^"]+)/.exec(await filter())![1]!;
+  // While a parent fades in, the glass sees a transparent backdrop: the
+  // frost must stay as transparent as that, not go opaque (black).
+  await expect(
+    page.locator(`filter#${id} feComposite[in2="SourceAlpha"]`),
+  ).toHaveCount(1);
+
+  await page
+    .getByRole("navigation", { name: "Primary" })
+    .getByRole("button", { name: "Switch to dark theme" })
+    .click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await expect.poll(filter).toMatch(/^url\("#lens-[^"]*f28"\)/);
+});
+
+test("no lens is built while effects are paused, and one is once they resume", async ({
+  page,
+}) => {
+  await openHome(page, "dark", { lampPaused: true });
+  const lenses = page.locator('svg filter[id^="lens-"]');
+  await page.waitForTimeout(800);
+  await expect(lenses).toHaveCount(0);
+  await page.getByRole("button", { name: "Resume background effects" }).click();
+  await expect.poll(() => lenses.count()).toBeGreaterThan(0);
+});
+
+test("a clicked nav link keeps the pill while the page scrolls to its section", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  // Smooth scrolling stays on; only the pill's own glide is switched off,
+  // so its position can be read at any moment.
+  await page.addStyleTag({
+    content: "*, *::before, *::after { transition: none !important }",
+  });
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  const pill = nav.locator('ul > li[aria-hidden="true"]');
+  const link = nav.locator('ul a[href="#skills"]');
+  const under = async () => {
+    const a = (await link.boundingBox())!;
+    const p = (await pill.boundingBox())!;
+    return Math.abs(a.x - p.x) < 1.5 && Math.abs(a.width - p.width) < 1.5;
+  };
+  await link.hover();
+  await expect.poll(under).toBe(true);
+  await link.click();
+  // The pointer leaves while the page is still on its way down.
+  await page.mouse.move(640, 500);
+  for (let i = 0; i < 8; i++) {
+    expect(await under(), `pill under Skills, sample ${i}`).toBe(true);
+    await page.waitForTimeout(60);
+  }
+  await expect(nav.locator('ul a[aria-current="location"]')).toHaveAttribute(
+    "href",
+    "#skills",
+  );
+  await expect.poll(under).toBe(true);
+});
+
 test("the nav pill follows the pointer and flows back to the current section", async ({
   page,
 }) => {

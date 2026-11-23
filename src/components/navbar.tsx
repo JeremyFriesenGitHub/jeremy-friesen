@@ -295,10 +295,27 @@ export function Navbar() {
 function DesktopLinks({ active }: { active: string | null }) {
   const listRef = useRef<HTMLUListElement>(null);
   const [pill, setPill] = useState<{ x: number; w: number } | null>(null);
-  // The pill slides under the link being pointed at (or focused) and flows
-  // back to the current section's link when the pointer leaves the list.
-  const [hovered, setHovered] = useState<string | null>(null);
-  const target = hovered ?? active;
+  // The pill slides under the link the mouse points at, or the one a
+  // keyboard has focused, and flows back to the current section's link when
+  // both leave the list. They're kept apart so that one leaving doesn't
+  // drop the other. A clicked link holds the pill while the page scrolls to
+  // its section, rather than the pill passing through every section between.
+  const [pointed, setPointed] = useState<string | null>(null);
+  const [focused, setFocused] = useState<string | null>(null);
+  const [picked, setPicked] = useState<string | null>(null);
+  const target = pointed ?? focused ?? picked ?? active;
+
+  useEffect(() => {
+    if (!picked) return;
+    const done = () => setPicked(null);
+    // The scroll ends there (or never starts, if it's already in place).
+    window.addEventListener("scrollend", done, { once: true });
+    const timer = window.setTimeout(done, 2500);
+    return () => {
+      window.removeEventListener("scrollend", done);
+      clearTimeout(timer);
+    };
+  }, [picked]);
 
   const measure = useCallback(() => {
     const list = listRef.current;
@@ -333,9 +350,9 @@ function DesktopLinks({ active }: { active: string | null }) {
     // xl. Hinted text (Linux, and CI) runs about 22px wider than unhinted.
     <ul
       ref={listRef}
-      onPointerLeave={() => setHovered(null)}
+      onPointerLeave={() => setPointed(null)}
       onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) setHovered(null);
+        if (!e.currentTarget.contains(e.relatedTarget)) setFocused(null);
       }}
       className="relative mx-1 hidden items-center px-1.5 md:flex xl:mx-2 xl:px-2.5"
     >
@@ -359,9 +376,13 @@ function DesktopLinks({ active }: { active: string | null }) {
               href={link.href}
               aria-current={isActive ? "location" : undefined}
               onPointerEnter={(e) => {
-                if (e.pointerType === "mouse") setHovered(link.href.slice(1));
+                if (e.pointerType === "mouse") setPointed(link.href.slice(1));
               }}
-              onFocus={() => setHovered(link.href.slice(1))}
+              onFocus={(e) => {
+                if (e.currentTarget.matches(":focus-visible"))
+                  setFocused(link.href.slice(1));
+              }}
+              onClick={() => setPicked(link.href.slice(1))}
               // Full-strength text: the bar is clear glass, so the links
               // carry the contrast themselves; the pill marks the active one.
               className="inline-flex h-9 items-center rounded-full px-2.5 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-foreground/6 lg:px-2 xl:px-3.5"
