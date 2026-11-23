@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { Icon } from "~/components/ui/icon";
 import type { SpriteIcon } from "~/lib/icons";
@@ -61,13 +62,8 @@ export function OrgLogo({
             colours drop backgrounds, so they get the logo itself. */}
         <span
           aria-hidden="true"
-          className="absolute inset-0 bg-current transition-opacity duration-350 print:hidden forced-colors:hidden lit:opacity-0"
-          style={{
-            maskImage: `url(${ghostOf(logo)})`,
-            maskSize: "cover",
-            maskPosition: "center",
-            maskRepeat: "no-repeat",
-          }}
+          className="absolute inset-0 bg-current transition-opacity duration-350 ghost-mask print:hidden forced-colors:hidden lit:opacity-0"
+          style={{ "--ghost-mask": `url(${ghostOf(logo)})` } as CSSProperties}
         />
         <Image
           src={logo}

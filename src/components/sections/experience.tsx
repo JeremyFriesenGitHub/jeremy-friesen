@@ -29,7 +29,7 @@ export function Experience() {
           {experiences.map((exp, i) => (
             <li
               key={`${exp.title}-${exp.date}`}
-              className="group relative pb-8 pl-12 last:pb-0 sm:pl-16"
+              className="group relative mb-8 pl-12 last:mb-0 sm:pl-16"
             >
               {/* The employer's mark sits on the rail, in place of a dot, on
                   the page colour so the rail doesn't show through its glass. */}

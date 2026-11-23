@@ -517,6 +517,14 @@
     background-color 0.35s ease;
 }
 
+/* Paints an image logo's ghost: its mask (set inline as --ghost-mask) over
+   the current colour. Written here rather than inline so it gets the
+   -webkit- prefix older Chromium still needs. */
+@utility ghost-mask {
+  -webkit-mask: var(--ghost-mask) center / cover no-repeat;
+  mask: var(--ghost-mask) center / cover no-repeat;
+}
+
 @utility glass-pill {
   background: color-mix(in oklab, var(--foreground) 5%, transparent);
   border: 1px solid var(--glass-edge);
