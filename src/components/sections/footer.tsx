@@ -1,4 +1,5 @@
 import { Icon } from "~/components/ui/icon";
+import { Monogram } from "~/components/ui/monogram";
 import { Year } from "~/components/ui/year";
 import { copy } from "~/data/copy";
 import {
@@ -47,9 +48,7 @@ export function Footer() {
               href="#top"
               className="inline-flex items-center gap-2.5 font-semibold tracking-tight"
             >
-              <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-primary via-accent to-tertiary font-mono text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.45)]">
-                JF
-              </span>
+              <Monogram />
               {profile.name}
             </a>
             {copy.footer.tagline && (
