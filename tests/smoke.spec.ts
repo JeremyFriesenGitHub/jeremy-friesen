@@ -1,3 +1,4 @@
+import { existsSync, readdirSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import { requiredRatio, worstContrast } from "./contrast";
 
@@ -373,6 +374,18 @@ test("a clicked nav link keeps the pill while the page scrolls to its section", 
   await expect.poll(under).toBe(true);
 });
 
+test("every logo has a ghost mask", () => {
+  const missing = readdirSync("public/logos")
+    .filter((f) => /\.(webp|png|jpe?g)$/i.test(f))
+    .filter(
+      (f) =>
+        !existsSync(`public/logos/ghost/${f.replace(/\.[^.]+$/, ".webp")}`),
+    );
+  expect(missing, "logos without a mask: run `npm run ghost-logos`").toEqual(
+    [],
+  );
+});
+
 test("the nav pill follows the pointer and flows back to the current section", async ({
   page,
 }) => {
@@ -563,6 +576,41 @@ for (const theme of ["light", "dark"] as const) {
         `${selector} (${theme}) holds ${need}:1`,
       ).toBeGreaterThanOrEqual(need);
     }
+  });
+
+  test(`logos are ghosts until their card is hovered, and stay readable (${theme})`, async ({
+    page,
+  }) => {
+    await openHome(page, theme);
+    await page.addStyleTag({
+      content:
+        "html { scroll-behavior: auto !important } *, *::before, *::after { transition: none !important }",
+    });
+    const card = page.locator("#community .glass").first();
+    await card.scrollIntoViewIfNeeded();
+    const mark = card.locator(".ghost-tile > span").first();
+    const logo = card.locator(".ghost-tile img").first();
+    // At rest: only the mark, painted from its ghost mask.
+    await expect(logo).toHaveCSS("opacity", "0");
+    await expect(mark).toHaveCSS("opacity", "1");
+    expect(await mark.evaluate((e) => getComputedStyle(e).maskImage)).toContain(
+      "/logos/ghost/",
+    );
+    // Hovered: the logo in its own colours.
+    await card.hover();
+    await expect(logo).toHaveCSS("opacity", "1");
+    await expect(mark).toHaveCSS("opacity", "0");
+    await page.mouse.move(0, 0);
+    await expect(logo).toHaveCSS("opacity", "0");
+
+    // A ghost is decorative (the name is beside it), but it should still
+    // read: a monogram holds 3:1, the bar for graphics.
+    const monogram = await worstContrast(
+      page,
+      "#certifications .ghost-tile:not(:has(svg))",
+    );
+    expect(monogram, "a monogram was measured").not.toBeNull();
+    expect(monogram!.p5, `ghost monogram (${theme})`).toBeGreaterThanOrEqual(3);
   });
 
   test(`nav links stay readable over the project screenshots (${theme})`, async ({

@@ -22,7 +22,10 @@ export function Skills() {
             delay={Math.min((i % 3) * 0.07, 0.2)}
             className="h-full"
           >
-            <GlassCard accent={category.accent} className="h-full p-5 sm:p-6">
+            <GlassCard
+              accent={category.accent}
+              className="group h-full p-5 sm:p-6"
+            >
               <div className="flex items-center gap-2.5">
                 <span
                   aria-hidden="true"
@@ -45,7 +48,7 @@ export function Skills() {
                         <Icon
                           name={skill.icon}
                           size={16}
-                          className="shrink-0 text-(--item-ink)"
+                          className="shrink-0 text-(--ghost-ink) transition-colors duration-350 lit:text-(--item-ink)"
                         />
                         {skill.name}
                       </a>

@@ -91,7 +91,7 @@ export function Hackathons() {
                       {p.hackathon}
                     </p>
                     {p.award && (
-                      <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-(--item-accent)/14 text-(--item-ink)">
+                      <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full ghost-tile lit:bg-(--item-accent)/14 lit:text-(--item-ink)">
                         <Icon name="trophy" size={15} />
                         <span className="sr-only">Winner</span>
                       </span>
@@ -196,7 +196,7 @@ export function Hackathons() {
           className="flex flex-col gap-4 p-5 sm:p-6 lg:flex-row lg:items-center lg:gap-8"
         >
           <div className="flex items-center gap-3 lg:w-56 lg:shrink-0">
-            <span className="flex size-10 items-center justify-center rounded-2xl bg-primary/12 text-primary-strong">
+            <span className="flex size-10 items-center justify-center rounded-2xl ghost-tile">
               <Icon name="gavel" size={20} />
             </span>
             <div>
