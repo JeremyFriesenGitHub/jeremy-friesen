@@ -142,6 +142,15 @@
   /* A sheen across the top of a panel and a glow just inside its edge. */
   --glass-sheen: rgba(255, 255, 255, 0.38);
   --glass-inner: rgba(255, 255, 255, 0.55);
+  /* Liquid glass: the light caught inside the rim (top left bright, bottom
+     right softer), the darker band a thick edge bends into view, and the
+     specular glint that follows the pointer along the rim. */
+  --glass-bevel: rgba(255, 255, 255, 0.95);
+  --glass-bevel-lo: rgba(255, 255, 255, 0.6);
+  --glass-depth: rgba(40, 52, 110, 0.1);
+  --glass-spec: rgba(255, 255, 255, 1);
+  --glass-tile-from: rgba(255, 255, 255, 0.18);
+  --glass-tile-to: rgba(255, 255, 255, 0.04);
   --glass-blur: 26px;
 
   /* Aurora palette shared by the WebGL background and the CSS fallback:
@@ -190,7 +199,7 @@
   --glass-clear-edge: rgba(255, 255, 255, 0.14);
   --glass-clear-hi: rgba(255, 255, 255, 0.22);
   --glass-clear-shadow: rgba(0, 0, 0, 0.5);
-  --glass-rim: rgba(255, 255, 255, 0.5);
+  --glass-rim: rgba(255, 255, 255, 0.8);
   --glass-edge: rgba(255, 255, 255, 0.13);
   --glass-hi: rgba(255, 255, 255, 0.28);
   --glass-lo: rgba(0, 0, 0, 0.35);
@@ -198,6 +207,14 @@
   --glass-glow: rgba(255, 255, 255, 0.16);
   --glass-sheen: rgba(255, 255, 255, 0.07);
   --glass-inner: rgba(255, 255, 255, 0.18);
+  --glass-bevel: rgba(255, 255, 255, 0.65);
+  --glass-bevel-lo: rgba(255, 255, 255, 0.3);
+  --glass-depth: rgba(0, 0, 0, 0.15);
+  --glass-spec: rgba(255, 255, 255, 0.95);
+  /* The hero's floating tiles carry only an icon, so their glass can be
+     nearly clear and show the lamp at full colour. */
+  --glass-tile-from: rgba(255, 255, 255, 0.05);
+  --glass-tile-to: rgba(255, 255, 255, 0.01);
   --glass-blur: 28px;
 
   --aurora-1: #6d28d9;
@@ -275,22 +292,50 @@
  * Liquid glass surfaces
  *
  *  .glass        translucent panel: a thin gradient fill with a sheen across the
- *                top, backdrop blur, gradient rim, inner highlight, a glow just
- *                inside the edge, soft drop shadow, and a specular highlight
- *                that follows the pointer via --mx/--my (set by usePointerGlow).
- *                The drop shadow is --glass-drop, so a hover can deepen it
- *                without replacing the inset lights.
+ *                top, backdrop blur, and the parts that make it read as a thick
+ *                slab of glass rather than frost: a bright rim that catches the
+ *                light top left and bottom right, light gathered just inside
+ *                the rim (--glass-bevel), a darker band where the thick edge
+ *                bends the page into view (--glass-depth), real refraction at
+ *                the rim in Chromium (--lens, see lib/liquid-lens.ts), and a
+ *                glow plus a glint on the rim that follow the pointer via
+ *                --mx/--my (set by usePointerGlow). The drop shadow is
+ *                --glass-drop, so a hover can deepen it without replacing the
+ *                inset lights.
  *  .glass-strong more opaque variant for the mobile menu.
  *  .glass-clear  the floating navbar's glass: its own tint, edge and top
  *                sheen (the -clear tokens), tuned to the nav links' contrast
  *                rather than a card's copy. The navbar thickens the tint
  *                with --glass-clear-frost while screenshots pass under it.
+ *  .glass-tile   nearly clear glass for the hero's icon tiles.
  *  .glass-pill   lightweight pill with NO backdrop blur, for chips nested inside
  *                a .glass card (nested backdrop filters are slow and buggy).
+ *
+ * The bevel and depth bands stay within about 10px of the edge, inside every
+ * panel's padding, so the copy's contrast is still set by the tint alone.
  * ------------------------------------------------------------------------ */
+
+/* Set inline by useLiquidLens on the one element it measured; a nested glass
+   element must not inherit a filter drawn for another size. */
+@property --lens-url {
+  syntax: "*";
+  inherits: false;
+}
+
+/* 0 to 1 as the pointer arrives, on the rim's own pseudo-element so it can
+   fade without touching the element's own transition list. */
+@property --glass-hover {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 @utility glass {
   position: relative;
   isolation: isolate;
+  /* The lens filter frosts as well, so it replaces the CSS blur. Unset
+     (no lens) falls back to the plain blur. */
+  --lens: var(--lens-url);
   background:
     linear-gradient(180deg, var(--glass-sheen), transparent 38%),
     linear-gradient(135deg, var(--glass-from), var(--glass-to));
@@ -298,12 +343,21 @@
   box-shadow:
     inset 0 1px 0 0 var(--glass-hi),
     inset 0 -1px 0 0 var(--glass-lo),
+    inset 7px 9px 10px -11px var(--glass-bevel),
+    inset -7px -9px 10px -11px var(--glass-bevel-lo),
+    inset 0 0 6px -2px var(--glass-depth),
     inset 0 0 26px -10px var(--glass-inner),
     var(--glass-drop, 0 28px 64px -28px var(--glass-shadow));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(200%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(200%);
+  backdrop-filter: var(--lens, blur(var(--glass-blur))) saturate(200%);
 
-  /* Gradient rim: a 1px ring that catches the light on the top-left edge. */
+  /* Paused effects drop the refraction too: it is the costliest part. */
+  html.reduce-effects & {
+    --lens: initial;
+  }
+
+  /* The rim: a 1px ring lit top left and, more softly, bottom right, plus a
+     glint that follows the pointer around it. */
   &::before {
     content: "";
     position: absolute;
@@ -312,13 +366,23 @@
     border-radius: inherit;
     padding: 1px;
     pointer-events: none;
-    background: linear-gradient(
-      135deg,
-      var(--glass-rim) 0%,
-      transparent 38%,
-      transparent 62%,
-      color-mix(in oklab, var(--glass-rim) 55%, transparent) 100%
-    );
+    background:
+      radial-gradient(
+        170px circle at var(--mx, 30%) var(--my, 0%),
+        color-mix(
+          in srgb,
+          var(--glass-spec) calc(var(--glass-hover) * 100%),
+          transparent
+        ),
+        transparent 72%
+      ),
+      linear-gradient(
+        135deg,
+        var(--glass-rim) 0%,
+        transparent 30%,
+        transparent 66%,
+        color-mix(in oklab, var(--glass-rim) 70%, transparent) 100%
+      );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
@@ -327,6 +391,7 @@
       linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+    transition: --glass-hover 0.45s ease;
   }
 
   /* Specular highlight that tracks the pointer. */
@@ -349,9 +414,15 @@
     &:hover::after {
       opacity: 0.55;
     }
+    &:hover::before {
+      --glass-hover: 1;
+    }
   }
   &:focus-within::after {
     opacity: 0.55;
+  }
+  &:focus-within::before {
+    --glass-hover: 1;
   }
 }
 
@@ -371,7 +442,49 @@
     linear-gradient(180deg, var(--glass-clear-sheen), transparent 60%),
     linear-gradient(135deg, var(--glass-from), var(--glass-to));
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: var(--lens, blur(var(--glass-blur))) saturate(180%);
+}
+
+/* Drifts toward the pointer (--tx/--ty, set by usePointerGlow) and springs
+   back when it leaves. */
+@utility glass-follow {
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition:
+    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+    translate 0.3s ease-out,
+    scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease-out;
+  &[data-following] {
+    transition:
+      transform 0.2s ease-out,
+      translate 0.3s ease-out,
+      scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.3s ease-out;
+  }
+}
+
+/* A screenshot that pans against the pointer inside its frame while its card
+   is hovered (reads --mx/--my from the card), zoomed just enough to keep
+   the frame filled. */
+@utility pan-with-pointer {
+  transition:
+    translate 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    :where(.group):hover & {
+      scale: 1.08;
+      translate: calc((50% - var(--mx, 50%)) * 0.07)
+        calc((50% - var(--my, 50%)) * 0.07);
+    }
+    html.reduce-effects :where(.group):hover & {
+      translate: none;
+    }
+  }
+}
+
+@utility glass-tile {
+  --glass-from: var(--glass-tile-from);
+  --glass-to: var(--glass-tile-to);
 }
 
 @utility glass-pill {

@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import { useLiquidLens } from "~/hooks/use-liquid-lens";
 import { usePointerGlow } from "~/hooks/use-pointer-glow";
 import { cn } from "~/lib/utils";
 
@@ -9,10 +10,16 @@ interface GlassCardProps {
   className?: string;
   /** Per-card accent colour, exposed to children as `--item-accent`. */
   accent?: { dark: string; light: string };
-  /** Lift on hover and track the pointer with a specular highlight. */
+  /**
+   * Lift and drift toward the pointer on hover, with a glow and a glint on
+   * the rim that follow it.
+   */
   interactive?: boolean;
   style?: CSSProperties;
 }
+
+/** Pixels a card drifts toward the pointer at its edge. */
+const SHIFT = 5;
 
 export function GlassCard({
   children,
@@ -21,7 +28,10 @@ export function GlassCard({
   interactive = true,
   style,
 }: GlassCardProps) {
-  const { ref, onPointerMove } = usePointerGlow<HTMLDivElement>();
+  const { ref, onPointerMove, onPointerLeave } = usePointerGlow<HTMLDivElement>(
+    { shift: interactive ? SHIFT : 0 },
+  );
+  useLiquidLens(ref, { bezel: 18 });
 
   const accentVars = accent
     ? ({
@@ -34,11 +44,12 @@ export function GlassCard({
     <div
       ref={ref}
       onPointerMove={interactive ? onPointerMove : undefined}
+      onPointerLeave={interactive ? onPointerLeave : undefined}
       style={{ ...accentVars, ...style }}
       className={cn(
         "accent-scope glass rounded-3xl",
         interactive &&
-          "transition-[translate,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:[--glass-drop:0_36px_76px_-30px_var(--glass-shadow)]",
+          "glass-follow hover:-translate-y-1 hover:[--glass-drop:0_36px_76px_-30px_var(--glass-shadow)] active:scale-[0.985]",
         className,
       )}
     >

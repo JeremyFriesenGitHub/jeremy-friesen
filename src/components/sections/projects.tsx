@@ -63,7 +63,7 @@ export function Projects() {
                     fill
                     sizes={imageSizes}
                     className={cn(
-                      "object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]",
+                      "pan-with-pointer object-cover",
                       project.image.position === "center"
                         ? "object-center"
                         : "object-top",

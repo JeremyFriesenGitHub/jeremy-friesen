@@ -1,58 +1,10 @@
 import type { CSSProperties } from "react";
-import { FaAws, FaDocker, FaPython } from "react-icons/fa6";
-import { SiPytorch, SiTypescript } from "react-icons/si";
-import { VscAzure } from "react-icons/vsc";
 import { LuArrowDown, LuChevronDown } from "react-icons/lu";
+import { HeroTiles } from "~/components/sections/hero-tiles";
 import { RotatingWord } from "~/components/sections/rotating-word";
 import { GlassButton } from "~/components/ui/glass-button";
 import { copy } from "~/data/copy";
 import { profile } from "~/data/social-links";
-import { cn } from "~/lib/utils";
-
-const tiles = [
-  {
-    Icon: FaPython,
-    label: "Python",
-    className: "top-[18%] left-[6%] lg:left-[10%]",
-    tilt: "-7deg",
-    delay: "0s",
-  },
-  {
-    Icon: SiTypescript,
-    label: "TypeScript",
-    className: "top-[62%] left-[9%] lg:left-[16%]",
-    tilt: "5deg",
-    delay: "-3s",
-  },
-  {
-    Icon: SiPytorch,
-    label: "PyTorch",
-    className: "top-[26%] right-[7%] lg:right-[12%]",
-    tilt: "8deg",
-    delay: "-5s",
-  },
-  {
-    Icon: VscAzure,
-    label: "Azure",
-    className: "top-[68%] right-[10%] lg:right-[18%]",
-    tilt: "-5deg",
-    delay: "-7s",
-  },
-  {
-    Icon: FaDocker,
-    label: "Docker",
-    className: "top-[88%] left-[22%]",
-    tilt: "4deg",
-    delay: "-2s",
-  },
-  {
-    Icon: FaAws,
-    label: "AWS",
-    className: "top-[10%] right-[30%]",
-    tilt: "-4deg",
-    delay: "-6s",
-  },
-] as const;
 
 function delay(ms: number): CSSProperties {
   return { animationDelay: `${ms}ms` };
@@ -74,25 +26,7 @@ export function Hero() {
         }}
       />
 
-      {/* Floating glass tiles: decorative, hidden from assistive tech, and only
-          shown from xl, where they clear the headline and the button. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden xl:block"
-      >
-        {tiles.map(({ Icon, label, className, tilt, delay: d }) => (
-          <div
-            key={label}
-            style={{ "--tilt": tilt, animationDelay: d } as CSSProperties}
-            className={cn(
-              "glass absolute flex size-16 animate-float items-center justify-center rounded-2xl text-3xl text-foreground/75 will-change-transform lg:size-[4.5rem] lg:text-[2.1rem]",
-              className,
-            )}
-          >
-            <Icon />
-          </div>
-        ))}
-      </div>
+      <HeroTiles />
 
       {/* Display type and a solid button: the navbar frosts over while they
           pass underneath (see navbar.tsx). */}

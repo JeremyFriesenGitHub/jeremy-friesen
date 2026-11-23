@@ -285,6 +285,165 @@ test("the effects toggle pauses the lamp and the choice persists", async ({
   await expect(page.locator("canvas")).toHaveCount(1);
 });
 
+test("the glass bends the page at its rim, and drops the lens when effects pause", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  const filter = () => nav.evaluate((e) => getComputedStyle(e).backdropFilter);
+  await expect.poll(filter).toMatch(/^url\("#lens-/);
+  // The filter was drawn for the bar's own box.
+  const id = /#(lens-[^"]+)/.exec(await filter())![1]!;
+  const [w, h] = await nav.evaluate((e) => [
+    (e as HTMLElement).offsetWidth,
+    (e as HTMLElement).offsetHeight,
+  ]);
+  expect(id).toContain(`${w}x${h}`);
+  await expect(page.locator(`filter#${id} feDisplacementMap`)).toHaveCount(1);
+
+  await page.getByRole("button", { name: "Pause background effects" }).click();
+  await expect.poll(filter).toMatch(/^blur\(/);
+});
+
+test("a card's lens takes the new theme's blur and keeps an empty backdrop clear", async ({
+  page,
+}) => {
+  await openHome(page, "light");
+  const card = page.locator("#experience .glass").first();
+  await card.scrollIntoViewIfNeeded();
+  const filter = () => card.evaluate((e) => getComputedStyle(e).backdropFilter);
+  // Light glass is frosted at 26px (--glass-blur), dark at 28px.
+  await expect.poll(filter).toMatch(/^url\("#lens-[^"]*f26"\)/);
+  const id = /#(lens-[^"]+)/.exec(await filter())![1]!;
+  // While a parent fades in, the glass sees a transparent backdrop: the
+  // frost must stay as transparent as that, not go opaque (black).
+  await expect(
+    page.locator(`filter#${id} feComposite[in2="SourceAlpha"]`),
+  ).toHaveCount(1);
+
+  await page
+    .getByRole("navigation", { name: "Primary" })
+    .getByRole("button", { name: "Switch to dark theme" })
+    .click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await expect.poll(filter).toMatch(/^url\("#lens-[^"]*f28"\)/);
+});
+
+test("no lens is built while effects are paused, and one is once they resume", async ({
+  page,
+}) => {
+  await openHome(page, "dark", { lampPaused: true });
+  const lenses = page.locator('svg filter[id^="lens-"]');
+  await page.waitForTimeout(800);
+  await expect(lenses).toHaveCount(0);
+  await page.getByRole("button", { name: "Resume background effects" }).click();
+  await expect.poll(() => lenses.count()).toBeGreaterThan(0);
+});
+
+test("a clicked nav link keeps the pill while the page scrolls to its section", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  // Smooth scrolling stays on; only the pill's own glide is switched off,
+  // so its position can be read at any moment.
+  await page.addStyleTag({
+    content: "*, *::before, *::after { transition: none !important }",
+  });
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  const pill = nav.locator('ul > li[aria-hidden="true"]');
+  const link = nav.locator('ul a[href="#skills"]');
+  const under = async () => {
+    const a = (await link.boundingBox())!;
+    const p = (await pill.boundingBox())!;
+    return Math.abs(a.x - p.x) < 1.5 && Math.abs(a.width - p.width) < 1.5;
+  };
+  await link.hover();
+  await expect.poll(under).toBe(true);
+  await link.click();
+  // The pointer leaves while the page is still on its way down.
+  await page.mouse.move(640, 500);
+  for (let i = 0; i < 8; i++) {
+    expect(await under(), `pill under Skills, sample ${i}`).toBe(true);
+    await page.waitForTimeout(60);
+  }
+  await expect(nav.locator('ul a[aria-current="location"]')).toHaveAttribute(
+    "href",
+    "#skills",
+  );
+  await expect.poll(under).toBe(true);
+});
+
+test("the nav pill follows the pointer and flows back to the current section", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  await page.addStyleTag({
+    content:
+      "html { scroll-behavior: auto !important } *, *::before, *::after { transition: none !important }",
+  });
+  await page.evaluate(() =>
+    document.querySelector("#projects")!.scrollIntoView(),
+  );
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  const current = nav.locator('ul a[aria-current="location"]');
+  await expect(current).toHaveAttribute("href", "#projects");
+  const pill = nav.locator('ul > li[aria-hidden="true"]');
+  const under = async (link: string) => {
+    const a = (await nav.locator(`ul a[href="${link}"]`).boundingBox())!;
+    const p = (await pill.boundingBox())!;
+    return Math.abs(a.x - p.x) < 1.5 && Math.abs(a.width - p.width) < 1.5;
+  };
+  await expect.poll(() => under("#projects")).toBe(true);
+
+  await nav.locator('ul a[href="#skills"]').hover();
+  await expect.poll(() => under("#skills")).toBe(true);
+  await page.mouse.move(640, 500);
+  await expect.poll(() => under("#projects")).toBe(true);
+});
+
+for (const reducedMotion of ["no-preference", "reduce"] as const) {
+  test(`cards, buttons and the hero tiles follow the mouse only when motion is welcome (${reducedMotion})`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion });
+    await openHome(page, "dark");
+    const moves = reducedMotion === "no-preference";
+
+    // The hero's tiles drift against the pointer.
+    const tile = page.locator("#top .glass-tile").first();
+    await page.mouse.move(100, 100);
+    await page.waitForTimeout(1200);
+    const before = await tile.evaluate((e) => getComputedStyle(e).translate);
+    await page.mouse.move(1180, 700);
+    await page.waitForTimeout(1200);
+    const after = await tile.evaluate((e) => getComputedStyle(e).translate);
+    expect(after !== before, "the tile drifted").toBe(moves);
+
+    // The hero button leans toward the pointer.
+    const button = page.getByRole("link", { name: /View projects/ });
+    const b = (await button.boundingBox())!;
+    await page.mouse.move(b.x + b.width - 24, b.y + b.height / 2);
+    await page.waitForTimeout(300);
+    const pulled = await button.evaluate((e) => e.style.transform !== "");
+    expect(pulled, "the button followed").toBe(moves);
+
+    // A card drifts toward the pointer.
+    await page.evaluate(() =>
+      document
+        .querySelector("#projects")!
+        .scrollIntoView({ behavior: "instant" }),
+    );
+    const card = page.locator("#projects .grid > * > .glass").first();
+    const c = (await card.boundingBox())!;
+    await page.mouse.move(c.x + c.width - 40, c.y + 40, { steps: 3 });
+    await page.waitForTimeout(500);
+    const shift = await card.evaluate(
+      (e) => new DOMMatrixReadOnly(getComputedStyle(e).transform).m41,
+    );
+    expect(Math.abs(shift) > 1, "the card drifted").toBe(moves);
+  });
+}
+
 test("the old project pages are gone and their addresses lead to the projects section", async ({
   page,
   request,

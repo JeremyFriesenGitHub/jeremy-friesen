@@ -15,7 +15,9 @@ import { useEffect, useRef, useState } from "react";
  *  - blob motion is computed in JS (doubles) every frame; the shader needs
  *    fragment highp, so GPUs without it get the CSS fallback instead
  *  - dims by LAMP_DIM once the hero scrolls away so card text stays readable
- *  - uniforms are packed into 13 vec4 slots, under the 16 that WebGL 1
+ *  - the wax swells toward the mouse, like a drop under a lens, easing in
+ *    and out so it trails the pointer; touch screens and still frames skip it
+ *  - uniforms are packed into 14 vec4 slots, under the 16 that WebGL 1
  *    guarantees for fragment shaders
  */
 
@@ -28,6 +30,9 @@ const BLOB_COUNT = 6;
  */
 const LAMP_DIM = { dark: 0.48, light: 0.4 } as const;
 
+/** How strongly the wax swells toward the mouse (0 is none). */
+const PULL = 0.32;
+
 const VERT = `attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0.0,1.0);}`;
 
 const FRAG = `
@@ -39,6 +44,7 @@ precision mediump float;
 uniform vec4 u_rm;      // res.xy, mouse.xy
 uniform vec4 u_bgi;     // background rgb, intensity
 uniform vec4 u_warp;    // two noise offsets (xy, zw)
+uniform vec4 u_pull;    // pull strength toward the mouse (x)
 uniform vec3 u_k[4];    // palette
 uniform vec4 u_b[${BLOB_COUNT}];  // x, y, radius, vertical stretch
 
@@ -85,7 +91,12 @@ void main(){
   p.x*=aspect;
   // A little domain warp keeps the wax from looking like perfect circles.
   vec2 q=vec2(snoise(p*1.6+u_warp.xy),snoise(p*1.6+u_warp.zw));
-  vec2 w=p+0.045*q-(u_rm.zw-0.5)*vec2(aspect,1.0)*0.05;
+  vec2 m=(u_rm.zw-0.5)*vec2(aspect,1.0);
+  vec2 w=p+0.045*q-m*0.07;
+  // Around the mouse the field is sampled from closer to it, so the wax
+  // there swells toward the pointer like a drop under a lens.
+  vec2 dm=w-m;
+  w-=dm*u_pull.x*exp(-dot(dm,dm)*7.0);
 
   // Steep metaball kernel (r^4 / d^4): blobs only merge when they nearly
   // touch, and distant wax never tints the whole screen on narrow phones.
@@ -313,6 +324,7 @@ export function LiquidBackground() {
       rm: u("u_rm"),
       bgi: u("u_bgi"),
       warp: u("u_warp"),
+      pull: u("u_pull"),
       k: u("u_k"),
       b: u("u_b"),
     };
@@ -346,7 +358,7 @@ export function LiquidBackground() {
     // effect twice on the same, already-sized canvas, and the second resize()
     // takes the early return below without touching it.
     const size = { w: canvas.width, h: canvas.height };
-    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
+    const mouse = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5, pull: 0, tpull: 0 };
 
     /**
      * Sizes the drawing buffer from the canvas's own CSS box (100lvh, so the
@@ -374,6 +386,11 @@ export function LiquidBackground() {
     const onPointerMove = (e: PointerEvent) => {
       mouse.tx = e.clientX / window.innerWidth;
       mouse.ty = 1 - e.clientY / window.innerHeight;
+      if (e.pointerType === "mouse") mouse.tpull = PULL;
+    };
+    // The swell relaxes when the pointer leaves the window.
+    const onPointerOut = (e: PointerEvent) => {
+      if (!e.relatedTarget) mouse.tpull = 0;
     };
 
     const blobs = new Float32Array(BLOB_COUNT * 4);
@@ -381,6 +398,7 @@ export function LiquidBackground() {
       fillBlobs(blobs, t, aspect);
       gl.uniform4fv(loc.b, blobs);
       gl.uniform4f(loc.rm, size.w, size.h, mouse.x, mouse.y);
+      gl.uniform4f(loc.pull, mouse.pull, 0, 0, 0);
       gl.uniform4f(
         loc.warp,
         2 * Math.sin(t * 0.05),
@@ -404,14 +422,16 @@ export function LiquidBackground() {
       const minInterval = window.scrollY > window.innerHeight ? 50 : 33;
       if (now - last < minInterval - 4) return;
       last = now;
-      mouse.x += (mouse.tx - mouse.x) * 0.06;
-      mouse.y += (mouse.ty - mouse.y) * 0.06;
+      mouse.x += (mouse.tx - mouse.x) * 0.08;
+      mouse.y += (mouse.ty - mouse.y) * 0.08;
+      mouse.pull += (mouse.tpull - mouse.pull) * 0.05;
       draw(seconds(now));
     };
 
     const renderStatic = () => {
       mouse.x = mouse.tx = 0.5;
       mouse.y = mouse.ty = 0.5;
+      mouse.pull = mouse.tpull = 0;
       // A moment where all six blobs sit well inside the viewport.
       draw(457.5);
     };
@@ -492,6 +512,7 @@ export function LiquidBackground() {
     canvas.addEventListener("webglcontextlost", onContextLost);
     if (!coarsePointer) {
       window.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.addEventListener("pointerout", onPointerOut, { passive: true });
     }
 
     return () => {
@@ -502,6 +523,7 @@ export function LiquidBackground() {
       window.removeEventListener("scroll", onScroll);
       if (fadeRaf) cancelAnimationFrame(fadeRaf);
       window.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerout", onPointerOut);
       reduceMotion.removeEventListener("change", onMotionPref);
       canvas.removeEventListener("webglcontextlost", onContextLost);
       themeObserver.disconnect();
