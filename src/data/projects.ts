@@ -26,12 +26,14 @@ export interface Project {
   repo?: string;
   /** Demo video (YouTube). */
   video?: string;
-  /** Screenshot(s). Empty for code-only work, which gets an icon banner instead. */
-  images: { src: string; alt: string }[];
+  /**
+   * One screenshot per card. Left out for code-only work, which gets an icon
+   * banner instead. `position: "center"` keeps the middle of the image in view
+   * when a wide card crops it; screenshots default to their top.
+   */
+  image?: { src: string; alt: string; position?: "top" | "center" };
   accent: { dark: string; light: string };
   icon: ProjectIcon;
-  /** Grid columns on desktop. */
-  colSpan: 1 | 2;
   tags: string[];
   /** Short label under the description: a prize (award: true) or the event/role. */
   note?: string;
@@ -41,9 +43,7 @@ export interface Project {
 /**
  * Newest first. Hackathon builds link to Devpost, a demo video and source:
  * their backends are long gone, so there are no live-app links here.
- * Cards from the same month keep this order, which also decides how the
- * two-column cards pack into the three-column grid: check for gaps on desktop
- * after adding or removing one.
+ * Cards from the same month keep this order. Every card is one column wide.
  */
 export const projects: Project[] = [
   {
@@ -52,13 +52,9 @@ export const projects: Project[] = [
     date: "2026-09",
     url: "https://devpost.com/software/loggr",
     repo: "https://github.com/JeremyFriesenGitHub/htn26",
-    images: [
-      { src: "/images/trace-1.webp", alt: "Trace landing page" },
-      { src: "/images/trace-2.webp", alt: "Trace investigation dashboard" },
-    ],
+    image: { src: "/images/trace-1.webp", alt: "Trace landing page" },
     accent: { dark: "#9ba4ff", light: "#3730a3" },
     icon: "shield",
-    colSpan: 2,
     tags: ["Python", "PyTorch", "scikit-learn", "Flask"],
     note: "1st place, CSE challenge at Hack the North 2026",
     award: true,
@@ -69,15 +65,12 @@ export const projects: Project[] = [
     date: "2026-05",
     url: "https://devpost.com/software/ctl-claude-del",
     repo: "https://github.com/JowiAoun/MapleVault",
-    images: [
-      {
-        src: "/images/maplevault-1.webp",
-        alt: "MapleVault system architecture diagram",
-      },
-    ],
+    image: {
+      src: "/images/maplevault-1.webp",
+      alt: "MapleVault system architecture diagram",
+    },
     accent: { dark: "#6ee7b7", light: "#047857" },
     icon: "lock",
-    colSpan: 1,
     tags: ["TypeScript", "FastAPI", "Cryptography", "Docker"],
     note: "Ottawa Defence Hackathon",
   },
@@ -86,15 +79,12 @@ export const projects: Project[] = [
     description: "",
     date: "2026-04",
     url: "https://github.com/JeremyFriesenGitHub/DATA5000_Project",
-    images: [
-      {
-        src: "/images/landcover-1.webp",
-        alt: "Risk map generated from the model output for Logan Lake",
-      },
-    ],
+    image: {
+      src: "/images/landcover-1.webp",
+      alt: "Risk map generated from the model output for Logan Lake",
+    },
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
     icon: "layers",
-    colSpan: 1,
     tags: ["PyTorch", "GeoPandas", "Computer vision"],
   },
   {
@@ -104,10 +94,9 @@ export const projects: Project[] = [
     url: "https://devpost.com/software/agent-o3l6si",
     repo: "https://github.com/chantalzhang/genaigenesis2026",
     video: "https://www.youtube.com/watch?v=hvT3rvw54yo",
-    images: [{ src: "/images/agent2-1.webp", alt: "Agent² landing page" }],
+    image: { src: "/images/agent2-1.webp", alt: "Agent² landing page" },
     accent: { dark: "#6b93ff", light: "#1536b8" },
     icon: "bot",
-    colSpan: 1,
     tags: ["Python", "FastAPI", "AWS", "Playwright"],
     note: "GenAI Genesis 2026",
   },
@@ -117,12 +106,9 @@ export const projects: Project[] = [
     date: "2026-06",
     url: "https://carletonai.com",
     repo: "https://github.com/carletonai/cais-website",
-    images: [
-      { src: "/images/cais-2.webp", alt: "Carleton AI Society homepage" },
-    ],
+    image: { src: "/images/cais-2.webp", alt: "Carleton AI Society homepage" },
     accent: { dark: "#9ba4ff", light: "#3730a3" },
     icon: "brain",
-    colSpan: 1,
     tags: ["React", "Vite", "Tailwind CSS"],
   },
   {
@@ -132,16 +118,12 @@ export const projects: Project[] = [
     url: "https://devpost.com/software/product-creator-temp-name-conu-x",
     repo: "https://github.com/chantalzhang/conuhacks26",
     video: "https://www.youtube.com/watch?v=GzHThTiV9rA",
-    images: [
-      { src: "/images/buildo-1.webp", alt: "Buildo terminal-style interface" },
-      {
-        src: "/images/buildo-2.webp",
-        alt: "Hardware prototype built from a Buildo guide",
-      },
-    ],
+    image: {
+      src: "/images/buildo-2.webp",
+      alt: "Hardware prototype built from a Buildo guide",
+    },
     accent: { dark: "#5eead4", light: "#0f766e" },
     icon: "cpu",
-    colSpan: 2,
     tags: ["Next.js", "Flask", "Gemini API", "Snowflake Cortex"],
     note: "MLH Best Use of Gemini API, ConUHacks X",
     award: true,
@@ -153,12 +135,12 @@ export const projects: Project[] = [
     url: "https://devpost.com/software/plante",
     repo: "https://github.com/JowiAoun/Plante",
     video: "https://www.youtube.com/watch?v=7n9EgHPRCC8",
-    images: [
-      { src: "/images/plante-1.webp", alt: "Plante pixel-art farm dashboard" },
-    ],
+    image: {
+      src: "/images/plante-1.webp",
+      alt: "Plante pixel-art farm dashboard",
+    },
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
     icon: "leaf",
-    colSpan: 1,
     tags: ["Next.js", "MongoDB", "Gemini", "Raspberry Pi"],
     note: "Best Designed Hack, uOttaHack 8",
     award: true,
@@ -168,12 +150,12 @@ export const projects: Project[] = [
     description: "",
     date: "2026-01",
     url: "https://github.com/JeremyFriesenGitHub/startup-idea-validator",
-    images: [
-      { src: "/images/validator-1.webp", alt: "Startup Idea Validator app" },
-    ],
+    image: {
+      src: "/images/validator-1.webp",
+      alt: "Startup Idea Validator app",
+    },
     accent: { dark: "#b08cff", light: "#5b21b6" },
     icon: "rocket",
-    colSpan: 1,
     tags: ["FastAPI", "Backboard.io", "JavaScript"],
     note: "AGI Ventures Canada challenge",
   },
@@ -183,10 +165,9 @@ export const projects: Project[] = [
     date: "2025-11",
     url: "https://devpost.com/software/blackbird-uav-shazam-4-drones",
     repo: "https://github.com/Blackbird-UAV/icebreaker-hackathon-2025",
-    images: [{ src: "/images/shazam-1.webp", alt: "Blackbird UAV logo" }],
+    image: { src: "/images/shazam-1.webp", alt: "Blackbird UAV logo" },
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
     icon: "radar",
-    colSpan: 1,
     tags: ["Next.js", "FastAPI", "scikit-learn", "SciPy"],
     note: "Shazam for Drones Hackathon",
   },
@@ -197,15 +178,12 @@ export const projects: Project[] = [
     url: "https://devpost.com/software/network-threat-explorer",
     repo: "https://github.com/JeremyFriesenGitHub/nte",
     video: "https://www.youtube.com/watch?v=ZuAKIEh6PcA",
-    images: [
-      {
-        src: "/images/nte-1.webp",
-        alt: "Network Threat Explorer upload screen",
-      },
-    ],
+    image: {
+      src: "/images/nte-1.webp",
+      alt: "Network Threat Explorer upload screen",
+    },
     accent: { dark: "#6b93ff", light: "#1536b8" },
     icon: "network",
-    colSpan: 1,
     tags: ["Python", "Flask", "DuckDB", "Arkime"],
     note: "CSE prize, Hack the North 2025",
     award: true,
@@ -217,10 +195,9 @@ export const projects: Project[] = [
     url: "https://devpost.com/software/cu-tunnels",
     repo: "https://github.com/JeremyFriesenGitHub/cuTunnel",
     video: "https://www.youtube.com/watch?v=mcY5xvBvbc0",
-    images: [{ src: "/images/cutunnel-1.webp", alt: "cuTunnel route map" }],
+    image: { src: "/images/cutunnel-1.webp", alt: "cuTunnel route map" },
     accent: { dark: "#6ee7b7", light: "#047857" },
     icon: "graph",
-    colSpan: 1,
     tags: ["JavaScript", "Dijkstra", "Cytoscape.js"],
     note: "Wolfram Award and People's Choice, cuHacking 6",
     award: true,
@@ -231,24 +208,24 @@ export const projects: Project[] = [
     date: "2025-11",
     url: "https://blackbirduav.ca",
     repo: "https://github.com/Blackbird-UAV/BlackbirdUAV-Website",
-    images: [
-      { src: "/images/blackbird-1.webp", alt: "Blackbird UAV homepage" },
-    ],
+    image: { src: "/images/blackbird-1.webp", alt: "Blackbird UAV homepage" },
     accent: { dark: "#67d2ff", light: "#0b5f8a" },
     icon: "plane",
-    colSpan: 1,
     tags: ["React", "Next.js", "GitHub Actions"],
   },
   {
     title: "cuHacking 2025 platform",
     description: "",
     date: "2024-12",
-    url: "https://cuhacking.ca",
+    url: "https://docs.cuhacking.ca/",
     repo: "https://github.com/cuhacking/2025",
-    images: [{ src: "/images/cuhacking-2.webp", alt: "cuHacking website" }],
+    image: {
+      src: "/images/cuhacking-docs-1.webp",
+      alt: "cuHacking 2025 DevDocs banner",
+      position: "center",
+    },
     accent: { dark: "#b08cff", light: "#5b21b6" },
     icon: "laptop",
-    colSpan: 1,
     tags: ["TypeScript", "Next.js", "Nx"],
   },
   {
@@ -256,15 +233,12 @@ export const projects: Project[] = [
     description: "",
     date: "2024-11",
     url: "https://github.com/JeremyFriesenGitHub/Event-Risk-Management-Forms-Automation",
-    images: [
-      {
-        src: "/images/riskforms-1.webp",
-        alt: "Event Risk Management page",
-      },
-    ],
+    image: {
+      src: "/images/riskforms-1.webp",
+      alt: "Event Risk Management page",
+    },
     accent: { dark: "#93c5fd", light: "#1d4ed8" },
     icon: "workflow",
-    colSpan: 1,
     tags: ["Playwright", "Node.js"],
   },
 ];

@@ -14,14 +14,8 @@ import { formatMonth } from "~/lib/dates";
 import { SHOW_MORE_INITIAL } from "~/lib/show-more";
 import { cn } from "~/lib/utils";
 
-/**
- * Width hint per image: a card is full width on phones, half on tablets and a
- * third (or two thirds) on desktop; below lg only the first image shows.
- */
-function imageSizes(colSpan: 1 | 2, count: number): string {
-  const desktop = Math.round((colSpan === 2 ? 66 : 33) / count);
-  return `(max-width: 640px) 100vw, (max-width: 1024px) 50vw, ${desktop}vw`;
-}
+/** A card is full width on phones, half on tablets and a third on desktop. */
+const imageSizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
 
 const iconLinkClass =
   "relative z-10 inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground";
@@ -56,37 +50,25 @@ export function Projects() {
         navFrost
       >
         {sorted.map((project, i) => (
-          <Reveal
-            key={project.title}
-            delay={Math.min((i % 3) * 0.07, 0.2)}
-            className={cn(project.colSpan === 2 && "lg:col-span-2")}
-          >
+          <Reveal key={project.title} delay={Math.min((i % 3) * 0.07, 0.2)}>
             <GlassCard
               accent={project.accent}
               className="group flex h-full flex-col overflow-hidden p-3"
             >
-              {project.images.length > 0 ? (
-                <div className="flex h-44 gap-2 overflow-hidden rounded-2xl sm:h-48">
-                  {project.images.map((img, n) => (
-                    <div
-                      key={img.src}
-                      className={cn(
-                        "relative min-w-0 flex-1 overflow-hidden rounded-2xl",
-                        n > 0 && "hidden lg:block",
-                      )}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        sizes={imageSizes(
-                          project.colSpan,
-                          project.images.length,
-                        )}
-                        className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                      />
-                    </div>
-                  ))}
+              {project.image ? (
+                <div className="relative h-44 overflow-hidden rounded-2xl sm:h-48">
+                  <Image
+                    src={project.image.src}
+                    alt={project.image.alt}
+                    fill
+                    sizes={imageSizes}
+                    className={cn(
+                      "object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]",
+                      project.image.position === "center"
+                        ? "object-center"
+                        : "object-top",
+                    )}
+                  />
                 </div>
               ) : (
                 /* Code-only work: an accent-tinted banner instead of a screenshot. */

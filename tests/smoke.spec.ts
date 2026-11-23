@@ -105,6 +105,16 @@ test("the projects grid shows eight cards, then all of them", async ({
   // Focus moved to the first revealed card, on screen.
   const focused = page.locator(":focus");
   await expect(focused).toBeInViewport();
+
+  // Every card is one column wide and shows one picture at most.
+  const cards = await grid.locator(":scope > *").evaluateAll((els) =>
+    els.map((e) => ({
+      width: Math.round(e.getBoundingClientRect().width),
+      images: e.querySelectorAll("img").length,
+    })),
+  );
+  expect(new Set(cards.map((c) => c.width)).size).toBe(1);
+  expect(Math.max(...cards.map((c) => c.images))).toBeLessThanOrEqual(1);
 });
 
 test("the navbar frosts when the grid grows under it without a scroll", async ({
@@ -236,6 +246,24 @@ test("the navbar keeps its logo under a content blocker and has no divider", asy
   });
   expect(borders).toEqual(["0px", "0px"]);
 });
+
+for (const theme of ["dark", "light"] as const) {
+  test(`the JF logo's letters hold 4.5:1 in the bar and the footer (${theme})`, async ({
+    page,
+  }) => {
+    await openHome(page, theme, { lampPaused: true });
+    for (const where of ['nav[aria-label="Primary"]', "footer"]) {
+      const result = await worstContrast(
+        page,
+        `${where} a[href="#top"] > span:first-child`,
+      );
+      expect(result, `the logo in ${where} was measured`).not.toBeNull();
+      expect(result!.p5, `the logo in ${where}`).toBeGreaterThanOrEqual(
+        requiredRatio(result!.size, result!.weight),
+      );
+    }
+  });
+}
 
 test("the effects toggle pauses the lamp and the choice persists", async ({
   page,

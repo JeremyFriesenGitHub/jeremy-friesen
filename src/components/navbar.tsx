@@ -12,6 +12,7 @@ import { SiDevpost } from "react-icons/si";
 import { LuFileText, LuMenu, LuX } from "react-icons/lu";
 import { MagneticElement } from "~/components/effects/magnetic-element";
 import { EffectsToggle } from "~/components/ui/effects-toggle";
+import { Monogram } from "~/components/ui/monogram";
 import { ThemeToggle } from "~/components/ui/theme-toggle";
 import { navLinks, profile, socialLinks } from "~/data/social-links";
 import { useActiveSection } from "~/hooks/use-active-section";
@@ -164,9 +165,7 @@ export function Navbar() {
           aria-label={`${profile.name}, top of page`}
           className="flex items-center gap-2.5 rounded-full py-1 pr-3 pl-1 font-semibold tracking-tight transition-colors hover:bg-foreground/5"
         >
-          <span className="flex size-8 items-center justify-center rounded-xl bg-linear-to-br from-primary via-accent to-tertiary font-mono text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.45)]">
-            JF
-          </span>
+          <Monogram />
           {/* The name only fits beside the links, socials and resume from xl;
               at lg the monogram stands in for it. */}
           <span className="hidden whitespace-nowrap sm:inline md:hidden xl:inline">
