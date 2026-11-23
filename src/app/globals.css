@@ -2,6 +2,18 @@
 
 /* `.dark` on <html> switches the theme; set before first paint by the inline script in layout.tsx. */
 @custom-variant dark (&:where(.dark, .dark *));
+/* While a card (a `.group`) is hovered, or holds keyboard focus: ghost
+   marks take their own colour (see `ghost-tile`). */
+@custom-variant lit {
+  @media (hover: hover) {
+    :where(.group):hover & {
+      @slot;
+    }
+  }
+  :where(.group):has(:focus-visible) & {
+    @slot;
+  }
+}
 
 @theme inline {
   --font-sans:
@@ -152,6 +164,8 @@
   --glass-tile-from: rgba(255, 255, 255, 0.18);
   --glass-tile-to: rgba(255, 255, 255, 0.04);
   --glass-blur: 26px;
+  /* Ghost marks: logos and icons as a see-through tint of the text. */
+  --ghost-ink: rgba(12, 12, 20, 0.6);
 
   /* Aurora palette shared by the WebGL background and the CSS fallback:
      blue, teal, violet and sky, bright enough to read as a moving field. */
@@ -216,6 +230,7 @@
   --glass-tile-from: rgba(255, 255, 255, 0.05);
   --glass-tile-to: rgba(255, 255, 255, 0.01);
   --glass-blur: 28px;
+  --ghost-ink: rgba(243, 243, 248, 0.62);
 
   --aurora-1: #6d28d9;
   --aurora-2: #2a4fe8;
@@ -487,6 +502,29 @@
   --glass-to: var(--glass-tile-to);
 }
 
+/* A ghost mark's tile: logos and icons sit in the glass as a see-through
+   tint of the text colour rather than in their own colours, which they take
+   back with the `lit:` variant (their card hovered or focused). An image
+   logo paints its mask from public/logos/ghost (`npm run ghost-logos`). */
+@utility ghost-tile {
+  color: var(--ghost-ink);
+  background-color: color-mix(in oklab, var(--foreground) 4%, transparent);
+  box-shadow:
+    inset 0 0 0 1px var(--glass-edge),
+    inset 0 1px 0 0 var(--glass-hi);
+  transition:
+    color 0.35s ease,
+    background-color 0.35s ease;
+}
+
+/* Paints an image logo's ghost: its mask (set inline as --ghost-mask) over
+   the current colour. Written here rather than inline so it gets the
+   -webkit- prefix older Chromium still needs. */
+@utility ghost-mask {
+  -webkit-mask: var(--ghost-mask) center / cover no-repeat;
+  mask: var(--ghost-mask) center / cover no-repeat;
+}
+
 @utility glass-pill {
   background: color-mix(in oklab, var(--foreground) 5%, transparent);
   border: 1px solid var(--glass-edge);
@@ -654,6 +692,7 @@
     --card: #ffffff;
     --border: #d4d4dc;
     --primary-strong: #1e3a8a;
+    --ghost-ink: rgba(0, 0, 0, 0.6);
   }
   html,
   body {

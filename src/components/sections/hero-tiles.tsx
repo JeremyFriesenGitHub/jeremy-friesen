@@ -139,7 +139,7 @@ function Tile({
         } as CSSProperties
       }
       className={cn(
-        "glass absolute flex size-16 [translate:calc(var(--px,0)*var(--depth)*-1px)_calc(var(--py,0)*var(--depth)*-1px)] animate-float items-center justify-center rounded-2xl text-3xl text-foreground/75 transition-[translate] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform glass-tile lg:size-[4.5rem] lg:text-[2.1rem]",
+        "glass absolute flex size-16 [translate:calc(var(--px,0)*var(--depth)*-1px)_calc(var(--py,0)*var(--depth)*-1px)] animate-float items-center justify-center rounded-2xl text-3xl text-(--ghost-ink) transition-[translate] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform glass-tile lg:size-[4.5rem] lg:text-[2.1rem]",
         className,
       )}
     >

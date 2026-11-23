@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { Icon } from "~/components/ui/icon";
 import type { SpriteIcon } from "~/lib/icons";
@@ -27,9 +28,15 @@ const initials = (name: string) =>
         .join("")
         .slice(0, 4);
 
+/** "/logos/x.webp" -> "/logos/ghost/x.webp", made by `npm run ghost-logos`. */
+const ghostOf = (logo: string) =>
+  logo.replace(/\/logos\/([^/]+)\.\w+$/, "/logos/ghost/$1.webp");
+
 /**
  * An organization's mark beside its name: the logo when the site has one,
- * otherwise an icon or a monogram tinted with the item's accent. The name
+ * otherwise an icon or a monogram. Either is a ghost, a see-through tint of
+ * the text colour, until its card is hovered or focused (`lit:`), when the
+ * logo shows in full colour and an icon takes the item's accent. The name
  * is always next to it as text, so the mark itself is decorative.
  */
 export function OrgLogo({
@@ -46,17 +53,24 @@ export function OrgLogo({
     return (
       <span
         className={cn(
-          "flex shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-background",
+          "relative flex shrink-0 overflow-hidden rounded-xl ghost-tile",
           className,
         )}
         style={style}
       >
+        {/* The mark alone, painted in the ghost ink. Print and forced
+            colours drop backgrounds, so they get the logo itself. */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 bg-current transition-opacity duration-350 ghost-mask print:hidden forced-colors:hidden lit:opacity-0"
+          style={{ "--ghost-mask": `url(${ghostOf(logo)})` } as CSSProperties}
+        />
         <Image
           src={logo}
           alt=""
           width={size}
           height={size}
-          className="size-full object-cover"
+          className="relative size-full object-cover opacity-0 transition-opacity duration-350 print:opacity-100 forced-colors:opacity-100 lit:opacity-100"
         />
       </span>
     );
@@ -66,7 +80,7 @@ export function OrgLogo({
     <span
       aria-hidden="true"
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-xl bg-(--item-accent)/14 font-mono text-xs font-semibold tracking-tight text-(--item-ink)",
+        "flex shrink-0 items-center justify-center rounded-xl ghost-tile font-mono text-xs font-semibold tracking-tight lit:bg-(--item-accent)/14 lit:text-(--item-ink)",
         className,
       )}
       style={style}

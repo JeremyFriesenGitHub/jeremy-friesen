@@ -29,12 +29,13 @@ export function Experience() {
           {experiences.map((exp, i) => (
             <li
               key={`${exp.title}-${exp.date}`}
-              className="relative pb-8 pl-12 last:pb-0 sm:pl-16"
+              className="group relative mb-8 pl-12 last:mb-0 sm:pl-16"
             >
-              {/* The employer's mark sits on the rail, in place of a dot. */}
+              {/* The employer's mark sits on the rail, in place of a dot, on
+                  the page colour so the rail doesn't show through its glass. */}
               <span
                 aria-hidden="true"
-                className="accent-scope absolute top-5 left-0 block rounded-full shadow-[0_0_0_4px_var(--background)] sm:top-4 sm:rounded-xl"
+                className="accent-scope absolute top-5 left-0 block rounded-full bg-background shadow-[0_0_0_4px_var(--background)] sm:top-4 sm:rounded-xl"
                 style={
                   {
                     "--accent-dark": exp.color,
