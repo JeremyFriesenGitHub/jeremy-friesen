@@ -6,6 +6,13 @@
  * the plain blur, and so do phones (battery) and anyone who asked for less
  * transparency. The CSS side is the `--lens` variable in globals.css.
  *
+ * It is the costliest thing the glass does: every lens on screen is drawn
+ * again whenever what lies behind it changes, which is each lamp frame and
+ * each scroll frame. So it goes only where the bend shows: the navbar, which
+ * content scrolls under, and the few small glass buttons. Cards and the
+ * hero's floating tiles don't get one: behind their rims there is only the
+ * smooth lamp, where the bend changes no pixel by more than about 5%.
+ *
  * One <filter> per element size and blur: the map has to match the
  * element's box, so elements of the same size and radius share one, counted
  * by `users`. The map image itself is shared across blurs, so a theme switch

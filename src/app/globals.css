@@ -312,9 +312,10 @@
  *                light top left and bottom right, light gathered just inside
  *                the rim (--glass-bevel), a darker band where the thick edge
  *                bends the page into view (--glass-depth), real refraction at
- *                the rim in Chromium (--lens, see lib/liquid-lens.ts), and a
- *                glow plus a glint on the rim that follow the pointer via
- *                --mx/--my (set by usePointerGlow). The drop shadow is
+ *                the rim in Chromium on the elements that ask for it (--lens,
+ *                see lib/liquid-lens.ts), and a glow plus a glint on the rim
+ *                that follow the pointer via --mx/--my (set by
+ *                usePointerGlow). The drop shadow is
  *                --glass-drop, so a hover can deepen it without replacing the
  *                inset lights.
  *  .glass-strong more opaque variant for the mobile menu.
@@ -604,13 +605,6 @@
     translate: 0 var(--reveal-y, 22px);
   }
 
-  /* Effects paused with the toggle (see components/ui/effects-toggle.tsx):
-     the lamp holds a still frame (liquid-background.tsx) and these stop too. */
-  .reduce-effects
-    :is(.animate-float, .animate-lava, .animate-nudge, .text-liquid-animate) {
-    animation: none;
-  }
-
   /* Collapsible grid (see components/ui/show-more.tsx): the first eight
      children stay visible; without JS, and on paper, everything shows. */
   @media screen {
@@ -674,6 +668,23 @@
       transition: none;
     }
   }
+}
+
+/* Outside any layer on purpose: the animations are utilities, and the
+   utilities layer beats every rule in the components layer, so from there
+   these never applied. */
+
+/* Effects paused with the toggle (see components/ui/effects-toggle.tsx):
+   the lamp holds a still frame (liquid-background.tsx) and these stop too. */
+.reduce-effects
+  :is(.animate-float, .animate-lava, .animate-nudge, .text-liquid-animate) {
+  animation: none;
+}
+
+/* Out of view (see components/ui/pausing-section.tsx), the loops hold where
+   they are and pick up again on the way back. */
+[data-offscreen] :is(.animate-float, .animate-nudge, .text-liquid-animate) {
+  animation-play-state: paused;
 }
 
 /* Paper is white whatever the theme: a printed page uses the same tokens

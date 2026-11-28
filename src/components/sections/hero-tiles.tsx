@@ -5,7 +5,6 @@ import type { IconType } from "react-icons";
 import { FaAws, FaDocker, FaPython } from "react-icons/fa6";
 import { SiPytorch, SiTypescript } from "react-icons/si";
 import { VscAzure } from "react-icons/vsc";
-import { useLiquidLens } from "~/hooks/use-liquid-lens";
 import { cn } from "~/lib/utils";
 
 /** `depth`: how many pixels a tile drifts as the pointer crosses the hero. */
@@ -64,7 +63,8 @@ const tiles = [
  * The hero's floating glass tiles: decorative, hidden from assistive tech,
  * and only shown from xl, where they clear the headline and the button.
  * They drift away from the mouse by their depth, so the hero reads as
- * layers, and their rims refract the lamp where the browser can draw it.
+ * layers. No refraction lens: a floating tile's backdrop is drawn again on
+ * every display frame, and over the smooth lamp the bend can't be seen.
  */
 export function HeroTiles() {
   const ref = useRef<HTMLDivElement>(null);
@@ -125,12 +125,8 @@ function Tile({
   delay: string;
   depth: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useLiquidLens(ref, { bezel: 12 });
-
   return (
     <div
-      ref={ref}
       style={
         {
           "--tilt": tilt,

@@ -3,6 +3,7 @@ import { LuArrowDown, LuChevronDown } from "react-icons/lu";
 import { HeroTiles } from "~/components/sections/hero-tiles";
 import { RotatingWord } from "~/components/sections/rotating-word";
 import { GlassButton } from "~/components/ui/glass-button";
+import { PausingSection } from "~/components/ui/pausing-section";
 import { copy } from "~/data/copy";
 import { profile } from "~/data/social-links";
 
@@ -12,7 +13,7 @@ function delay(ms: number): CSSProperties {
 
 export function Hero() {
   return (
-    <section
+    <PausingSection
       id="top"
       className="relative flex min-h-svh items-center justify-center overflow-hidden px-4 pt-28 pb-20 sm:px-6"
     >
@@ -79,6 +80,6 @@ export function Hero() {
       >
         <LuChevronDown className="animate-nudge" size={28} aria-hidden="true" />
       </a>
-    </section>
+    </PausingSection>
   );
 }
