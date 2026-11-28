@@ -531,6 +531,19 @@ test("the footer carries the 613 Webring, which finds this site by its origin", 
   await expect(home).toHaveAttribute("target", "_blank");
   await expect(home).toHaveAttribute("rel", /noopener/);
 
+  // The ring's mark is a ghost until its link is hovered or focused.
+  const mark = home.locator("img");
+  await expect(mark).toHaveCSS("opacity", "0");
+  await home.hover();
+  await expect(mark).toHaveCSS("opacity", "1");
+  await page.mouse.move(0, 0);
+  await expect(mark).toHaveCSS("opacity", "0");
+  await ring.getByRole("link", { name: "Previous site in the ring" }).focus();
+  await page.keyboard.press("Tab");
+  await expect(home).toBeFocused();
+  await expect(mark).toHaveCSS("opacity", "1");
+  await home.blur();
+
   // The bottom line of the footer: the ring between the copyright and the
   // source link once there is room (1024px), on a row of its own before
   // that, and never wrapped or spilling out of the footer.

@@ -63,7 +63,7 @@ const hopClass =
 function HopLink({ dir }: { dir: keyof typeof hops }) {
   const { icon, label } = hops[dir];
   return (
-    <a href={hop(dir)} aria-label={label} title={label} className={hopClass}>
+    <a href={hop(dir)} title={label} className={hopClass}>
       <Icon name={icon} size={14} />
     </a>
   );
@@ -81,7 +81,9 @@ function Webring({ className }: { className?: string }) {
     >
       <HopLink dir="prev" />
       {/* The ring's mark is a ghost in the text colour, like the logos in the
-          sections, and shows in its own chrome while the link is hovered. */}
+          sections, and shows in its own chrome while the link is hovered or
+          focused. `lit:` covers hover; its focus half looks for focus inside
+          the group, and here the group is the focused link itself. */}
       <a
         href={webring}
         target="_blank"
@@ -91,7 +93,7 @@ function Webring({ className }: { className?: string }) {
         <span className="relative size-4 shrink-0">
           <span
             aria-hidden="true"
-            className="absolute inset-0 bg-current transition-opacity duration-350 ghost-mask print:hidden forced-colors:hidden lit:opacity-0"
+            className="absolute inset-0 bg-current transition-opacity duration-350 ghost-mask group-focus-visible:opacity-0 print:hidden forced-colors:hidden lit:opacity-0"
             style={
               {
                 "--ghost-mask": "url(/logos/ghost/613-webring.webp)",
@@ -103,7 +105,7 @@ function Webring({ className }: { className?: string }) {
             alt=""
             width={16}
             height={16}
-            className="relative size-full opacity-0 transition-opacity duration-350 print:opacity-100 forced-colors:opacity-100 lit:opacity-100"
+            className="relative size-full opacity-0 transition-opacity duration-350 group-focus-visible:opacity-100 print:opacity-100 forced-colors:opacity-100 lit:opacity-100"
           />
         </span>
         <span>
