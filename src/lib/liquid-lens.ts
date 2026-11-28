@@ -8,10 +8,11 @@
  *
  * It is the costliest thing the glass does: every lens on screen is drawn
  * again whenever what lies behind it changes, which is each lamp frame and
- * each scroll frame. So it goes only where the bend shows: the navbar, which
- * content scrolls under, and the few small glass buttons. Cards and the
- * hero's floating tiles don't get one: behind their rims there is only the
- * smooth lamp, where the bend changes no pixel by more than about 5%.
+ * each scroll frame, and the filter does the frosting too. So it goes on
+ * small pieces whose whole face it shapes (the hero's tiles, the glass
+ * buttons) and on the navbar, which content scrolls under. Cards don't get
+ * one: their faces are large, the frost in their middle is the same either
+ * way, and only a faint band along the rim differs over the smooth lamp.
  *
  * One <filter> per element size and blur: the map has to match the
  * element's box, so elements of the same size and radius share one, counted

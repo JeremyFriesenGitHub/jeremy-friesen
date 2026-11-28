@@ -675,10 +675,12 @@
    these never applied. */
 
 /* Effects paused with the toggle (see components/ui/effects-toggle.tsx):
-   the lamp holds a still frame (liquid-background.tsx) and these stop too. */
+   the lamp holds a still frame (liquid-background.tsx) and these hold
+   theirs too. Paused rather than removed: a tile's tilt lives in its
+   keyframes, so removing the animation would stand it upright. */
 .reduce-effects
   :is(.animate-float, .animate-lava, .animate-nudge, .text-liquid-animate) {
-  animation: none;
+  animation-play-state: paused;
 }
 
 /* Out of view (see components/ui/pausing-section.tsx), the loops hold where

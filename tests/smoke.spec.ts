@@ -276,13 +276,15 @@ test("the effects toggle pauses the lamp and the choice persists", async ({
   expect(await page.evaluate(() => localStorage.getItem("effects"))).toBe(
     "reduced",
   );
-  // The hero's loops stop with it.
+  // The hero's loops hold still with it.
   for (const loop of ["h1 .text-liquid-animate", "#top .animate-nudge"])
     await expect
       .poll(() =>
-        page.locator(loop).evaluate((e) => getComputedStyle(e).animationName),
+        page
+          .locator(loop)
+          .evaluate((e) => getComputedStyle(e).animationPlayState),
       )
-      .toBe("none");
+      .toBe("paused");
   await expect(
     page.getByRole("button", { name: "Resume background effects" }),
   ).toBeVisible();

@@ -30,10 +30,10 @@ export function GlassCard({
   const { ref, onPointerMove, onPointerLeave } = usePointerGlow<HTMLDivElement>(
     { shift: interactive ? SHIFT : 0 },
   );
-  // No refraction lens on cards (see lib/liquid-lens.ts): a card only ever
-  // has the smooth lamp behind its rim, where the bend changes no pixel by
-  // more than about 5%, yet every lens on screen is redrawn with each lamp
-  // frame and each scroll frame. The rim lighting and glint stay.
+  // No refraction lens on cards (see lib/liquid-lens.ts): with only the
+  // smooth lamp behind a card, it changes no more than a faint band along
+  // the rim, yet every lens on screen is redrawn with each lamp frame and
+  // each scroll frame. The rim lighting and glint stay.
 
   const accentVars = accent
     ? ({

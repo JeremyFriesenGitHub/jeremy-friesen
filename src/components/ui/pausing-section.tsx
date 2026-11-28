@@ -18,7 +18,9 @@ export function PausingSection({
   useEffect(() => {
     const el = ref.current;
     if (!el || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver(([entry]) => {
+    const observer = new IntersectionObserver((entries) => {
+      // A late callback can carry several changes, oldest first.
+      const entry = entries.at(-1);
       if (entry) el.toggleAttribute("data-offscreen", !entry.isIntersecting);
     });
     observer.observe(el);
