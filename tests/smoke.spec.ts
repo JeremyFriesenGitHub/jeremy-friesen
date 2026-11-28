@@ -506,6 +506,68 @@ test("the footer links the email address and the phone number", async ({
   expect(squeezed, "footer links that wrap or shrink at 768px").toEqual([]);
 });
 
+test("the footer carries the 613 Webring, which finds this site by its origin", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  const ring = page.getByRole("navigation", { name: "613 Webring" });
+  const hops = [
+    ["Previous site in the ring", "prev"],
+    ["Random site in the ring", "random"],
+    ["Next site in the ring", "next"],
+  ] as const;
+  for (const [name, dir] of hops) {
+    const href = await ring.getByRole("link", { name }).getAttribute("href");
+    const url = new URL(href!);
+    expect(`${url.origin}${url.pathname}`).toBe(
+      "https://www.613webring.ca/nav",
+    );
+    expect(url.searchParams.get("dir")).toBe(dir);
+    // The ring matches members by origin, as its own widget sends it.
+    expect(url.searchParams.get("site")).toBe("https://jeremy-friesen.com");
+  }
+  const home = ring.getByRole("link", { name: "613 Webring", exact: true });
+  await expect(home).toHaveAttribute("href", "https://www.613webring.ca");
+  await expect(home).toHaveAttribute("target", "_blank");
+  await expect(home).toHaveAttribute("rel", /noopener/);
+
+  // The bottom line of the footer: the ring between the copyright and the
+  // source link once there is room (1024px), on a row of its own before
+  // that, and never wrapped or spilling out of the footer.
+  for (const width of [320, 768, 1024]) {
+    await page.setViewportSize({ width, height: 800 });
+    const layout = await ring.evaluate((nav) => {
+      const bar = nav.parentElement!.getBoundingClientRect();
+      const [copy, ringBox, source] = [...nav.parentElement!.children].map(
+        (e) => e.getBoundingClientRect(),
+      );
+      return {
+        copyLines: Math.round(copy!.height / 16),
+        ringHeight: ringBox!.height,
+        spill: ringBox!.right - bar.right,
+        oneRow:
+          Math.abs(
+            ringBox!.top + ringBox!.height / 2 - (copy!.top + copy!.height / 2),
+          ) < 2 &&
+          Math.abs(
+            source!.top + source!.height / 2 - (copy!.top + copy!.height / 2),
+          ) < 2,
+        gaps: [ringBox!.left - copy!.right, source!.left - ringBox!.right],
+      };
+    });
+    expect(layout.copyLines, `copyright lines at ${width}px`).toBe(1);
+    expect(layout.ringHeight, `ring height at ${width}px`).toBeLessThan(44);
+    expect(layout.spill, `ring spill at ${width}px`).toBeLessThanOrEqual(0);
+    expect(layout.oneRow, `one row at ${width}px`).toBe(width >= 1024);
+    if (width >= 1024)
+      for (const gap of layout.gaps)
+        expect(
+          gap,
+          `room beside the ring at ${width}px`,
+        ).toBeGreaterThanOrEqual(24);
+  }
+});
+
 test("every profile is linked from the bar, the phone menu and the footer", async ({
   page,
 }) => {
@@ -566,6 +628,7 @@ for (const theme of ["light", "dark"] as const) {
       "#community li span.text-sm",
       "#hackathons p.text-muted-foreground",
       "#certifications p.text-muted-foreground",
+      'nav[aria-label="613 Webring"]',
     ];
     for (const selector of probes) {
       const result = await worstContrast(page, selector);

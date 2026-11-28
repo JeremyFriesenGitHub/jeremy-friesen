@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+import Image from "next/image";
 import { Icon } from "~/components/ui/icon";
 import { Monogram } from "~/components/ui/monogram";
 import { Year } from "~/components/ui/year";
@@ -9,6 +11,8 @@ import {
   socialLinks,
   telHref,
 } from "~/data/social-links";
+import { siteUrl } from "~/lib/site";
+import { cn } from "~/lib/utils";
 
 const elsewhere = [
   { href: socialLinks.github, label: "GitHub", icon: "github" },
@@ -35,6 +39,82 @@ const stack = [
 
 const linkClass =
   "inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground";
+
+/**
+ * The 613 Webring (https://www.613webring.ca/join). Its nav page finds this
+ * site in the ring by origin and sends the visitor to the neighbour. This is
+ * the ring's no-JavaScript version: its widget.js would need the CSP opened
+ * to a third-party script and image, and picks light or dark from the OS
+ * rather than the site's theme toggle.
+ */
+const webring = "https://www.613webring.ca";
+const hop = (dir: "prev" | "random" | "next") =>
+  `${webring}/nav?dir=${dir}&site=${encodeURIComponent(new URL(siteUrl).origin)}`;
+
+const hops = {
+  prev: { icon: "arrow-left", label: "Previous site in the ring" },
+  random: { icon: "shuffle", label: "Random site in the ring" },
+  next: { icon: "arrow-right", label: "Next site in the ring" },
+} as const;
+
+const hopClass =
+  "inline-flex size-7 items-center justify-center rounded-full transition-colors hover:bg-foreground/8 hover:text-foreground";
+
+function HopLink({ dir }: { dir: keyof typeof hops }) {
+  const { icon, label } = hops[dir];
+  return (
+    <a href={hop(dir)} aria-label={label} title={label} className={hopClass}>
+      <Icon name={icon} size={14} />
+    </a>
+  );
+}
+
+/** A glass pill on the footer's glass: `glass-pill`, with no backdrop filter of its own. */
+function Webring({ className }: { className?: string }) {
+  return (
+    <nav
+      aria-label="613 Webring"
+      className={cn(
+        "inline-flex items-center gap-0.5 rounded-full p-1 glass-pill",
+        className,
+      )}
+    >
+      <HopLink dir="prev" />
+      {/* The ring's mark is a ghost in the text colour, like the logos in the
+          sections, and shows in its own chrome while the link is hovered. */}
+      <a
+        href={webring}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1.5 font-medium transition-colors hover:bg-foreground/8 hover:text-foreground"
+      >
+        <span className="relative size-4 shrink-0">
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 bg-current transition-opacity duration-350 ghost-mask print:hidden forced-colors:hidden lit:opacity-0"
+            style={
+              {
+                "--ghost-mask": "url(/logos/ghost/613-webring.webp)",
+              } as CSSProperties
+            }
+          />
+          <Image
+            src="/logos/613-webring.webp"
+            alt=""
+            width={16}
+            height={16}
+            className="relative size-full opacity-0 transition-opacity duration-350 print:opacity-100 forced-colors:opacity-100 lit:opacity-100"
+          />
+        </span>
+        <span>
+          <span className="font-mono font-semibold">613</span> Webring
+        </span>
+      </a>
+      <HopLink dir="random" />
+      <HopLink dir="next" />
+    </nav>
+  );
+}
 
 export function Footer() {
   const built = new Date().getFullYear();
@@ -146,15 +226,18 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-2 border-t border-border/70 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        {/* The ring sits in the middle once the line has room for it; until
+            then it has a row of its own under the copyright and the source. */}
+        <div className="mt-8 grid justify-items-start gap-3 border-t border-border/70 pt-6 text-xs text-muted-foreground sm:grid-cols-[1fr_auto] sm:items-center lg:grid-cols-[1fr_auto_1fr]">
           <p>
             © <Year built={built} /> {profile.name}. {profile.location}.
           </p>
+          <Webring className="sm:col-span-2 sm:row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1" />
           <a
             href={socialLinks.repo}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-foreground"
+            className="transition-colors hover:text-foreground sm:col-start-2 sm:row-start-1 sm:justify-self-end lg:col-start-3"
           >
             Source on GitHub
           </a>
