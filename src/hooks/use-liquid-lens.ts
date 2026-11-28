@@ -19,7 +19,7 @@ const SETTLE_MS = 150;
  * `backdrop-filter` reads. Elsewhere it does nothing and the glass keeps its
  * plain blur.
  *
- * Maps are built when the browser is idle, so a page of cards doesn't make
+ * Maps are built when the browser is idle, so a page of glass doesn't make
  * one long task. When the element's size changes the lens is dropped at
  * once (the plain blur fits any size) and rebuilt once the size has settled,
  * not on every frame of a window drag. A theme switch or crossing the small

@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from "react";
  * Performance budget:
  *  - renders at ~0.5× device pixels (the field is smooth, so this is invisible)
  *  - capped at 30 fps in the hero and 20 fps once scrolled past it
+ *  - holds still while the page scrolls: each lamp frame makes every glass
+ *    panel on screen redraw its backdrop, which scrolling already does
  *  - pauses when the tab is hidden; draws one static frame for reduced-motion
  *    or data-saver users; falls back to CSS blobs without WebGL
  *  - blob motion is computed in JS (doubles) every frame; the shader needs
@@ -32,6 +34,9 @@ const LAMP_DIM = { dark: 0.48, light: 0.4 } as const;
 
 /** How strongly the wax swells toward the mouse (0 is none). */
 const PULL = 0.32;
+
+/** Quiet time after the last scroll event before the lamp moves again. */
+const SCROLL_SETTLE_MS = 150;
 
 const VERT = `attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0.0,1.0);}`;
 
@@ -411,21 +416,33 @@ export function LiquidBackground() {
 
     let raf = 0;
     let last = 0;
-    const start = performance.now();
-    const seconds = (now: number) => (now - start) / 1000 + 11;
+    // Seconds of motion shown so far. It only runs while frames are drawn,
+    // so after a pause (a scroll, a hidden tab) the wax carries on from
+    // where it stopped instead of jumping ahead.
+    let clock = 11;
+    // While the page scrolls, every glass panel already redraws its
+    // backdrop on each frame; a new lamp frame on top would make each of
+    // them redraw again. So the lamp holds still until scrolling stops.
+    let holdUntil = 0;
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
+      if (now < holdUntil) {
+        last = 0;
+        return;
+      }
       // Below the hero the field is mostly covered by content: 20 fps is plenty.
       // The 4ms tolerance keeps a steady every-2nd/3rd-frame cadence on 60Hz
       // displays instead of flapping on the exact vsync multiple.
       const minInterval = window.scrollY > window.innerHeight ? 50 : 33;
-      if (now - last < minInterval - 4) return;
+      if (last && now - last < minInterval - 4) return;
+      // At most two frames' worth of motion per draw, however long the gap.
+      if (last) clock += Math.min(now - last, 2 * minInterval) / 1000;
       last = now;
       mouse.x += (mouse.tx - mouse.x) * 0.08;
       mouse.y += (mouse.ty - mouse.y) * 0.08;
       mouse.pull += (mouse.tpull - mouse.pull) * 0.05;
-      draw(seconds(now));
+      draw(clock);
     };
 
     const renderStatic = () => {
@@ -461,9 +478,13 @@ export function LiquidBackground() {
       const dim = document.documentElement.classList.contains("dark")
         ? LAMP_DIM.dark
         : LAMP_DIM.light;
-      canvas.style.opacity = String(1 - dim * t);
+      const opacity = String(1 - dim * t);
+      // Past the hero this stops changing: don't restyle the canvas on
+      // every scroll frame for nothing.
+      if (canvas.style.opacity !== opacity) canvas.style.opacity = opacity;
     };
     const onScroll = () => {
+      holdUntil = performance.now() + SCROLL_SETTLE_MS;
       if (!fadeRaf) fadeRaf = requestAnimationFrame(applyFade);
     };
 
@@ -484,7 +505,7 @@ export function LiquidBackground() {
         if (!resize()) return;
         // Reallocating cleared the buffer: paint it again before the next vsync.
         if (isStatic()) renderStatic();
-        else draw(seconds(performance.now()));
+        else draw(clock);
       }, 120);
     };
     const onContextLost = (e: Event) => {

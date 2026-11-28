@@ -276,6 +276,15 @@ test("the effects toggle pauses the lamp and the choice persists", async ({
   expect(await page.evaluate(() => localStorage.getItem("effects"))).toBe(
     "reduced",
   );
+  // The hero's loops hold still with it.
+  for (const loop of ["h1 .text-liquid-animate", "#top .animate-nudge"])
+    await expect
+      .poll(() =>
+        page
+          .locator(loop)
+          .evaluate((e) => getComputedStyle(e).animationPlayState),
+      )
+      .toBe("paused");
   await expect(
     page.getByRole("button", { name: "Resume background effects" }),
   ).toBeVisible();
@@ -306,13 +315,16 @@ test("the glass bends the page at its rim, and drops the lens when effects pause
   await expect.poll(filter).toMatch(/^blur\(/);
 });
 
-test("a card's lens takes the new theme's blur and keeps an empty backdrop clear", async ({
+test("a glass button's lens takes the new theme's blur and keeps an empty backdrop clear", async ({
   page,
 }) => {
   await openHome(page, "light");
-  const card = page.locator("#experience .glass").first();
-  await card.scrollIntoViewIfNeeded();
-  const filter = () => card.evaluate((e) => getComputedStyle(e).backdropFilter);
+  const button = page
+    .locator("#projects")
+    .getByRole("link", { name: "All repositories" });
+  await button.scrollIntoViewIfNeeded();
+  const filter = () =>
+    button.evaluate((e) => getComputedStyle(e).backdropFilter);
   // Light glass is frosted at 26px (--glass-blur), dark at 28px.
   await expect.poll(filter).toMatch(/^url\("#lens-[^"]*f26"\)/);
   const id = /#(lens-[^"]+)/.exec(await filter())![1]!;
@@ -328,6 +340,44 @@ test("a card's lens takes the new theme's blur and keeps an empty backdrop clear
     .click();
   await expect(page.locator("html")).toHaveClass(/dark/);
   await expect.poll(filter).toMatch(/^url\("#lens-[^"]*f28"\)/);
+});
+
+test("cards keep the plain frost, without a lens to redraw", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  const nav = page.getByRole("navigation", { name: "Primary" });
+  // Once the navbar has its lens, any card's would have been built too.
+  await expect
+    .poll(() => nav.evaluate((e) => getComputedStyle(e).backdropFilter))
+    .toMatch(/^url\("#lens-/);
+  const filters = await page
+    .locator("main .glass.rounded-3xl")
+    .evaluateAll((els) => els.map((e) => getComputedStyle(e).backdropFilter));
+  expect(filters.length).toBeGreaterThan(10);
+  for (const f of filters) expect(f).toMatch(/^blur\(/);
+});
+
+test("the hero's looping animations hold still while it is out of view", async ({
+  page,
+}) => {
+  await openHome(page, "dark");
+  await page.addStyleTag({
+    content: "html { scroll-behavior: auto !important }",
+  });
+  const hero = page.locator("#top");
+  const shimmer = page.locator("h1 .text-liquid-animate");
+  const state = () =>
+    shimmer.evaluate((e) => getComputedStyle(e).animationPlayState);
+  await expect.poll(state).toBe("running");
+  await page.evaluate(() =>
+    document.querySelector("#projects")!.scrollIntoView(),
+  );
+  await expect(hero).toHaveAttribute("data-offscreen", "");
+  await expect.poll(state).toBe("paused");
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(hero).not.toHaveAttribute("data-offscreen", "");
+  await expect.poll(state).toBe("running");
 });
 
 test("no lens is built while effects are paused, and one is once they resume", async ({

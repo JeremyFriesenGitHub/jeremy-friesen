@@ -1,7 +1,6 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useLiquidLens } from "~/hooks/use-liquid-lens";
 import { usePointerGlow } from "~/hooks/use-pointer-glow";
 import { cn } from "~/lib/utils";
 
@@ -31,7 +30,10 @@ export function GlassCard({
   const { ref, onPointerMove, onPointerLeave } = usePointerGlow<HTMLDivElement>(
     { shift: interactive ? SHIFT : 0 },
   );
-  useLiquidLens(ref, { bezel: 18 });
+  // No refraction lens on cards (see lib/liquid-lens.ts): with only the
+  // smooth lamp behind a card, it changes no more than a faint band along
+  // the rim, yet every lens on screen is redrawn with each lamp frame and
+  // each scroll frame. The rim lighting and glint stay.
 
   const accentVars = accent
     ? ({
